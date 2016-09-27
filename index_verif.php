@@ -43,8 +43,12 @@ $bankid_cheque = (GETPOST("CASHDESK_ID_BANKACCOUNT_CHEQUE") > 0)?GETPOST("CASHDE
 $bankid_cb = (GETPOST("CASHDESK_ID_BANKACCOUNT_CB") > 0)?GETPOST("CASHDESK_ID_BANKACCOUNT_CB",'int'):$conf->global->CASHDESK_ID_BANKACCOUNT_CB;
 
 
+var_dump($thirdpartyid);
+var_dump($warehouseid);
+var_dump($bankid_cash);
+var_dump($bankid_cb);
 
-
+var_dump($_SESSION);
 
 
 // Check username
@@ -55,34 +59,34 @@ if (empty($username))
 	exit;
 }
 // Check third party id
-if (! ($thirdpartyid > 0))
-{
-    $retour=$langs->trans("ErrorFieldRequired",$langs->transnoentities("CashDeskThirdPartyForSell"));
-    header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
-    exit;
-}
+// if (! ($thirdpartyid > 0))
+// {
+//     $retour=$langs->trans("ErrorFieldRequired",$langs->transnoentities("CashDeskThirdPartyForSell"));
+//     header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
+//     exit;
+// }
 
-// If we setup stock module to ask movement on invoices, we must not allow access if required setup not finished.
-if (! empty($conf->stock->enabled) && empty($conf->global->CASHDESK_NO_DECREASE_STOCK) && ! ($warehouseid > 0))
-{
-	$retour=$langs->trans("CashDeskYouDidNotDisableStockDecease");
-	header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
-	exit;
-}
+// // If we setup stock module to ask movement on invoices, we must not allow access if required setup not finished.
+// if (! empty($conf->stock->enabled) && empty($conf->global->CASHDESK_NO_DECREASE_STOCK) && ! ($warehouseid > 0))
+// {
+// 	$retour=$langs->trans("CashDeskYouDidNotDisableStockDecease");
+// 	header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
+// 	exit;
+// }
 
-// If stock decrease on bill validation, check user has stock edit permissions
-if (! empty($conf->stock->enabled) && empty($conf->global->CASHDESK_NO_DECREASE_STOCK) && ! empty($username))
-{
-	$testuser=new User($db);
-	$testuser->fetch(0,$username);
-	$testuser->getrights('stock');
-	if (empty($testuser->rights->stock->creer))
-	{
-		$retour=$langs->trans("UserNeedPermissionToEditStockToUsePos");
-		header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
-		exit;
-	}
-}
+// // If stock decrease on bill validation, check user has stock edit permissions
+// if (! empty($conf->stock->enabled) && empty($conf->global->CASHDESK_NO_DECREASE_STOCK) && ! empty($username))
+// {
+// 	$testuser=new User($db);
+// 	$testuser->fetch(0,$username);
+// 	$testuser->getrights('stock');
+// 	if (empty($testuser->rights->stock->creer))
+// 	{
+// 		$retour=$langs->trans("UserNeedPermissionToEditStockToUsePos");
+// 		header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
+// 		exit;
+// 	}
+// }
 
 
 /*
@@ -128,6 +132,8 @@ if ( $retour >= 0 )
         $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] = ($bankid_cash > 0 ? $bankid_cash : '');
         $_SESSION['CASHDESK_ID_BANKACCOUNT_CHEQUE'] = ($bankid_cheque > 0 ? $bankid_cheque : '');
         $_SESSION['CASHDESK_ID_BANKACCOUNT_CB'] = ($bankid_cb > 0 ? $bankid_cb : '');
+
+		$_SESSION['almacen']="Almacen del usuario ingresado";
         //var_dump($_SESSION);exit;
 
 		header('Location: '.DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=facturation&id=NOUV');
