@@ -49,10 +49,10 @@ $obj_facturation->calculTotaux();	// Redefine prix_total_ttc, prix_total_ht et m
 
 $total_ttc = $obj_facturation->prixTotalTtc();
 
-/*var_dump($obj_facturation);
-var_dump($_SESSION['poscart']);
-var_dump($total_ttc);
-exit;*/
+// var_dump($obj_facturation);
+// var_dump($_SESSION['poscart']);
+// var_dump($total_ttc);
+// //exit;
 
 
 // Left area with selected articles (area for article, amount and payments)
@@ -79,9 +79,7 @@ else
 	dol_print_error('','menu param '.$page.' is not inside allowed list');
 }
 
-Kint::dump( $_GET );
 
-Kint::dump( $page );
 print '</div>';
 print '</div>';
 
@@ -96,5 +94,6 @@ require ('tpl/liste_articles.tpl.php');
 
 print '</div>';
 print '</div>';
+
 
 $_SESSION['serObjFacturation'] = serialize($obj_facturation);

@@ -41,6 +41,7 @@ if ( $_SESSION['uid'] > 0 )
 $usertxt=GETPOST('user','',1);
 $err=GETPOST("err");
 
+var_dump($usertxt);
 
 /*
  * View
@@ -96,7 +97,9 @@ $disabled=0;
 $langs->load("companies");
 if (! empty($conf->global->CASHDESK_ID_THIRDPARTY)) $disabled=1; // If a particular third party is defined, we disable choice
 print $form->select_company(GETPOST('socid','int')?GETPOST('socid','int'):$conf->global->CASHDESK_ID_THIRDPARTY,'socid','s.client in (1,3)',!$disabled,$disabled,1);
-//print '<input name="warehouse_id" class="texte_login" type="warehouse_id" value="" />';
+//  print '<input name="warehouse_id" class="texte_login" type="warehouse_id" value="" />';
+
+
 print '</td>';
 print "</tr>\n";
 

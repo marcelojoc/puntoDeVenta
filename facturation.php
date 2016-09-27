@@ -198,3 +198,5 @@ $obj_facturation->paiementLe('RESET');
 
 // Affichage des templates
 require ('tpl/facturation1.tpl.php');
+
+

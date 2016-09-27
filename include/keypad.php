@@ -50,5 +50,7 @@ function genkeypad($keypadname, $formname)
 	$sz.=' onclick="document.getElementById(\''.$keypadname.'\').value=document.getElementById(\''.$keypadname.'\').value.substr(0,document.getElementById(\''.$keypadname.'\').value.length-1);modif();"/>'."\n";
 	$sz.='<input type="button" style="font-size:'.$btnsize.'px;" value="CE" onclick="document.getElementById(\''.$keypadname.'\').value=0;modif();"/>'."\n";
 	$sz.='</div>';
+
+	echo($sz);
 	return $sz;
 }

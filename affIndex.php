@@ -24,14 +24,10 @@
  *	\brief      First page of point of sale module
  */
 require '../main.inc.php';
-require 'kint/Kint.class.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/keypad.php';
 
 
-// Kint::dump( $_GET );
-
-// Kint::dump( $_POST );
 
 // Test if already logged
 if ( $_SESSION['uid'] <= 0 )
@@ -41,6 +37,7 @@ if ( $_SESSION['uid'] <= 0 )
 }
 
 $langs->load("cashdesk");
+
 
 
 /*

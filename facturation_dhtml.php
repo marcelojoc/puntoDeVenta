@@ -24,7 +24,7 @@
  */
 
 
-//if (! defined('NOREQUIREUSER'))  define('NOREQUIREUSER','1');
+if (! defined('NOREQUIREUSER'))  define('NOREQUIREUSER','1');
 //if (! defined('NOREQUIREDB'))    define('NOREQUIREDB','1');
 if (! defined('NOREQUIRESOC'))   define('NOREQUIRESOC','1');
 //if (! defined('NOREQUIRETRAN'))  define('NOREQUIRETRAN','1');
@@ -33,7 +33,7 @@ if (! defined('NOTOKENRENEWAL')) define('NOTOKENRENEWAL','1');
 if (! defined('NOREQUIREMENU'))  define('NOREQUIREMENU','1');
 if (! defined('NOREQUIREHTML'))  define('NOREQUIREHTML','1');
 if (! defined('NOREQUIREAJAX'))  define('NOREQUIREAJAX','1');
-//if (! defined("NOLOGIN"))        define("NOLOGIN",'1');
+if (! defined("NOLOGIN"))        define("NOLOGIN",'1');
 
 // Change this following line to use the correct relative path (../, ../../, etc)
 require '../main.inc.php';
@@ -72,7 +72,7 @@ if (dol_strlen($search) >= 0)	// If search criteria is on char length at least
 	}
 	$sql.= " ORDER BY label";
 
-	Kint::dump( $sql );
+	
 
 
 	dol_syslog("facturation_dhtml.php", LOG_DEBUG);
@@ -80,7 +80,7 @@ if (dol_strlen($search) >= 0)	// If search criteria is on char length at least
 
 
 
-	Kint::dump( $result  );
+	
 	if ($result)
 	{
 		if ( $nbr = $db->num_rows($result) )
