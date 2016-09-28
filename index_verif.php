@@ -141,15 +141,16 @@ $sql.=" AND entity IN(0,".$conf->entity.")";
 			
 			$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] =$tab['caja'];
 
+
+
+			
+
 		}else{
 			//  en caso de que no tenga una caja asociada  vuelve al login
             header('Location: '.DOL_URL_ROOT.'/cashdesk/deconnexion.php');
 
 		}
         //$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] = ($bankid_cash > 0 ? $bankid_cash : '');
-
-
-
         // $_SESSION['CASHDESK_ID_BANKACCOUNT_CHEQUE'] = ($bankid_cheque > 0 ? $bankid_cheque : '');
         // $_SESSION['CASHDESK_ID_BANKACCOUNT_CB'] = ($bankid_cb > 0 ? $bankid_cb : '');
 
