@@ -15,6 +15,7 @@ if ( $_SESSION['uid'] > 0 )
 $usertxt=GETPOST('user','',1);
 $err=GETPOST("err");
 
+
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +50,8 @@ $err=GETPOST("err");
 	</tr>
 
 // <?php
+$formproduct=new FormProduct($db);
+$form=new Form($db);
 // print "<tr>";
 // print '<td class="label1">'.$langs->trans("CashDeskThirdPartyForSell").'</td>';
 // print '<td>';
@@ -69,9 +72,9 @@ $err=GETPOST("err");
 // 	print '<td class="label1">'.$langs->trans("Warehouse").'</td>';
 // 	print '<td>';
 // 	$disabled=0;
-// 	if ($conf->global->CASHDESK_ID_WAREHOUSE > 0) $disabled=1;	// If a particular stock is defined, we disable choice
-// 	print $formproduct->selectWarehouses((GETPOST('warehouseid')?GETPOST('warehouseid','int'):(empty($conf->global->CASHDESK_ID_WAREHOUSE)?'ifone':$conf->global->CASHDESK_ID_WAREHOUSE)),'warehouseid','',!$disabled,$disabled);
-// 	print '</td>';
+	// if ($conf->global->CASHDESK_ID_WAREHOUSE > 0) $disabled=1;	// If a particular stock is defined, we disable choice
+	// print $formproduct->selectWarehouses((GETPOST('warehouseid')?GETPOST('warehouseid','int'):(empty($conf->global->CASHDESK_ID_WAREHOUSE)?'ifone':$conf->global->CASHDESK_ID_WAREHOUSE)),'warehouseid','',!$disabled,$disabled);
+	// print '</td>';
 // 	print "</tr>\n";
 // }
 
@@ -101,6 +104,9 @@ $err=GETPOST("err");
 // print $form->select_comptes(((GETPOST('bankid_cb') > 0)?GETPOST('bankid_cb'):$conf->global->CASHDESK_ID_BANKACCOUNT_CB),'CASHDESK_ID_BANKACCOUNT_CB',0,"courant=1",($defaultknown?0:2));
 // print '</td>';
 // print "</tr>\n";
+echo($conf->global->PRODUIT_MULTIPRICES);  //opcion para saber si esta activo o no multiprecio
+
+var_dump($_SESSION);
 
 // ?>
 

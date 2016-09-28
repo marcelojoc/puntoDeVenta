@@ -43,12 +43,7 @@ $bankid_cheque = (GETPOST("CASHDESK_ID_BANKACCOUNT_CHEQUE") > 0)?GETPOST("CASHDE
 $bankid_cb = (GETPOST("CASHDESK_ID_BANKACCOUNT_CB") > 0)?GETPOST("CASHDESK_ID_BANKACCOUNT_CB",'int'):$conf->global->CASHDESK_ID_BANKACCOUNT_CB;
 
 
-var_dump($thirdpartyid);
-var_dump($warehouseid);
-var_dump($bankid_cash);
-var_dump($bankid_cb);
 
-var_dump($_SESSION);
 
 
 // Check username
@@ -101,16 +96,28 @@ if (! empty($_POST['txtUsername']) && ! empty($conf->banque->enabled) && (empty(
 
 // Check password
 $auth = new Auth($db);
+
+// comprueba si el usuario existe y esta activo_  devuelve un 0  si esta OK   y -1  si esta mal
 $retour = $auth->verif($username, $password);
+
+
 
 if ( $retour >= 0 )
 {
 	$return=array();
 
-	$sql = "SELECT rowid, lastname, firstname";
-	$sql.= " FROM ".MAIN_DB_PREFIX."user";
-	$sql.= " WHERE login = '".$username."'";
-	$sql.= " AND entity IN (0,".$conf->entity.")";
+	// $sql = "SELECT rowid, lastname, firstname";
+	// $sql.= " FROM ".MAIN_DB_PREFIX."user";
+	// $sql.= " WHERE login = '".$username."'";
+	// $sql.= " AND entity IN (0,".$conf->entity.")";
+
+
+$sql ="SELECT llx_user.rowid, llx_user.lastname, llx_user.firstname, llx_user_extrafields.warehouse, llx_user_extrafields.caja ";
+$sql.=" FROM llx_user, llx_user_extrafields";
+$sql.=" WHERE login = '".$username."'";
+$sql.=" AND  llx_user.rowid= llx_user_extrafields.fk_object";
+$sql.=" AND entity IN(0,".$conf->entity.")";
+
 
 	$result = $db->query($sql);
 	if ($result)
@@ -121,22 +128,37 @@ if ( $retour >= 0 )
 		{
 			$return[$key] = $value;
 		}
-
+		
+		// carga en la sesion los datos del usuario ingresado
 		$_SESSION['uid'] = $tab['rowid'];
 		$_SESSION['uname'] = $username;
 		$_SESSION['lastname'] = $tab['lastname'];
 		$_SESSION['firstname'] = $tab['firstname'];
-		$_SESSION['CASHDESK_ID_THIRDPARTY'] = ($thirdpartyid > 0 ? $thirdpartyid : '');
-        $_SESSION['CASHDESK_ID_WAREHOUSE'] = ($warehouseid > 0 ? $warehouseid : '');
-        
-        $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] = ($bankid_cash > 0 ? $bankid_cash : '');
-        $_SESSION['CASHDESK_ID_BANKACCOUNT_CHEQUE'] = ($bankid_cheque > 0 ? $bankid_cheque : '');
-        $_SESSION['CASHDESK_ID_BANKACCOUNT_CB'] = ($bankid_cb > 0 ? $bankid_cb : '');
+		//$_SESSION['CASHDESK_ID_THIRDPARTY'] = ($thirdpartyid > 0 ? $thirdpartyid : '');
+        $_SESSION['CASHDESK_ID_WAREHOUSE'] = ($tab['warehouse'] > 0 ? $tab['warehouse'] : '');
 
-		$_SESSION['almacen']="Almacen del usuario ingresado";
-        //var_dump($_SESSION);exit;
+		if($tab['caja']>0){
+			
+			$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] =$tab['caja'];
 
-		header('Location: '.DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=facturation&id=NOUV');
+		}else{
+			//  en caso de que no tenga una caja asociada  vuelve al login
+            header('Location: '.DOL_URL_ROOT.'/cashdesk/deconnexion.php');
+
+		}
+        //$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] = ($bankid_cash > 0 ? $bankid_cash : '');
+
+
+
+        // $_SESSION['CASHDESK_ID_BANKACCOUNT_CHEQUE'] = ($bankid_cheque > 0 ? $bankid_cheque : '');
+        // $_SESSION['CASHDESK_ID_BANKACCOUNT_CB'] = ($bankid_cb > 0 ? $bankid_cb : '');
+
+		$_SESSION['almacen']=$tab['caja'];
+        var_dump($_SESSION);
+		
+		exit;
+
+		//header('Location: '.DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=facturation&id=NOUV');
 		exit;
 	}
 	else
