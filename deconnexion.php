@@ -33,5 +33,6 @@ require_once '../main.inc.php';
 unset($_SESSION['uid']);
 
 header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
+//session_destroy();
 exit;
 

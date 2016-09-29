@@ -50,7 +50,7 @@ $bankid_cb = (GETPOST("CASHDESK_ID_BANKACCOUNT_CB") > 0)?GETPOST("CASHDESK_ID_BA
 if (empty($username))
 {
 	$retour=$langs->trans("ErrorFieldRequired",$langs->transnoentities("Login"));
-	header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid.'&bankid_cash='.$bankid_cash.'&bankid_cheque='.$bankid_cheque.'&bankid_cb='.$bankid_cb);
+	header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php?err='.urlencode($retour).'&user='.$username);
 	exit;
 }
 // Check third party id
@@ -96,6 +96,7 @@ if (! empty($_POST['txtUsername']) && ! empty($conf->banque->enabled) && (empty(
 
 // Check password
 $auth = new Auth($db);
+$form=new Form($db);
 
 // comprueba si el usuario existe y esta activo_  devuelve un 0  si esta OK   y -1  si esta mal
 $retour = $auth->verif($username, $password);
@@ -112,11 +113,11 @@ if ( $retour >= 0 )
 	// $sql.= " AND entity IN (0,".$conf->entity.")";
 
 
-$sql ="SELECT llx_user.rowid, llx_user.lastname, llx_user.firstname, llx_user_extrafields.warehouse, llx_user_extrafields.caja ";
-$sql.=" FROM llx_user, llx_user_extrafields";
-$sql.=" WHERE login = '".$username."'";
-$sql.=" AND  llx_user.rowid= llx_user_extrafields.fk_object";
-$sql.=" AND entity IN(0,".$conf->entity.")";
+	$sql ="SELECT llx_user.rowid, llx_user.lastname, llx_user.firstname, llx_user_extrafields.warehouse, llx_user_extrafields.caja ";
+	$sql.=" FROM llx_user, llx_user_extrafields";
+	$sql.=" WHERE login = '".$username."'";
+	$sql.=" AND  llx_user.rowid= llx_user_extrafields.fk_object";
+	$sql.=" AND entity IN(0,".$conf->entity.")";
 
 
 	$result = $db->query($sql);
@@ -142,7 +143,7 @@ $sql.=" AND entity IN(0,".$conf->entity.")";
 			$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] =$tab['caja'];
 
 
-
+			//  lo mando a la pagina de seleccion de Cliente
 			
 
 		}else{
@@ -154,13 +155,14 @@ $sql.=" AND entity IN(0,".$conf->entity.")";
         // $_SESSION['CASHDESK_ID_BANKACCOUNT_CHEQUE'] = ($bankid_cheque > 0 ? $bankid_cheque : '');
         // $_SESSION['CASHDESK_ID_BANKACCOUNT_CB'] = ($bankid_cb > 0 ? $bankid_cb : '');
 
-		$_SESSION['almacen']=$tab['caja'];
+		//$_SESSION['almacen']=$tab['caja'];
         var_dump($_SESSION);
-		
-		exit;
+		//exit;
 
 		//header('Location: '.DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=facturation&id=NOUV');
-		exit;
+		header('Location: '.DOL_URL_ROOT.'/cashdesk/select_client.php');
+		$b=unserialize($_SESSION['serObjFacturation']);
+var_dump($b);
 	}
 	else
 	{
@@ -172,7 +174,7 @@ else
 	$langs->load("errors");
     $langs->load("other");
 	$retour=$langs->trans("ErrorBadLoginPassword");
-	header('Location: '.DOL_URL_ROOT.'/cashdesk/index.php?err='.urlencode($retour).'&user='.$username.'&socid='.$thirdpartyid.'&warehouseid='.$warehouseid);
+	header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php?err='.urlencode($retour).'&user='.$username);
 	exit;
 }
 

@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 unset ($_SESSION['serObjFacturation']);
 
-echo $_GET['action'];
+
 switch ( $_GET['action'] )
 {
 
@@ -57,7 +57,6 @@ switch ( $_GET['action'] )
 			}
 
 
-echo $sql;
 			$result = $db->query($sql);
 
 			if ($result)
