@@ -31,7 +31,7 @@ top_htmlhead('','',0,0,'','');
 
     <label class="sr-only" for="selCliente">Cliente</label>
         <select class="form-control" id="selCliente">
-            <option>1</option>
+            
 
         </select>
   </div>
@@ -66,4 +66,6 @@ top_htmlhead('','',0,0,'','');
 
 
 </body>
+
+<script type="text/javascript" src="javascript/dhtml.js"></script>
 </html>

@@ -66,27 +66,49 @@ function setStyle(aIdElement, aClasse) {
 
 }
 
-function get_MyClient(){
+function get_MyClient(param= null){
 
 
-$.ajax(
-{
-  url : 'getDataUser.php',
-  type: "POST",
-  data : {idP: '10'}
-})
+	$.ajax(
+			{
+			url : 'ajax_query.php',
+			type: "POST",
+			data : {
+					consulta: 'getAll',
+					dato    :  param
+					},
+			dataType: 'JSON',
 
-  .done(function(data) {
-    $("#respuesta").html(data);
-  })
+			success : function(json) {
+			loadComponent(json);
+			},
 
-  .fail(function(data) {
-    alert( "error" );
-  })
+			// código a ejecutar si la petición falla;
+			// son pasados como argumentos a la función
+			// el objeto de la petición en crudo y código de estatus de la petición
+			error : function(xhr, status) {
+				alert('Disculpe, existió un problema '+ status + xhr );
+			},
 
-  .always(function(data) {
-    alert( "complete" );
-  });
+			// código a ejecutar sin importar si la petición falló o no
+			complete : function(xhr, status) {
+				alert('Petición realizada');
+			}
+
+	})
 
 }
 
+//<option value="1">1</option>
+
+function loadComponent( datos){
+	var select =$('#selCliente');
+	select.html('');
+	$.each(datos, function(id,value){
+			select.append('<option value="'+value.id_cliente+'">'+value.nombre+'</option>');
+			});
+
+}
+
+
+$('#txtcodigo').on('keyup', get_MyClient($('#txtcodigo').val()) );
