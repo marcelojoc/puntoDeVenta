@@ -13,6 +13,11 @@ if ( $_SESSION['uid'] <= 0 )
 	exit;
 }
 
+
+
+// $thirdpartyid = (GETPOST('selCliente') > 0)?GETPOST('selCliente'):$conf->global->CASHDESK_ID_THIRDPARTY;
+// $_SESSION['CASHDESK_ID_THIRDPARTY'] = $thirdpartyid ;
+
 $langs->load("cashdesk");
 
 

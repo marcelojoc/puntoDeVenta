@@ -73,10 +73,8 @@ $respuesta=null;
 
             FROM    llx_societe, llx_societe_extrafields
             WHERE   llx_societe_extrafields.vendedor = $codVendedor
-            AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-            AND     code_client LIKE '".$dato."%'"
-
-        ;
+            AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
+           // AND     code_client LIKE '".$dato."%'";
 
         $resql=$db->query($sql);
 
@@ -94,6 +92,7 @@ $respuesta=null;
                                             // You can use here results
                                             $respuesta[]= array(
                                                                 'id_cliente'=> $obj->rowid,
+                                                                'cod_cliente'=>$obj->code_client,
                                                                 'nombre'=> $obj->nom
                                             );
                                             //print $obj->name_alias;

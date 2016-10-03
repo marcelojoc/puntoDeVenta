@@ -1,11 +1,17 @@
 <?php
-require_once '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
+include '../main.inc.php';
+require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
+
 
 $langs->load("admin");
 $langs->load("cashdesk");
 
-//var_dump($_SESSION);
+var_dump($_SESSION);
+
+var_dump($_POST);
+
+echo GETPOST('selCliente','',1);
+
 
 // Test if user logged
 if ( !$_SESSION['uid'] )
@@ -21,23 +27,29 @@ top_htmlhead('','',0,0,'','');
     
     
 
-<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="txtcodigo">Codigo</label>
-    <input type="text" class="form-control" id="txtcodigo" placeholder="Codigo">
-  </div>
+<form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" >
 
-  <div class="form-group">
+    
+    
+Nombre<input name="txtcodigo" type="text" id="txtcodigo"><br />
 
-    <label class="sr-only" for="selCliente">Cliente</label>
-        <select class="form-control" id="selCliente">
-            
+
+
+  
+
+
+        <select  id="selCliente" name"selCliente">
+                    <option value="value1">Value 1</option>
+        <option value="value2">Value 2</option>
 
         </select>
-  </div>
+  
 
-  <button type="submit" class="btn btn-default">Sign in</button>
+  
+  <input class="button" name="sbmtConnexion" type="submit" value="conexion" />
 </form>
+
+
 
 
 <?php
@@ -67,5 +79,5 @@ top_htmlhead('','',0,0,'','');
 
 </body>
 
-<script type="text/javascript" src="javascript/dhtml.js"></script>
+<script type="text/javascript" src="javascript/list_clients.js"></script>
 </html>

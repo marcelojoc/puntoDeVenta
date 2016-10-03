@@ -137,7 +137,7 @@ if ( $retour >= 0 )
 		$_SESSION['lastname'] = $tab['lastname'];
 		$_SESSION['firstname'] = $tab['firstname'];
 		$_SESSION['codVendedor'] = $tab['codvendedor'];
-		//$_SESSION['CASHDESK_ID_THIRDPARTY'] = ($thirdpartyid > 0 ? $thirdpartyid : '');
+		$_SESSION['CASHDESK_ID_THIRDPARTY'] = ($thirdpartyid > 0 ? $thirdpartyid : '');
         $_SESSION['CASHDESK_ID_WAREHOUSE'] = ($tab['warehouse'] > 0 ? $tab['warehouse'] : '');
 
 
