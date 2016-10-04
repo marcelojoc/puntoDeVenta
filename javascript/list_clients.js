@@ -1,8 +1,6 @@
 var todo=null;
 
-$('#txtcodigo').on('keyup', loadComponent($('#txtcodigo').val()) );
 
-$('#selCliente').on('change', loadComponent($('#txtcodigo').val()) );
 // si no estoy en esta pagina, declaro el array  y hago la peticion ajax a Clientes
  $(document).ready(function(){
 
@@ -16,7 +14,11 @@ $('#selCliente').on('change', loadComponent($('#txtcodigo').val()) );
 
 function asignarCodigo(){
 
-$('#txtcodigo').val()
+$('#hiddenCode').val( $('#selCliente').val())
+
+var codClient= $('#selCliente option:selected').text();
+
+$('#txtcodigo').val( codClient.replace(/\D/g,''));
 
 
 };
@@ -53,7 +55,6 @@ function get_MyClient(param= null){
 
 }
 
-//<option value="1">1</option>
 
 
 function loadComponent( filtro){
@@ -68,5 +69,5 @@ function loadComponent( filtro){
 				});
 		}
 
-
+    
 }

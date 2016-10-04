@@ -7,7 +7,21 @@ Formulario
 <body>
 <form name="prueba" action="PRUEBA.PHP" method="POST"><!--generamos el formulario, se va a recargar por eso el action es "formulario2.php"-->
 Nombre<input name="nombre" type="text" ><br />
-ContraseÃ±a <input name="contra" type="password"><br />
+ContraseÃ±a 
+
+
+
+        <select  id="selCliente" name"selCliente">
+                    <option value="value1">Value 1</option>
+        <option value="value2">Value 2</option>
+                    <option value="value1">Value 1</option>
+        <option value="value2">Value 2</option>
+                            <option value="value1">Value 1</option>
+        <option value="value2">Value 2</option>
+        </select>
+
+
+
 <input type="submit" name="btn_envio" value="Entrar">
 </form>
  

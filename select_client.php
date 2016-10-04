@@ -2,16 +2,8 @@
 include '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
 
-
 $langs->load("admin");
 $langs->load("cashdesk");
-
-var_dump($_SESSION);
-
-var_dump($_POST);
-
-echo GETPOST('selCliente','',1);
-
 
 // Test if user logged
 if ( !$_SESSION['uid'] )
@@ -20,34 +12,87 @@ if ( !$_SESSION['uid'] )
 	exit;
 }
 
-top_htmlhead('','',0,0,'','');
+/*
+
+1)comprobar si hay post del boton y si el campo codigo no esta vacio al igual que el hidden
+
+2) verificar el cliente  si es el mismo del valor que viene por post
+
+3) llenar el paramentro de session que falta y redireccionar a el punto de venta
+
+*/
+
+  if($_POST && isset($_POST['sbmtConnexion'])){  // valido que los datos esten llegando por post
+
+  $hidden=$_POST['hiddenCode'];
+  $codCliente= $_POST['txtcodigo'];
+
+      if ($hidden!= "" &&  $hidden > 0 ){  // compruebo el campo hiden
+
+        include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';  
+        $company=new Societe($db);
+
+          if( $company->fetch($hidden) ){    // compruebo que el valor exista y sea correcto
+
+              $_SESSION["CASHDESK_ID_THIRDPARTY"]=$hidden;
+              header('Location: '.DOL_URL_ROOT.'/cashdesk/affindex.php');
+          }else{
+
+            unset($_POST);
+            header('Location: '.DOL_URL_ROOT.'/cashdesk/select_client.php?err=cliente incorrecto');
+
+          }
+        
+
+      }else{  //  en caso de error vuelve a la seleccion del cliente
+
+        unset($_POST);
+        header('Location: '.DOL_URL_ROOT.'/cashdesk/select_client.php');
+
+      }
+
+  }else{ //  si no hay datos post  cargo el form de busqueda de Clientes
+
+    top_htmlhead('','',0,0,'',''); // cargo encabezados
+
+ ?>   
+
+
+
+
+
+      <form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" >
+
+      <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
+
+      Nombre<input name="txtcodigo" type="text" id="txtcodigo" onkeyup="loadComponent(this.value)"  required/><br />
+
+          <select  id="selCliente" name"selCliente" onclick ="asignarCodigo();" required>
+
+          </select>
+
+
+
+      <input class="button" name="sbmtConnexion" type="submit" value="conexion" />
+      </form>
+
+
+</body>
+
+<script type="text/javascript" src="javascript/list_clients.js"></script>
+</html>
+
+
+
+<?php
+  }
 ?>
 
 <body>
     
     
 
-<form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" >
 
-    
-    
-Nombre<input name="txtcodigo" type="text" id="txtcodigo"><br />
-
-
-
-  
-
-
-        <select  id="selCliente" name"selCliente">
-                    <option value="value1">Value 1</option>
-        <option value="value2">Value 2</option>
-
-        </select>
-  
-
-  
-  <input class="button" name="sbmtConnexion" type="submit" value="conexion" />
-</form>
 
 
 
@@ -77,7 +122,3 @@ Nombre<input name="txtcodigo" type="text" id="txtcodigo"><br />
 
 
 
-</body>
-
-<script type="text/javascript" src="javascript/list_clients.js"></script>
-</html>
