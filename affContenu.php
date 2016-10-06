@@ -24,7 +24,8 @@
  */
 require_once 'class/Facturation.class.php';
 
-// Si nouvelle vente, reinitialisation des donnees (destruction de l'objet et vidage de la table contenant la liste des articles)
+var_dump($_GET);
+// n o hace falta aqui  
 if ( $_GET['id'] == 'NOUV' )
 {
 	unset($_SESSION['serObjFacturation']);
@@ -35,6 +36,7 @@ if ( $_GET['id'] == 'NOUV' )
 if (isset($_SESSION['serObjFacturation']))
 {
 	$obj_facturation = unserialize($_SESSION['serObjFacturation']);
+var_dump($obj_facturation);
 	unset($_SESSION['serObjFacturation']);
 }
 else
@@ -72,6 +74,8 @@ if (in_array(
 		)
 	))
 {
+
+	var_dump($page);
 	include $page.'.php';
 }
 else
@@ -89,11 +93,12 @@ print '</div>';
 print '<div class="inline-block" style="vertical-align: top">';
 print '<div class="liste_articles">';
 
-print 'hola tpv';
+
 require ('tpl/liste_articles.tpl.php');
 
 print '</div>';
 print '</div>';
 
+var_dump($_SESSION);
 
 $_SESSION['serObjFacturation'] = serialize($obj_facturation);

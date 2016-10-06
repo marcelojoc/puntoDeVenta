@@ -57,6 +57,8 @@ switch ( $_GET['action'] )
 			}
 
 
+
+
 			$result = $db->query($sql);
 
 			if ($result)

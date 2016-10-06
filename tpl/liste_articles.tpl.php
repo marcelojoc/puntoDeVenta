@@ -29,7 +29,7 @@ $langs->load("cashdesk");
 <div class="liste_articles_haut">
 <div class="liste_articles_bas">
 
-<p class="titre"><?php echo $langs->trans("ShoppingCart"); echo 'sgopingcart'; ?></p>
+<p class="titre"><?php  echo 'carro de Compras'; ?></p>
 
 <?php
 /** add Ditto for MultiPrix*/

@@ -55,6 +55,9 @@ if ( !$_SESSION['uid'] )
 
     top_htmlhead('','',0,0,'',''); // cargo encabezados
 
+    unset($_SESSION['serObjFacturation']); //borro sesion de facturacion y de carro de compras
+    unset($_SESSION['poscart']);
+
  ?>   
 
 

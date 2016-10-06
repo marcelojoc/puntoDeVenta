@@ -56,7 +56,18 @@ $respuesta=null;
 	case 'get_client':
 
 
-    break;
+        break;
+
+
+
+        case 'get_product_stock':
+
+                $sql="SELECT p.rowid, p.ref, p.label, p.tva_tx, p.fk_product_type, ps.reel FROM llx_product AS p LEFT JOIN llx_product_stock AS ps ON p.rowid = ps.fk_product AND ps.fk_entrepot = 8 WHERE p.entity IN (1) AND p.tosell = 1 AND p.fk_product_type = 0  ORDER BY label
+                ";
+
+
+
+                break;
 
 
 
