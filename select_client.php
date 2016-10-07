@@ -64,7 +64,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-      <form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" >
+      <form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" />
 
       <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
 

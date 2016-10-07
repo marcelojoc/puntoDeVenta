@@ -60,10 +60,44 @@ $respuesta=null;
 
 
 
-        case 'get_product_stock':
+        case 'get_products':
 
-                $sql="SELECT p.rowid, p.ref, p.label, p.tva_tx, p.fk_product_type, ps.reel FROM llx_product AS p LEFT JOIN llx_product_stock AS ps ON p.rowid = ps.fk_product AND ps.fk_entrepot = 8 WHERE p.entity IN (1) AND p.tosell = 1 AND p.fk_product_type = 0  ORDER BY label
-                ";
+                $sql='SELECT p.rowid, p.ref, p.label, p.tva_tx, p.fk_product_type, ps.reel 
+                FROM llx_product AS p 
+                LEFT JOIN llx_product_stock AS ps ON p.rowid = ps.fk_product 
+                AND ps.fk_entrepot = '. $_SESSION['CASHDESK_ID_WAREHOUSE'] .' WHERE p.entity IN (1) 
+                AND p.tosell = 1 
+                AND p.fk_product_type = 0  ORDER BY label';
+
+                $resql=$db->query($sql);
+
+                if ($resql)
+                {
+                        $num = $db->num_rows($resql);
+                        $i = 0;
+                        if ($num)
+                        {
+                                while ($i < $num)
+                                {
+                                        $obj = $db->fetch_object($resql);
+                                        if ($obj)
+                                        {
+                                                // You can use here results
+                                                $respuesta[]= array(
+                                                                        'id_product'=> $obj->rowid,
+                                                                        'nom_product'=>$obj->label,
+                                                                        'stock_product'=> $obj->reel
+                                                );
+                                                //print $obj->name_alias;
+                                        }
+                                        $i++;
+                                }
+                        }
+                }else{
+
+                        $respuesta = 'hay un error en la conexion';
+                }
+
 
 
 

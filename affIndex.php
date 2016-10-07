@@ -9,12 +9,34 @@ if ( !$_SESSION['uid'] )
 	header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
 	exit;
 }
-top_htmlhead('','',0,0,'',''); // cargo encabezados
+
+
+
+var_dump($_SESSION);
+
+
+
+
+//top_htmlhead('','',0,0,'',''); // cargo encabezados
 ?>
 
-<script type="text/javascript" src="javascript/facturation1.js"></script>
+<!--<script type="text/javascript" src="javascript/facturation1.js"></script>
 <script type="text/javascript" src="javascript/dhtml.js"></script>
-<script type="text/javascript" src="javascript/keypad.js"></script>
+<script type="text/javascript" src="javascript/keypad.js"></script>-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+   
+
 
 <body>
 
@@ -50,27 +72,25 @@ top_htmlhead('','',0,0,'',''); // cargo encabezados
 
 
 
-    <div class="col-xs-5">
-            <div class="input-group">
-      <input id="appendedtext" name="appendedtext" class="form-control" placeholder="ref" type="text">
-      <span class="input-group-addon"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+    <form action="affIndex.php" metod="POST" name="formProduct">
 
-      
-    </div>
-    <!--<input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md">-->
-    </div>
-    <div class="col-xs-7 ">
-    
-        <select class="form-control input-md">
-            <option value="">qwqw</option>
-            <option value="">wewe</option>
-            <option value="">rerer</option>
-            <option value="">rtrt</option>
-            <option value="">wwewe</option>
-            <option value="">trtr</option>
-            <option value="">wewew</option>
-        </select>
-    </div>
+        <div class="col-xs-5">
+            <div class="input-group">
+                <input id="appendedtext" name="appendedtext" class="form-control" placeholder="ref" type="text"/>
+                <span class="input-group-addon"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+
+            </div>
+
+        <!--<input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md">-->
+        </div>
+        <div class="col-xs-7 ">
+        
+            <select class="form-control input-md" name="selectProduct" id="selectProduct"/>
+
+            </select>
+        </div>
+
+    </form>
 
   </div>
 
@@ -156,58 +176,58 @@ top_htmlhead('','',0,0,'',''); // cargo encabezados
 <hr>
 
 
-<div class="panel panel-default">
-  <div class="panel-heading text-center">Importe</div>
-  <div class="panel-body">
-    
-    <table class="table table-striped">
-                <thead class="success">
-                <tr>
-                    <th>Total</th>
-                    <th>Recibido</th>
-                    <th>Cambio</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" ></td>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
-                </tr>
-                
-                </tbody>
+    <div class="panel panel-default">
+    <div class="panel-heading text-center">Importe</div>
+    <div class="panel-body">
+        
+        <table class="table table-striped">
+                    <thead class="success">
+                    <tr>
+                        <th>Total</th>
+                        <th>Recibido</th>
+                        <th>Cambio</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" ></td>
+                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                    </tr>
+                    
+                    </tbody>
 
-    </table>
+        </table>
+    </div>
+    </div>
+
+
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">Medio de Pago</div>
+            <div class="panel-body">
+
+
+                <div class="row">
+
+                    <div class="col-xs-6">
+
+                    <button type="button" class="btn btn-success btn-block">Efectivo</button>
+
+                    </div>
+
+                    <div class="col-xs-6">
+
+                        
+                    </div>
+
+              </div>
+
+        </div>
   </div>
-</div>
-
-
-
-
-
-
-<div class="panel panel-default">
-  <div class="panel-heading text-center">Medio de Pago</div>
-  <div class="panel-body">
-    
-
-<div class="row">
-
-<div class="col-xs-6">
-
-<button type="button" class="btn btn-success btn-block">Efectivo</button>
-
-</div>
-
-<div class="col-xs-6">
-
-    
-</div>
-
-</div>
-
-  </div>
-</div>
 
 
 
@@ -218,8 +238,9 @@ top_htmlhead('','',0,0,'',''); // cargo encabezados
 
 
 
+ <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
+    <script src="javascript/bootstrap.min.js"></script>
 
-    
-</body>
-
+     <script type="text/javascript" src="javascript/ptv_principal.js"></script>
+  </body>
 </html>
