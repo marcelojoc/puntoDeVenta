@@ -49,8 +49,19 @@ $respuesta=null;
 
 	default:
 
-		$redirection = DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=validation';
-		break;
+        $redirection = DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=validation';
+        break;
+
+
+
+        // case 'setProduct'
+
+
+
+
+
+
+        // break;
 
 
 	case 'get_client':
@@ -105,53 +116,53 @@ $respuesta=null;
 
 
 
-    case 'getAll':
+        case 'getAll':
 
 
-        // busca clientes de a cuerdo al codigo asociado al vendedor
+                // busca clientes de a cuerdo al codigo asociado al vendedor
 
-        $sql="
-        
-            SELECT  llx_societe.code_client, 
-            llx_societe.rowid , 
-            llx_societe.nom
+                $sql="
+                
+                SELECT  llx_societe.code_client, 
+                llx_societe.rowid , 
+                llx_societe.nom
 
-            FROM    llx_societe, llx_societe_extrafields
-            WHERE   llx_societe_extrafields.vendedor = $codVendedor
-            AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
-           // AND     code_client LIKE '".$dato."%'";
+                FROM    llx_societe, llx_societe_extrafields
+                WHERE   llx_societe_extrafields.vendedor = $codVendedor
+                AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
+                // AND     code_client LIKE '".$dato."%'";
 
-        $resql=$db->query($sql);
+                $resql=$db->query($sql);
 
-            if ($resql)
-            {
-                    $num = $db->num_rows($resql);
-                    $i = 0;
-                    if ($num)
-                    {
-                            while ($i < $num)
-                            {
-                                    $obj = $db->fetch_object($resql);
-                                    if ($obj)
-                                    {
-                                            // You can use here results
-                                            $respuesta[]= array(
-                                                                'id_cliente'=> $obj->rowid,
-                                                                'cod_cliente'=>$obj->code_client,
-                                                                'nombre'=> $obj->nom
-                                            );
-                                            //print $obj->name_alias;
-                                    }
-                                    $i++;
-                            }
-                    }
-            }else{
+                if ($resql)
+                {
+                        $num = $db->num_rows($resql);
+                        $i = 0;
+                        if ($num)
+                        {
+                                while ($i < $num)
+                                {
+                                        $obj = $db->fetch_object($resql);
+                                        if ($obj)
+                                        {
+                                                // You can use here results
+                                                $respuesta[]= array(
+                                                                        'id_cliente'=> $obj->rowid,
+                                                                        'cod_cliente'=>$obj->code_client,
+                                                                        'nombre'=> $obj->nom
+                                                );
+                                                //print $obj->name_alias;
+                                        }
+                                        $i++;
+                                }
+                        }
+                }else{
 
-                $respuesta = 'hay un error en la conexion';
-            }
+                        $respuesta = 'hay un error en la conexion';
+                }
 
 
-    break;
+        break;
 }
 
 

@@ -25,7 +25,7 @@ var_dump($_SESSION);
 <script type="text/javascript" src="javascript/keypad.js"></script>-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,7 +35,7 @@ var_dump($_SESSION);
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-   
+   <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 
 
 <body>
