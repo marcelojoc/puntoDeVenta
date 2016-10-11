@@ -56,7 +56,7 @@ switch ( $_GET['action'] )
 				$sql.= " AND p.ref = '".$_POST['txtRef']."'";
 			}
 
-
+			
 
 
 			$result = $db->query($sql);
@@ -73,7 +73,7 @@ switch ( $_GET['action'] )
 						$ret[$key] = $value;
 					}
                     // Here $ret['tva_tx'] is vat rate of product but we want to not use the one into table but found by function
-                    
+                    var_dump($ret);
 					$productid = $ret['rowid'];
 					$product = new Product($db);
                     $product->fetch($productid);
@@ -193,6 +193,8 @@ switch ( $_GET['action'] )
 }
 
 // We saved object obj_facturation
+
+
 $_SESSION['serObjFacturation'] = serialize($obj_facturation);
 //var_dump($_SESSION['serObjFacturation']);
 header('Location: '.$redirection);

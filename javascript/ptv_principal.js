@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     
     
-get_Product();
+get_Products();
 
 
 
@@ -11,14 +11,7 @@ get_Product();
 
 
 
-
-
-
-
-
-
-
-function get_Product(param= null){
+function get_Products(param= null){
     
 	$.ajax(
 			{
@@ -34,16 +27,13 @@ function get_Product(param= null){
 			//loadComponent(json);
 			},
 
-			// código a ejecutar si la petición falla;
-			// son pasados como argumentos a la función
-			// el objeto de la petición en crudo y código de estatus de la petición
 			error : function(xhr, status) {
 				alert('Disculpe, existió un problema '+ status + xhr );
 			},
 
 			// código a ejecutar sin importar si la petición falló o no
 			complete : function(xhr, status) {
-				loadComponent("");
+				//loadComponent("");
 			}
 
 	})
@@ -54,15 +44,53 @@ function get_Product(param= null){
 
 function loadComponent(data ){
 
-
-
+// cargo el select de productos siempre que tenga Stock
 	
 	var select =$('#selectProduct');
-	//select.html('');
+	var opcion= '';
 		$.each(data, function(id,value){
-				select.append('<option value="'+value.id_product+'">'+value.nom_product + ' - '+value.stock_product+'</option>');
-				});
-	
 
+				if(value.stock_product <= 0){
+                   opcion= 'disabled'
+				}else{
+
+					opcion= ''
+				}
+                   select.append('<option value="'+value.id_product+'" '+ opcion + '>'+value.nom_product + ' - '+value.stock_product+'</option>');
+			
+		});
+}
+
+
+function get_valProduct(){
+
+	var param= $('#selectProduct').val();  // seteo el valor seleccionado del Select
     
+	$.ajax(
+			{
+			url : 'ajax_query.php',
+			type: "POST",
+			data : {
+					consulta: 'get_valProduct',
+					dato    : param
+					},
+			dataType: 'JSON',
+
+			success : function(json) {
+				    
+					console.log(json);
+			//loadComponent(json);
+			},
+
+			error : function(xhr, status) {
+				alert('Disculpe, existió un problema '+ status + xhr );
+			},
+
+			// código a ejecutar sin importar si la petición falló o no
+			//complete : function(xhr, status) {
+				//loadComponent("");
+			//}
+
+	})
+
 }

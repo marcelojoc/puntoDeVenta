@@ -45,6 +45,7 @@ class Facturation
     protected $montant_remise;
     protected $prix;
     protected $tva;
+    protected $precio_tabla ;
 
     /**
      * Attributs persistants : utilises pour toute la duree de la vente (jusqu'a validation ou annulation)
@@ -76,6 +77,7 @@ class Facturation
     {
         $this->raz();
         $this->razPers();
+        
     }
 
 
@@ -87,6 +89,26 @@ class Facturation
      *
      *  @return	void
      */
+
+
+    public function get_precio_tabla()
+    {
+
+    
+    return $this->precio_tabla;
+
+    }
+
+
+    public function set_precio_tabla($new_precio){
+
+       
+
+            $this->precio_tabla = $new_precio;
+        
+        
+    }
+
     public function ajoutArticle()
     {
         global $conf,$db,$mysoc;
@@ -240,6 +262,7 @@ class Facturation
         $this->montantRemise('RESET');
         $this->prix('RESET');
         $this->tva('RESET');
+        $this->precio_tabla('RESET');
     }
 
     /**
@@ -461,6 +484,28 @@ class Facturation
         }
 
     }
+
+
+// metodo de acceso al precio de tabla 
+    public function precio_tabla($pTabla=null)
+    {
+        if ( !$pTabla ) {
+
+            return $this->precio_tabla;
+
+        } else if ( $pTabla == 'RESET' ) {
+
+            $this->precio_tabla = NULL;
+
+        } else {
+
+            $this->precio_tabla = $pTabla;
+
+        }
+
+    }
+
+
 
     /**
      * Get num invoice

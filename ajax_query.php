@@ -1,7 +1,7 @@
 <?php
 
 require_once '../main.inc.php';
-
+require_once DOL_DOCUMENT_ROOT.'/cashdesk/class/Facturation.class.php';
 // validar acceso
 /*
 var consulta trae el nombre de la funcion que ejecuta
@@ -15,6 +15,13 @@ $dato     = GETPOST("dato", "alpha");
 
 
 $codVendedor= $_SESSION['codVendedor'];
+
+
+// $consulta = $_GET["consulta"];
+// $dato     =  $_GET["dato"];
+
+
+
 
 
 // $resql=$db->query("select * from llx_societe where rowid = 116");
@@ -54,24 +61,155 @@ $respuesta=null;
 
 
 
-        // case 'setProduct'
+        case 'get_valProduct':                        // consulta datos del producto  y si tiene tabla de descuentos la devuelve esta de otro modo devuelve una nula
+
+        if(!isset($_SESSION['serObjFacturation'])){  // si no hay variable de sesion para el objeto facturacion  la creo
+
+
+                 $obj_facturation = new Facturation();
+
+        }else{                                       // si ya existe. la desserializo  y la elimino, debo recrear el objeto
+
+                $obj_facturation = unserialize($_SESSION['serObjFacturation']);
+                unset ($_SESSION['serObjFacturation']);
+
+        }
+
+
+
+
+            $sql= '
+                SELECT p.rowid, p.ref, p.price, p.tva_tx, p.recuperableonly, 
+                ps.reel FROM llx_product AS p 
+                LEFT JOIN llx_product_stock AS ps 
+                ON p.rowid = ps.fk_product 
+                AND ps.fk_entrepot = '. $_SESSION['CASHDESK_ID_WAREHOUSE'] .' 
+                WHERE p.entity IN (1) 
+                AND p.rowid ='. $dato 
+            ;
+
+           
+             $resql=$db->query($sql);  //Aqui tengo los datos del producto seleccionado
+
+
+
+             $num = $db->num_rows($resql);
+             // si devuelve producto  entro al proceso
+             if ($num){
+
+                     /*
+                      debo traer el producto, precio, Stock y otros datos
+                      verificar que enga una lista de descuentos y trarla en ese caso
+                      instanciar el objeto facturation  y asignar los valores a cada parametro
+                     
+                     */
+                        $tabSql= 'SELECT * FROM `llx_desc` WHERE `fk_product` = '.$dato ;  // crea la consulta la lista de descuentos
+
+                        $re_tabsql= $db->query($tabSql);  // consulto  si existen descuentos 
+
+                       $tabla = $db->num_rows($re_tabsql);
+
+                       $matriz_desc= array();
+
+                        if($tabla >0){    // si hay tabla devolver la matriz de descuentos cargada
+
+                                    $i=0;
+
+                                while ($i < $tabla)  // recorrer el fech y guradarlo en un arreglo 
+                                {
+                                        $obj = $db->fetch_object($re_tabsql);
+                                        if ($obj)
+                                        {
+                                                // You can use here results
+                                                $matriz_desc[]= array(
+                                                                        'list' => $i,
+                                                                        'min'=>$obj->linf,
+                                                                        'max'=> $obj->lsup,
+                                                                        'descuento'=> $obj->descuento
+                                                );
+                                                
+                                        }
+                                        $i++;
+                                }
+                   
+
+                        }else{           // si no hya tabla devolver matriz basica de descuento (valor de compra normal)
+
+                                $matriz_desc= array(
+
+                                                'list1'     => "lista basica",
+                                                'min'       => "0",
+                                                'max'       => "max",
+                                                'descuento'=> '0.30'
+
+                                );
+
+                        }
+
+
+
+
+                // luego de cargar la lista de descuentos hay que traer el producto y setear el objeto
 
 
 
 
 
 
-        // break;
-
-
-	case 'get_client':
-
-
-        break;
 
 
 
-        case 'get_products':
+
+
+
+               $respuesta=array('tabla_desc' => $matriz_desc,
+               
+               'producto' => [250, 30,223],
+               ) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             }else{
+
+                        $respuesta= array(
+                                        'error'       => "los datos son invalidos"
+                        );
+             }
+
+
+
+
+
+
+
+
+
+
+
+             break;
+
+
+	case 'get_client':     // sin definicion
+
+
+
+
+              break;
+
+
+
+        case 'get_products':   // busca productos del almacen del vendedor y su Stock  y lo envia para cargar el select html
 
                 $sql='SELECT p.rowid, p.ref, p.label, p.tva_tx, p.fk_product_type, ps.reel 
                 FROM llx_product AS p 
@@ -116,10 +254,8 @@ $respuesta=null;
 
 
 
-        case 'getAll':
+        case 'getAll':        // busca clientes de acuerdo al codigo asociado al vendedor
 
-
-                // busca clientes de a cuerdo al codigo asociado al vendedor
 
                 $sql="
                 
@@ -161,8 +297,7 @@ $respuesta=null;
                         $respuesta = 'hay un error en la conexion';
                 }
 
-
-        break;
+               break;
 }
 
 

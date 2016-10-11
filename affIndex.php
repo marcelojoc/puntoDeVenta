@@ -1,7 +1,7 @@
 <?php
 include '../main.inc.php';
 //require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
-
+require_once DOL_DOCUMENT_ROOT.'/cashdesk/class/Facturation.class.php';
 
 // Test if user logged
 if ( !$_SESSION['uid'] )
@@ -11,11 +11,10 @@ if ( !$_SESSION['uid'] )
 }
 
 
-
 var_dump($_SESSION);
 
-
-
+ $obj_facturation= unserialize($_SESSION['serObjFacturation']);
+var_dump($obj_facturation);
 
 //top_htmlhead('','',0,0,'',''); // cargo encabezados
 ?>
@@ -85,7 +84,7 @@ var_dump($_SESSION);
         </div>
         <div class="col-xs-7 ">
         
-            <select class="form-control input-md" name="selectProduct" id="selectProduct"/>
+            <select class="form-control input-md" name="selectProduct" id="selectProduct" >
 
             </select>
         </div>

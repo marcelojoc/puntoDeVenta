@@ -36,7 +36,7 @@ if ( $_GET['id'] == 'NOUV' )
 if (isset($_SESSION['serObjFacturation']))
 {
 	$obj_facturation = unserialize($_SESSION['serObjFacturation']);
-var_dump($obj_facturation);
+
 	unset($_SESSION['serObjFacturation']);
 }
 else
@@ -51,7 +51,7 @@ $obj_facturation->calculTotaux();	// Redefine prix_total_ttc, prix_total_ht et m
 
 $total_ttc = $obj_facturation->prixTotalTtc();
 
-// var_dump($obj_facturation);
+ var_dump($obj_facturation);
 // var_dump($_SESSION['poscart']);
 // var_dump($total_ttc);
 // //exit;
