@@ -5,10 +5,8 @@ get_Products();
 
 
 
-
     
 });
-
 
 
 function get_Products(param= null){
@@ -79,6 +77,9 @@ function get_valProduct(){
 			success : function(json) {
 				    
 					console.log(json);
+                    cargatablaLocal(json.tabla_desc);
+                    cargaValores(json.datos_prod);
+
 			//loadComponent(json);
 			},
 
@@ -92,5 +93,35 @@ function get_valProduct(){
 			//}
 
 	})
+
+}
+
+
+function cargaValores(datos){
+
+var stock= $('#txtstock');
+var pUnit= $('#txtPunit');
+
+stock.val(datos.stock_product);
+
+var precio = parseFloat(datos.prod_precio)
+pUnit.val(precio.toFixed(2));
+
+
+console.log(datos);
+
+
+
+
+}
+
+function cargatablaLocal(tabla){
+
+	console.log(tabla);
+
+	
+		localStorage.removeItem('tabla');
+		localStorage.setItem('tabla', JSON.stringify(tabla));
+
 
 }

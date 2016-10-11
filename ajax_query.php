@@ -70,6 +70,7 @@ $respuesta=null;
 
         }else{                                       // si ya existe. la desserializo  y la elimino, debo recrear el objeto
 
+                
                 $obj_facturation = unserialize($_SESSION['serObjFacturation']);
                 unset ($_SESSION['serObjFacturation']);
 
@@ -107,9 +108,9 @@ $respuesta=null;
 
                         $re_tabsql= $db->query($tabSql);  // consulto  si existen descuentos 
 
-                       $tabla = $db->num_rows($re_tabsql);
+                        $tabla = $db->num_rows($re_tabsql);
 
-                       $matriz_desc= array();
+                        $matriz_desc= array();
 
                         if($tabla >0){    // si hay tabla devolver la matriz de descuentos cargada
 
@@ -135,49 +136,60 @@ $respuesta=null;
 
                         }else{           // si no hya tabla devolver matriz basica de descuento (valor de compra normal)
 
-                                $matriz_desc= array(
+                                $matriz_desc[]= array(
 
                                                 'list1'     => "lista basica",
                                                 'min'       => "0",
                                                 'max'       => "max",
-                                                'descuento'=> '0.30'
+                                                'descuento' => '0'
 
                                 );
 
                         }
 
 
+                                        // luego de cargar la lista de descuentos hay que traer el producto y setear el objeto
+                        $datos_producto= array();
+                        $num = $db->num_rows($resql);
+                         $i=0;
+                                while ($i < $num) // recorro el fetch de la base de datos y cargo el array con los datos
+                                {
+                                        $obj = $db->fetch_object($resql);
+                                        if ($obj)
+                                        {
+                                                
+                                                $datos_producto= array(
+                                                                        'prod_id'=> $obj->rowid,
+                                                                        'prod_precio'=>$obj->price,
+                                                                        'stock_product'=> $obj->reel
+                                                );
+
+                                                $obj_facturation->id = $obj->rowid;
+                                                $obj_facturation->ref($obj->ref);
+                                                $obj_facturation->stock("0");
+                                                $obj_facturation->stock($obj->reel);
+                                                $obj_facturation->prix($obj->price);
 
 
-                // luego de cargar la lista de descuentos hay que traer el producto y setear el objeto
+                                                
+                                        }
+                                        $i++;
+                                }
+                        
+                                                //concateno el arreglo con los datos y los descuentos
+                        $respuesta=array(
+
+                                'datos_prod' => $datos_producto,
+                                'tabla_desc' => $matriz_desc
+                        ) ;
+
+                                        // guardo los datos en la sesion
 
 
+                //$obj_facturation = unserialize($_SESSION['serObjFacturation']);
+                $_SESSION['serObjFacturation']=serialize($obj_facturation);
 
-
-
-
-
-
-
-
-
-
-               $respuesta=array('tabla_desc' => $matriz_desc,
-               
-               'producto' => [250, 30,223],
-               ) ;
-
-
-
-
-
-
-
-
-
-
-
-
+                      
 
 
              }else{
@@ -186,15 +198,6 @@ $respuesta=null;
                                         'error'       => "los datos son invalidos"
                         );
              }
-
-
-
-
-
-
-
-
-
 
 
              break;

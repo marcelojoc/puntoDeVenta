@@ -11,10 +11,9 @@ if ( !$_SESSION['uid'] )
 }
 
 
-var_dump($_SESSION);
 
  $obj_facturation= unserialize($_SESSION['serObjFacturation']);
-var_dump($obj_facturation);
+
 
 //top_htmlhead('','',0,0,'',''); // cargo encabezados
 ?>
@@ -36,6 +35,52 @@ var_dump($obj_facturation);
     <link href="css/bootstrap.min.css" rel="stylesheet">
    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 
+<style>
+
+.spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+  display:float;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+</style>
 
 <body>
 
@@ -75,7 +120,7 @@ var_dump($obj_facturation);
 
         <div class="col-xs-5">
             <div class="input-group">
-                <input id="appendedtext" name="appendedtext" class="form-control" placeholder="ref" type="text"/>
+                <input id="txtref" name="txtref" class="form-control" placeholder="ref" type="text"/>
                 <span class="input-group-addon"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
 
             </div>
@@ -94,7 +139,11 @@ var_dump($obj_facturation);
   </div>
 
 
-
+<div class="spinner">
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div>
 
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
         <div class="row">
@@ -110,9 +159,9 @@ var_dump($obj_facturation);
                 </thead>
                 <tbody>
                 <tr>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md"></td>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                    <td><input id="txtcantidad" name="txtcantidad" type="text" placeholder="cantidad" class="form-control input-md"></td>
+                    <td><input id="txtstock" name="txtstock" type="text" placeholder="Stock" class="form-control input-md" disabled></td>
+                    <td><input id="txtPunit" name="txtPunit" type="text" placeholder="precio" class="form-control input-md" disabled></td>
                 </tr>
                 
                 </tbody>
@@ -141,10 +190,7 @@ var_dump($obj_facturation);
                                 <option value="1">qwqw</option>
                                 <option value="2">wewe</option>
                                 <option value="3">rerer</option>
-                                <option value="4">rtrt</option>
-                                <option value="5">wwewe</option>
-                                <option value="6">trtr</option>
-                                <option value="7">wewew</option>
+
                             </select>
         </td>
                 </tr>
