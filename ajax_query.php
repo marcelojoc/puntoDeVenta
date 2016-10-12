@@ -138,7 +138,7 @@ $respuesta=null;
 
                                 $matriz_desc[]= array(
 
-                                                'list1'     => "lista basica",
+                                                'list'     => "0",
                                                 'min'       => "0",
                                                 'max'       => "max",
                                                 'descuento' => '0'

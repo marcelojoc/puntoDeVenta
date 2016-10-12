@@ -12,9 +12,9 @@ if ( !$_SESSION['uid'] )
 
 
 
- $obj_facturation= unserialize($_SESSION['serObjFacturation']);
+//  $obj_facturation= unserialize($_SESSION['serObjFacturation']);
 
-
+// var_dump($_SESSION);
 //top_htmlhead('','',0,0,'',''); // cargo encabezados
 ?>
 
@@ -29,58 +29,13 @@ if ( !$_SESSION['uid'] )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Punto de venta</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 
-<style>
 
-.spinner {
-  margin: 100px auto 0;
-  width: 70px;
-  text-align: center;
-  display:float;
-}
-
-.spinner > div {
-  width: 18px;
-  height: 18px;
-  background-color: #333;
-
-  border-radius: 100%;
-  display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-}
-
-.spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-
-.spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-}
-
-@-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  } 40% { 
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-  }
-}
-
-</style>
 
 <body>
 
@@ -129,7 +84,7 @@ if ( !$_SESSION['uid'] )
         </div>
         <div class="col-xs-7 ">
         
-            <select class="form-control input-md" name="selectProduct" id="selectProduct" >
+            <select class="form-control input-md" name="selectProduct" id="selectProduct" onchange="get_valProduct()" >
 
             </select>
         </div>
@@ -139,11 +94,7 @@ if ( !$_SESSION['uid'] )
   </div>
 
 
-<div class="spinner">
-  <div class="bounce1"></div>
-  <div class="bounce2"></div>
-  <div class="bounce3"></div>
-</div>
+
 
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
         <div class="row">
@@ -159,10 +110,13 @@ if ( !$_SESSION['uid'] )
                 </thead>
                 <tbody>
                 <tr>
-                    <td><input id="txtcantidad" name="txtcantidad" type="text" placeholder="cantidad" class="form-control input-md"></td>
+                    <td><input id="txtcantidad" name="txtcantidad" onkeyup="calculos(this.value);"type="text" placeholder="cantidad" class="form-control input-md"></td>
                     <td><input id="txtstock" name="txtstock" type="text" placeholder="Stock" class="form-control input-md" disabled></td>
-                    <td><input id="txtPunit" name="txtPunit" type="text" placeholder="precio" class="form-control input-md" disabled></td>
+
+                    <td> <input id ='hiddenpUnit'type="hidden" value="">
+                    <input id="txtPunit" name="txtPunit" type="text" placeholder="precio" class="form-control input-md" disabled></td>
                 </tr>
+                
                 
                 </tbody>
 

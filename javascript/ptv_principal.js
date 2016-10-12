@@ -57,6 +57,7 @@ function loadComponent(data ){
                    select.append('<option value="'+value.id_product+'" '+ opcion + '>'+value.nom_product + ' - '+value.stock_product+'</option>');
 			
 		});
+		get_valProduct();
 }
 
 
@@ -79,6 +80,7 @@ function get_valProduct(){
 					console.log(json);
                     cargatablaLocal(json.tabla_desc);
                     cargaValores(json.datos_prod);
+					$('#txtcantidad').val('');
 
 			//loadComponent(json);
 			},
@@ -99,29 +101,56 @@ function get_valProduct(){
 
 function cargaValores(datos){
 
-var stock= $('#txtstock');
-var pUnit= $('#txtPunit');
+	var stock= $('#txtstock');
+	var pUnit= $('#txtPunit');
+	var hidden= $('#hiddenpUnit');
 
-stock.val(datos.stock_product);
+	stock.val(datos.stock_product);
 
-var precio = parseFloat(datos.prod_precio)
-pUnit.val(precio.toFixed(2));
-
-
-console.log(datos);
-
-
-
+	var precio = parseFloat(datos.prod_precio)
+	pUnit.val(precio.toFixed(2));
+	hidden.val(precio.toFixed(2));
 
 }
 
 function cargatablaLocal(tabla){
 
 	console.log(tabla);
+	localStorage.removeItem('tabla');
+	localStorage.setItem('tabla', JSON.stringify(tabla));
+}
+
+
+// recibe el dato de cantidad  y hace el calculo
+function calculos(el){
+
+//consulto localStorage 
+var tabla = JSON.parse(localStorage.tabla);
+var e = parseInt(el);
+
+	if(el == '0' || el=='' ){   //  si cantidad es cero, pongo el valor unitario basico
+		$('#txtPunit').val($('#hiddenpUnit').val());
+	}
+
+$.each( tabla, function( key, value ) {
+  
+  //  verificar si el valor es el maximo, utiliza un -1 para simbolizar el maximo de Stock
+
+  if(value.max == '-1'){
+	  value.max= 10000000000000;
+
+  }
+	if(e >= parseInt(value.min) && e <= parseInt(value.max)){
+
+			if(value.descuento !=0){
+
+				$('#txtPunit').val(value.descuento);
+			}
+
+	}
+  
+});
+	
 
 	
-		localStorage.removeItem('tabla');
-		localStorage.setItem('tabla', JSON.stringify(tabla));
-
-
 }
