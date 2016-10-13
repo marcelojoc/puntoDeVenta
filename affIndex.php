@@ -71,7 +71,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-    <form action="affIndex.php" metod="POST" name="formProduct">
+    <form action="affIndex.php" metod="POST" name="formProduct" autocomplete="off">
 
         <div class="col-xs-5">
             <div class="input-group">
