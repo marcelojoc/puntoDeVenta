@@ -16,6 +16,8 @@ if ( !$_SESSION['uid'] )
 
 // var_dump($_SESSION);
 //top_htmlhead('','',0,0,'',''); // cargo encabezados
+	$company=new Societe($db);
+	$company->fetch($_SESSION["CASHDESK_ID_THIRDPARTY"]);
 ?>
 
 <!--<script type="text/javascript" src="javascript/facturation1.js"></script>
@@ -44,28 +46,40 @@ if ( !$_SESSION['uid'] )
 <div class="container">
   
 
-<div class="row">
-
-
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default ">
   <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Punto de Venta</a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Punto de venta</a>
     </div>
-    <!--<ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a></li> 
-      <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li> 
-      
-      <li><a href="#"><span class="glyphicon  glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li> 
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 
-    </ul>-->
-  </div>
+      <ul class="nav navbar-nav navbar-right">
+
+
+<?php   
+          
+            $tab=array();                       //  declaro un arreglo para almacenar lo que hay en el carrito
+            $tab = $_SESSION['poscart'];        // asigno lo que hay en el carrito
+
+            $tab_size=count($tab); 
+?>
+        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-toggle="modal" data-target="#myModal" ><span class="badge success"><?php echo($tab_size); ?></span></span></a></li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
-
-
-</div>
-  
+ 
 
   <div class="row">
 
@@ -95,7 +109,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-
+<form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" >
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
         <div class="row">
 
@@ -134,12 +148,12 @@ if ( !$_SESSION['uid'] )
                     <td>
                         
                         <div class="input-group">
-                        <input id="appendedtext" name="appendedtext" class="form-control" placeholder="desc" type="text">
+                        <input id="txtdesc" name="txtdesc" class="form-control" onkeyup="calcularTotal();" placeholder="desc" type="text" >
                         <span class="input-group-addon">%</span>
                         </div>
                         
                     </td>
-                    <td><input id="textinput" name="textinput" type="text" placeholder="$$" class="form-control input-md" disabled></td>
+                    <td><input id="txtbase" name="txtbase" type="text"  class="form-control input-md" value="$0.00" disabled></td>
                     <td>        <select class="form-control input-md">
                                 <option value="1">qwqw</option>
                                 <option value="2">wewe</option>
@@ -165,11 +179,25 @@ if ( !$_SESSION['uid'] )
 
                 <div class="col-xs-12">
 
-            <button type="button" class="btn btn-success btn-block">Añadir</button>
+            
+            <input class="btn btn-success btn-block" type="submit" id="sbmtEnvoyer" value="Añadir">
                 </div>
 
                 
             </div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <hr>
@@ -236,6 +264,103 @@ if ( !$_SESSION['uid'] )
 
 
 
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Ventas a <?php echo ($company->name_alias);  ?></h4>
+      </div>
+      <div class="modal-body">
+        
+        
+<!--<div class="panel panel-default">
+  <div class="panel-body">
+
+    <address>
+    <strong>Speed x24 l</strong><br>
+    Avenida Principal 123<br>
+    Ciudad, Provincia 00000<br>
+    <abbr title="Phone">Tel:</abbr> 9XX 123 456
+    </address>
+
+  </div>
+</div>-->
+
+<?php 
+
+
+if ($tab_size <= 0) {
+    
+    print '
+        <div class="panel panel-default">
+        <div class="panel-body">
+
+        <address>
+        <strong>No hay articulos</strong><br>
+        </address>
+        </div>
+        </div>
+        ';
+
+}
+else
+{
+
+
+
+for ($i=0;$i < $tab_size;$i++)
+    {
+        echo ('<div class="cadre_article">'."\n");
+        echo ('<p><a href="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'" title="'.$langs->trans("DeleteArticle").'">'.$tab[$i]['ref'].' - '.$tab[$i]['label'].'</a></p>'."\n");
+
+        if ( $tab[$i]['remise_percent'] > 0 ) {
+
+            $remise_percent = ' -'.$tab[$i]['remise_percent'].'%';
+
+        } else {
+
+            $remise_percent = '';
+
+        }
+
+        $remise = $tab[$i]['remise'];
+
+        echo ('<p>'.$tab[$i]['qte'].' x '.price2num($tab[$i]['price'], 'MT').$remise_percent.' = '.price(price2num($tab[$i]['total_ht'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("HT").' ('.price(price2num($tab[$i]['total_ttc'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("TTC").')</p>'."\n");
+        echo ('</div>'."\n");
+    }
+
+
+}
+
+echo ('<p class="cadre_prix_total">'.$langs->trans("Total").' : '.price(price2num($total_ttc, 'MT'),0,$langs,0,0,-1,$conf->currency).'<br></p>'."\n");
+
+?>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?php 
+var_dump($_SESSION);
+?>
 
  <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
     <script src="javascript/bootstrap.min.js"></script>

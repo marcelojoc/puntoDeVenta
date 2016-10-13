@@ -121,6 +121,7 @@ class Facturation
         $product = new Product($db);
         $product->fetch($this->id);
 
+
         
         $vatrowid = $this->tva();
         
@@ -156,17 +157,19 @@ class Facturation
         $newcartarray[$i]['id']=$i;
         $newcartarray[$i]['ref']=$product->ref;
         $newcartarray[$i]['label']=$product->label;
+
+
         $newcartarray[$i]['price']=$product->price;
         $newcartarray[$i]['price_ttc']=$product->price_ttc;
         
-        if (! empty($conf->global->PRODUIT_MULTIPRICES))
-        {
-            if (isset($product->multiprices[$societe->price_level]))
-            {
-                $newcartarray[$i]['price'] = $product->multiprices[$societe->price_level];
-                $newcartarray[$i]['price_ttc'] = $product->multiprices_ttc[$societe->price_level];
-            }
-        }
+        // if (! empty($conf->global->PRODUIT_MULTIPRICES))
+        // {
+        //     if (isset($product->multiprices[$societe->price_level]))
+        //     {
+        //         $newcartarray[$i]['price'] = $product->multiprices[$societe->price_level];
+        //         $newcartarray[$i]['price_ttc'] = $product->multiprices_ttc[$societe->price_level];
+        //     }
+        // }
 
         $newcartarray[$i]['fk_article']=$this->id;
         $newcartarray[$i]['qte']=$this->qte();
@@ -179,6 +182,8 @@ class Facturation
         $newcartarray[$i]['total_localtax1']=price2num($total_localtax1, 'MT');
         $newcartarray[$i]['total_localtax2']=price2num($total_localtax2, 'MT');
         $_SESSION['poscart']=$newcartarray;
+
+
 
         $this->raz();
 

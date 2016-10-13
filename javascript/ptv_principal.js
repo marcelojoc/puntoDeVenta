@@ -146,4 +146,44 @@
 		
 		});
 
+		calcularTotal();
+
+	}
+
+
+
+	function calcularTotal(){
+
+		// compruebo que los campos tengan datos
+		// todos deben ser numeros
+
+		var cantidad =  !isNaN(parseInt($('#txtcantidad').val()))? parseInt($('#txtcantidad').val()) : 0 ;
+		var stock = !isNaN(parseInt($('#txtstock').val()))? parseInt($('#txtstock').val()) : 0 ;
+		var pUnit = !isNaN(parseFloat($('#txtPunit').val()))? parseFloat($('#txtPunit').val()) : 0 ;
+		var descuento = !isNaN(parseInt($('#txtdesc').val()))? parseInt($('#txtdesc').val()) : 0 ;
+		var baseImp = parseInt ( $('#txtbase').val());
+		var valor_desc=null;
+
+
+
+		//  total parcial de la venta	
+		var total_ht = ( (pUnit * cantidad)*100 ) / 100 ;
+
+
+
+		if ( descuento <= 0 ) {
+
+			valor_desc = 0;
+
+		} else {
+
+			valor_desc = total_ht * descuento / 100;
+
+		}
+
+	// Recalcul du montant total, avec la remise
+		var total = ( (total_ht - valor_desc) *100 ) / 100;
+
+		$('#txtbase').val('$' + total.toFixed(2))
+
 	}
