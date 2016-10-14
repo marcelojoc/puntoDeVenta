@@ -169,6 +169,7 @@ $respuesta=null;
                                                 $obj_facturation->stock("0");
                                                 $obj_facturation->stock($obj->reel);
                                                 $obj_facturation->prix($obj->price);
+                                                $obj_facturation->precio_tabla($obj->price);
 
 
                                                 
@@ -203,10 +204,20 @@ $respuesta=null;
              break;
 
 
-	case 'get_client':     // sin definicion
+	case 'set_valorTabla':     // sin definicion
+
+
+                $obj_facturation = unserialize($_SESSION['serObjFacturation']);
+                unset ($_SESSION['serObjFacturation']);
+                $obj_facturation->precio_tabla($dato);
+                $_SESSION['serObjFacturation']=serialize($obj_facturation);
 
 
 
+
+                $obj_facturation = unserialize($_SESSION['serObjFacturation']);
+
+                var_dump($obj_facturation);
 
               break;
 

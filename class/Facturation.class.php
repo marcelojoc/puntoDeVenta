@@ -132,7 +132,7 @@ class Facturation
         $localtaxarray = getLocalTaxesFromRate($vatrowid, 0, $societe, $mysoc, 1);
         
         // Define part of HT, VAT, TTC
-        $resultarray=calcul_price_total($this->qte, $this->prix(), $this->remisePercent(), $vat_rate, -1, -1, 0, 'HT', $use_npr, $product->type, $mysoc, $localtaxarray);
+        $resultarray=calcul_price_total($this->qte, $this->precio_tabla(), $this->remisePercent(), $vat_rate, -1, -1, 0, 'HT', $use_npr, $product->type, $mysoc, $localtaxarray);
 
         // Calcul du total ht sans remise
         $total_ht = $resultarray[0];
@@ -159,8 +159,8 @@ class Facturation
         $newcartarray[$i]['label']=$product->label;
 
 
-        $newcartarray[$i]['price']=$product->price;
-        $newcartarray[$i]['price_ttc']=$product->price_ttc;
+        $newcartarray[$i]['price']=$this->precio_tabla();
+        $newcartarray[$i]['price_ttc']=$this->precio_tabla();
         
         // if (! empty($conf->global->PRODUIT_MULTIPRICES))
         // {

@@ -176,6 +176,7 @@ switch ( $_GET['action'] )
 			$obj_facturation->qte($_POST['txtcantidad']);
 			$obj_facturation->tva(233);                 // Save VAT selected so we can use it for next product
 			$obj_facturation->remisePercent($_POST['txtdesc']);
+			
 			$obj_facturation->ajoutArticle();	// This add an entry into $_SESSION['poscart']
 			// We update prixTotalTtc
 			 

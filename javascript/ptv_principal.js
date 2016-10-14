@@ -1,8 +1,9 @@
 	$( document ).ready(function() {
 		
-		
 	get_Products();
 
+	//si hay algo en el total de venta lo asigno al campo txttotal
+	$('#txttotal').val($('#campototal').val())
 
 
 		
@@ -140,6 +141,7 @@
 					if(value.descuento !=0){
 
 						$('#txtPunit').val(value.descuento);
+						setValorTabla(value.descuento);
 					}
 
 			}
@@ -186,4 +188,15 @@
 
 		$('#txtbase').val('$' + total.toFixed(2))
 
+	}
+
+	function setValorTabla(valor){
+
+
+		alert('cambio el valor del prod')
+
+		$.post( "ajax_query.php", { consulta: "set_valorTabla", dato: valor }, function(data){
+
+			console.log(data);
+		} );
 	}

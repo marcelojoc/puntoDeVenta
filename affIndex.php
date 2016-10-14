@@ -29,7 +29,7 @@ if ( !$_SESSION['uid'] )
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Punto de venta</title>
 
@@ -127,8 +127,8 @@ if ( !$_SESSION['uid'] )
                     <td><input id="txtcantidad" name="txtcantidad" onkeyup="calculos(this.value);"type="text" placeholder="cantidad" class="form-control input-md"></td>
                     <td><input id="txtstock" name="txtstock" type="text" placeholder="Stock" class="form-control input-md" disabled></td>
 
-                    <td> <input id ='hiddenpUnit'type="hidden" value="">
-                    <input id="txtPunit" name="txtPunit" type="text" placeholder="precio" class="form-control input-md" disabled></td>
+                    <td> <input id ='hiddenpUnit'type="hidden" value="" >
+                    <input id="txtPunit" name="txtPunit" type="text" placeholder="precio"  class="form-control input-md" disabled></td>
                 </tr>
                 
                 
@@ -217,7 +217,7 @@ if ( !$_SESSION['uid'] )
                     </thead>
                     <tbody>
                     <tr>
-                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                        <td><input id="txttotal" name="txttotal" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
                         <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" ></td>
                         <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
                     </tr>
@@ -311,16 +311,39 @@ if ($tab_size <= 0) {
         </div>
         ';
 
+
+
+
+
+//         <div class="panel panel-default">
+//   <div class="panel-heading">Panel heading without title</div>
+//   <div class="panel-body">
+//     Panel content
+//   </div>
+// </div>
+
 }
 else
 {
 
 
+$total_valor=0;
 
 for ($i=0;$i < $tab_size;$i++)
     {
-        echo ('<div class="cadre_article">'."\n");
-        echo ('<p><a href="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'" title="'.$langs->trans("DeleteArticle").'">'.$tab[$i]['ref'].' - '.$tab[$i]['label'].'</a></p>'."\n");
+        echo ('<div class="panel panel-default">');
+
+        echo('<div class="panel-heading">
+        
+        
+        <p class="panel-title pull-left">
+            '.$tab[$i]['label'].'
+
+        </p>
+
+        <a href ="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'"   class="btn btn-danger btn-xs pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <div class="clearfix"></div>
+        </div>');
 
         if ( $tab[$i]['remise_percent'] > 0 ) {
 
@@ -334,14 +357,37 @@ for ($i=0;$i < $tab_size;$i++)
 
         $remise = $tab[$i]['remise'];
 
-        echo ('<p>'.$tab[$i]['qte'].' x '.price2num($tab[$i]['price'], 'MT').$remise_percent.' = '.price(price2num($tab[$i]['total_ht'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("HT").' ('.price(price2num($tab[$i]['total_ttc'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("TTC").')</p>'."\n");
-        echo ('</div>'."\n");
+
+        echo('
+        <div class="panel-body">
+         <address>
+
+
+           <strong>'.$tab[$i]['label'].'</strong><br>
+
+        '
+        
+            .$tab[$i]['qte'].' x '.price2num($tab[$i]['price'], 'MT').$remise_percent.' = '.price(price2num($tab[$i]['total_ht'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("HT").' ('.price(price2num($tab[$i]['total_ttc'], 'MT'),0,$langs,0,0,-1,$conf->currency).' '.$langs->trans("TTC").')
+        
+        <br>
+        </address>
+        </div>
+
+        ');
+
+
+        $total_valor+=$tab[$i]['total_ht'];
+
+        echo('</div>');
+
     }
 
 
 }
 
-echo ('<p class="cadre_prix_total">'.$langs->trans("Total").' : '.price(price2num($total_ttc, 'MT'),0,$langs,0,0,-1,$conf->currency).'<br></p>'."\n");
+echo('<input id ="campototal" type="hidden" value="'.$total_valor.'">');
+echo ('<p>Total :  $ '.$total_valor. '</p>');
+
 
 ?>
 
@@ -361,6 +407,8 @@ echo ('<p class="cadre_prix_total">'.$langs->trans("Total").' : '.price(price2nu
 <?php 
 var_dump($_SESSION);
 ?>
+
+
 
  <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
     <script src="javascript/bootstrap.min.js"></script>

@@ -62,4 +62,4 @@ include_once 'affPied.php';
 print '</div></div></div>'."\n";
 print '</body></html>'."\n";
 
-var_dump( unserialize($_SESSION['serObjFacturation']));
+//var_dump( unserialize($_SESSION['serObjFacturation']));

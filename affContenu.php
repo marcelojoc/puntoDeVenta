@@ -75,7 +75,7 @@ if (in_array(
 	))
 {
 
-	var_dump($page);
+	
 	include $page.'.php';
 }
 else
