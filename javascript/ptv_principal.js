@@ -193,8 +193,6 @@
 	function setValorTabla(valor){
 
 
-		alert('cambio el valor del prod')
-
 		$.post( "ajax_query.php", { consulta: "set_valorTabla", dato: valor }, function(data){
 
 			console.log(data);

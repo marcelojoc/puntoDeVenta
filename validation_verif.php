@@ -85,7 +85,7 @@ switch ($action)
 			$obj_facturation->paiementLe($txtDatePaiement);
 		}
 
-		$redirection = 'affIndex.php?menutpl=validation';
+		$redirection = 'validation.php';
 		break;
 
 

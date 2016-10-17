@@ -191,16 +191,11 @@ if ( !$_SESSION['uid'] )
 
 
 
-
-
-
-
-
-
-
-
-
 <hr>
+
+<!--onsubmit="javascript: return verifReglement()"-->
+<form id="frmDifference"  class="formulaire1" method="post"  action="validation_verif.php?action=valide_achat">
+
 
 
     <div class="panel panel-default">
@@ -242,8 +237,10 @@ if ( !$_SESSION['uid'] )
 
                     <div class="col-xs-6">
 
-                    <button type="button" class="btn btn-success btn-block">Efectivo</button>
+                    
+                    <input class="btn btn-success btn-block" type="submit" name="btnModeReglement" value="Efectivo" />
 
+<!--onclick="javascript: verifClic('DIF');" -->
                     </div>
 
                     <div class="col-xs-6">
@@ -256,8 +253,7 @@ if ( !$_SESSION['uid'] )
         </div>
   </div>
 
-
-
+</form>   <!-- CIERRO EL FORMULARIO DE ENVIO DE PAGO -->
 
 
 </div>
@@ -390,8 +386,6 @@ echo ('<p>Total :  $ '.$total_valor. '</p>');
 
 
 ?>
-
-
 
 
       </div>

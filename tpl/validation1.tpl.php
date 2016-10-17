@@ -16,6 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+ $obj_facturation = unserialize($_SESSION['serObjFacturation']);
+//unset ($_SESSION['serObjFacturation']);
+
 $langs->load("main");
 $langs->load("bills");
 
@@ -27,8 +31,8 @@ $langs->load("bills");
 
 	<table class="table_resume">
 
-		<tr><td class="resume_label"><?php echo $langs->trans("Invoice"); ?></td><td><?php  echo $obj_facturation->numInvoice(); ?></td></tr>
-		<tr><td class="resume_label"><?php echo $langs->trans("TotalHT"); ?></td><td><?php echo price(price2num($obj_facturation->prixTotalHt(),'MT'),0,$langs,0,0,-1,$conf->currency); ?></td></tr>
+		<tr><td class="resume_label">Factura</td><td><?php  echo $obj_facturation->numInvoice(); ?></td></tr>
+		<tr><td class="resume_label">Total_ht</td><td><?php echo price(price2num($obj_facturation->prixTotalHt(),'MT'),0,$langs,0,0,-1,$conf->currency); ?></td></tr>
 		<?php
 			// Affichage de la tva par taux
 			if ( $obj_facturation->montantTva() ) {
@@ -120,3 +124,10 @@ $langs->load("bills");
 
 
 </fieldset>
+
+
+<?php  var_dump($_SESSION);
+
+var_dump($obj_facturation);
+
+ ?>
