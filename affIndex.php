@@ -213,8 +213,8 @@ if ( !$_SESSION['uid'] )
                     <tbody>
                     <tr>
                         <td><input id="txttotal" name="txttotal" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
-                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" ></td>
-                        <td><input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                        <td><input id="txtRecibido" name="txtRecibido" type="text" placeholder="cantidad" class="form-control input-md" onkeyup="calculoCuenta();" ></td>
+                        <td><input id="txtVuelto" name="txtVuelto" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
                     </tr>
                     
                     </tbody>

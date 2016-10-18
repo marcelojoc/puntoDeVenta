@@ -190,6 +190,38 @@
 
 	}
 
+
+
+	function calculoCuenta(){
+
+
+		var recibido= parseFloat($('#txtRecibido').val());
+        var total =   parseFloat($('#txttotal').val());
+		var vuelto=   $('#txtVuelto');
+
+
+
+		if (recibido > total) {    // compruebo el monto de la compra y lo que me paga
+
+		resultat = ((recibido - total) * 100 ) / 100;
+
+		vuelto.val(resultat.toFixed(2));
+
+		} else if (recibido == total) {
+
+		vuelto.val(0);
+
+		} else {
+
+		vuelto.val('-');
+
+		}
+
+parseInt(value.max)
+
+
+	}
+
 	function setValorTabla(valor){
 
 

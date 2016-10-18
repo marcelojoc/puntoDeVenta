@@ -24,6 +24,7 @@
  */
 
 require '../main.inc.php';
+include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';  
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/class/Facturation.class.php';
 require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
@@ -43,6 +44,8 @@ switch ($action)
 	default:
 
 		$redirection = DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=validation';
+
+		
 		break;
 
 
@@ -52,28 +55,30 @@ switch ($action)
 		$company->fetch($conf->global->CASHDESK_ID_THIRDPARTY);
 
 		$invoice=new Facture($db);
-		$invoice->date=dol_now();
-		$invoice->type= Facture::TYPE_STANDARD;
-		$num=$invoice->getNextNumRef($company);
+		$invoice->date=dol_now();   // fecha de la factura
+		$invoice->type= Facture::TYPE_STANDARD;  //tipo de factura
+		$num=$invoice->getNextNumRef($company);  // dame el proximo numero de factura para el cliente ....
 
-		$obj_facturation->numInvoice($num);
+		$obj_facturation->numInvoice($num);       // asigna el numero nuevo de factura
 
-		$obj_facturation->getSetPaymentMode($_POST['hdnChoix']);
+		$obj_facturation->getSetPaymentMode($_POST['hdnChoix']);    // seleccion del medio de pago
 
 		// Si paiement autre qu'en especes, montant encaisse = prix total
 		$mode_reglement = $obj_facturation->getSetPaymentMode();
+
+		// ESP es de contado     DIF es el otro...cuenta corriente seria
 		if ( $mode_reglement != 'ESP' ) {
-			$montant = $obj_facturation->prixTotalTtc();
+			$montant = $obj_facturation->prixTotalTtc();  // cantidad
 		} else {
-			$montant = $_POST['txtEncaisse'];
+			$montant = $_POST['txtRecibido'];            // cantidad 
 		}
 
 		if ( $mode_reglement != 'DIF') {
-			$obj_facturation->montantEncaisse($montant);
+			$obj_facturation->montantEncaisse($montant); // importe en efectivo
 
 			//Determination de la somme rendue
 			$total = $obj_facturation->prixTotalTtc();
-			$encaisse = $obj_facturation->montantEncaisse();
+			$encaisse = $obj_facturation->montantEncaisse(); // saldo en efectivo
 
 			$obj_facturation->montantRendu($encaisse - $total);
 		}
@@ -195,6 +200,9 @@ switch ($action)
 		$invoice->note_private=$note;
 		$invoice->cond_reglement_id=$cond_reglement_id;
 		$invoice->mode_reglement_id=$mode_reglement_id;
+
+
+		var_dump($invoice);
 		//print "c=".$invoice->cond_reglement_id." m=".$invoice->mode_reglement_id; exit;
 
 		// Si paiement differe ...
@@ -328,6 +336,8 @@ switch ($action)
 			$db->rollback();
 			$redirection = 'affIndex.php?facid='.$id.'&mesg=ErrorFailedToCreateInvoice';	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
 		}
+
+		
 		break;
 
 		// End of case: valide_facture
@@ -335,6 +345,3 @@ switch ($action)
 
 
 
-$_SESSION['serObjFacturation'] = serialize($obj_facturation);
-
-header('Location: '.$redirection);
