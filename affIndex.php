@@ -76,6 +76,8 @@ if ( !$_SESSION['uid'] )
         <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-toggle="modal" data-target="#myModal" ><span class="badge success"><?php echo($tab_size); ?></span></span></a></li>
 
       </ul>
+
+
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
@@ -194,7 +196,7 @@ if ( !$_SESSION['uid'] )
 <hr>
 
 <!--onsubmit="javascript: return verifReglement()"-->
-<form id="frmDifference"  class="formulaire1" method="post"  action="validation_verif.php?action=valide_achat">
+<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat">
 
 
 
@@ -212,9 +214,15 @@ if ( !$_SESSION['uid'] )
                     </thead>
                     <tbody>
                     <tr>
-                        <td><input id="txttotal" name="txttotal" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                        <td>
+                            <input id ='hiddentxttotal' name="hiddentxttotal" type="hidden" value="" >
+                            <input id="txttotal" name="txttotal" type="text" placeholder="cantidad" class="form-control input-md" disabled>
+                        </td>
                         <td><input id="txtRecibido" name="txtRecibido" type="text" placeholder="cantidad" class="form-control input-md" onkeyup="calculoCuenta();" ></td>
-                        <td><input id="txtVuelto" name="txtVuelto" type="text" placeholder="cantidad" class="form-control input-md" disabled></td>
+                        <td>
+                            <input id ='hiddentxtVuelto' name="hiddentxtVuelto" type="hidden" value="" >
+                            <input id="txtVuelto" name="txtVuelto" type="text" placeholder="cantidad" class="form-control input-md" disabled>
+                        </td>
                     </tr>
                     
                     </tbody>

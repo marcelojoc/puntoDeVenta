@@ -58,18 +58,18 @@ $langs->load("bills");
 				if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"]))
 					$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"];
 				break;
-			// case 'CB':
-			// 	echo $langs->trans("CreditCard");
-			// 	$filtre='courant=1';
-			// 	if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CB"]))
-			// 		$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CB"];
-			// 	break;
-			// case 'CHQ':
-			// 	echo $langs->trans("Cheque");
-			// 	$filtre='courant=1';
-			// 	if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"]))
-			// 		$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"];
-			// 	break;
+			case 'CB':
+				echo $langs->trans("CreditCard");
+				$filtre='courant=1';
+				if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CB"]))
+					$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CB"];
+				break;
+			case 'CHQ':
+				echo $langs->trans("Cheque");
+				$filtre='courant=1';
+				if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"]))
+					$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"];
+				break;
 			case 'DIF':
 				echo $langs->trans("Reported");
 				$filtre='courant=1 OR courant=2';

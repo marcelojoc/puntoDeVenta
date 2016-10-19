@@ -107,7 +107,7 @@ if ( GETPOST('filtre') ) {
 
 	dol_syslog($sql);
 
-	var_dump($sql);
+	//var_dump($sql);
 	$resql=$db->query($sql);
 	if ($resql)
 	{

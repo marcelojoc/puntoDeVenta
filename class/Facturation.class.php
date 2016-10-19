@@ -58,6 +58,21 @@ class Facturation
      * int $prix_total_ht	=> Prix total hors taxes
      * int $montant_tva		=> Montant total de la TVA, tous taux confondus
      * int $prix_total_ttc	=> Prix total TTC
+
+
+
+     * Los atributos persistentes: se utiliza para toda la duración de la venta (hasta la validación o cancelación)
+      * Cadena $ num_facture => Número de la factura (el FAYYMM-XXXX)
+      * Cadena $ mode_reglement => Modo de liquidación (ESP, CB o CHQ)
+      * Int $ montant_encaisse => Importe efectivo en caso de liquidación en efectivo
+      * Int $ montant_rendu => entrega de cambio en el caso de la liquidación en efectivo
+      * Int $ paiement_le => Fecha de pago si difiere de pago
+      *
+      * Int $ prix_total_ht => Precio total sin impuestos
+      * Int $ montant_tva => cantidad total de IVA en todos los niveles
+      * Int $ prix_total_ttc => Precio Total
+
+
      */
     protected $num_facture;
     protected $mode_reglement;

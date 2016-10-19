@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 
 $obj_facturation = unserialize($_SESSION['serObjFacturation']);
-unset ($_SESSION['serObjFacturation']);
+//unset ($_SESSION['serObjFacturation']);
 
 $action =GETPOST('action');
 $bankaccountid=GETPOST('cashdeskbank');
@@ -51,6 +51,19 @@ switch ($action)
 
 	case 'valide_achat':
 
+
+		// echo($_POST['txtRecibido'].'<br>');
+		// echo($_POST['hiddentxtVuelto'].'<br>');
+		// echo($_POST['hiddentxttotal'].'<br>');
+
+		// echo($_POST['txtRecibido'].'<br>');
+
+
+
+		$obj_facturation->prixTotalTtc($_POST['hiddentxttotal']);
+	
+
+
 		$company=new Societe($db);
 		$company->fetch($conf->global->CASHDESK_ID_THIRDPARTY);
 
@@ -62,6 +75,11 @@ switch ($action)
 		$obj_facturation->numInvoice($num);       // asigna el numero nuevo de factura
 
 		$obj_facturation->getSetPaymentMode($_POST['hdnChoix']);    // seleccion del medio de pago
+
+
+
+
+
 
 		// Si paiement autre qu'en especes, montant encaisse = prix total
 		$mode_reglement = $obj_facturation->getSetPaymentMode();
@@ -90,8 +108,36 @@ switch ($action)
 			$obj_facturation->paiementLe($txtDatePaiement);
 		}
 
-		$redirection = 'validation.php';
+		
+
+          $redirection = 'validation.php';
+		//$redirection = 'affIndex_bkp.php?menutpl=validation';
 		break;
+
+
+
+
+
+	case 'crear_remito':
+
+
+
+		var_dump($_SESSION['poscart']);
+
+
+
+
+
+
+
+
+
+
+
+
+	break;
+
+
 
 
 	case 'retour':
@@ -202,7 +248,7 @@ switch ($action)
 		$invoice->mode_reglement_id=$mode_reglement_id;
 
 
-		var_dump($invoice);
+		//var_dump($invoice);
 		//print "c=".$invoice->cond_reglement_id." m=".$invoice->mode_reglement_id; exit;
 
 		// Si paiement differe ...
@@ -345,3 +391,9 @@ switch ($action)
 
 
 
+
+
+
+$_SESSION['serObjFacturation'] = serialize($obj_facturation);
+
+header('Location: '.$redirection);

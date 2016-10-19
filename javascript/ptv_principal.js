@@ -4,6 +4,7 @@
 
 	//si hay algo en el total de venta lo asigno al campo txttotal
 	$('#txttotal').val($('#campototal').val())
+	$('#hiddentxttotal').val($('#campototal').val())
 
 
 		
@@ -197,8 +198,9 @@
 
 		var recibido= parseFloat($('#txtRecibido').val());
         var total =   parseFloat($('#txttotal').val());
-		var vuelto=   $('#txtVuelto');
 
+		var vuelto=   $('#txtVuelto');
+        var vueltohidden=   $('#hiddentxtVuelto');
 
 
 		if (recibido > total) {    // compruebo el monto de la compra y lo que me paga
@@ -206,6 +208,7 @@
 		resultat = ((recibido - total) * 100 ) / 100;
 
 		vuelto.val(resultat.toFixed(2));
+		vueltohidden.val(resultat.toFixed(2));
 
 		} else if (recibido == total) {
 
@@ -217,7 +220,7 @@
 
 		}
 
-parseInt(value.max)
+
 
 
 	}
