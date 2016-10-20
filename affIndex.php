@@ -157,9 +157,8 @@ if ( !$_SESSION['uid'] )
                     </td>
                     <td><input id="txtbase" name="txtbase" type="text"  class="form-control input-md" value="$0.00" disabled></td>
                     <td>        <select class="form-control input-md">
-                                <option value="1">qwqw</option>
-                                <option value="2">wewe</option>
-                                <option value="3">rerer</option>
+                                <option value="1">0</option>
+
 
                             </select>
         </td>

@@ -52,11 +52,11 @@ switch ($action)
 	case 'valide_achat':
 
 
-		// echo($_POST['txtRecibido'].'<br>');
-		// echo($_POST['hiddentxtVuelto'].'<br>');
-		// echo($_POST['hiddentxttotal'].'<br>');
+		echo($_POST['txtRecibido'].'<br>');
+		echo($_POST['hiddentxtVuelto'].'<br>');
+		echo($_POST['hiddentxttotal'].'<br>');
 
-		// echo($_POST['txtRecibido'].'<br>');
+		echo($_POST['txtRecibido'].'<br>');
 
 
 
@@ -375,7 +375,8 @@ switch ($action)
 		if (! $error)
 		{
 			$db->commit();
-			$redirection = 'affIndex.php?menutpl=validation_ok&facid='.$id;	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
+			//$redirection = 'affIndex.php?menutpl=validation_ok&facid='.$id;	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
+			$redirection = 'affIndex_bkp.php?menutpl=validation_ok&facid='.$id;
 		}
 		else
 		{
