@@ -63,7 +63,7 @@ if (usertxt){
 
 					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 						
-					<form id="frmLogin" method="POST" action="index_verif.php" class="form-horizontal" role="form">
+					<form id="frmLogin" method="POST" action="index_verif.php" class="form-horizontal formcentro" role="form">
 								
 						<div style="margin-bottom: 25px" class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>

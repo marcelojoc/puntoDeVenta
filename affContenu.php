@@ -24,7 +24,6 @@
  */
 require_once 'class/Facturation.class.php';
 
-var_dump($_GET);
 // n o hace falta aqui  
 if ( $_GET['id'] == 'NOUV' )
 {
@@ -99,6 +98,5 @@ require ('tpl/liste_articles.tpl.php');
 print '</div>';
 print '</div>';
 
-var_dump($_SESSION);
 
 $_SESSION['serObjFacturation'] = serialize($obj_facturation);

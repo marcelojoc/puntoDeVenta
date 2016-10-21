@@ -376,12 +376,13 @@ switch ($action)
 		{
 			$db->commit();
 			//$redirection = 'affIndex.php?menutpl=validation_ok&facid='.$id;	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
-			$redirection = 'affIndex_bkp.php?menutpl=validation_ok&facid='.$id;
+			$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
+
 		}
 		else
 		{
 			$db->rollback();
-			$redirection = 'affIndex.php?facid='.$id.'&mesg=ErrorFailedToCreateInvoice';	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
+			$redirection = 'validacion_ok.php?facid='.$id.'&mesg=error';	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
 		}
 
 		

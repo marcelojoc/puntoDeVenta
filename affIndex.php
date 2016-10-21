@@ -14,15 +14,9 @@ if ( !$_SESSION['uid'] )
 
 //  $obj_facturation= unserialize($_SESSION['serObjFacturation']);
 
-// var_dump($_SESSION);
-//top_htmlhead('','',0,0,'',''); // cargo encabezados
 	$company=new Societe($db);
 	$company->fetch($_SESSION["CASHDESK_ID_THIRDPARTY"]);
 ?>
-
-<!--<script type="text/javascript" src="javascript/facturation1.js"></script>
-<script type="text/javascript" src="javascript/dhtml.js"></script>
-<script type="text/javascript" src="javascript/keypad.js"></script>-->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -406,7 +400,7 @@ echo ('<p>Total :  $ '.$total_valor. '</p>');
 
 
 <?php 
-var_dump($_SESSION);
+
 ?>
 
 

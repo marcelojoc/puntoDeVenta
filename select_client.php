@@ -91,7 +91,7 @@ if ( !$_SESSION['uid'] )
 
 					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 						
-					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" class="form-horizontal" role="form">
+					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" class="form-horizontal formcentro" role="form">
 								
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >

@@ -139,19 +139,6 @@ $langs->load("bills");
 </div>
 
 
-
-
-
-
-
-
-
-	<?php  var_dump($_SESSION);
-
-	var_dump($obj_facturation);
-
-	?>
-
 	</div>
 
  </body>
