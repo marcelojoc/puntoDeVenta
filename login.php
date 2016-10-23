@@ -53,7 +53,7 @@ if (usertxt){
 
 <div class="container">    
 	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-		<div class="panel panel-default" >
+		<div class="panel panel-default formcentro" >
 				<!--<div class="panel-heading">
 					<div class="panel-title text-center">Acceso TPV</div>
 					
@@ -63,7 +63,7 @@ if (usertxt){
 
 					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 						
-					<form id="frmLogin" method="POST" action="index_verif.php" class="form-horizontal formcentro" role="form">
+					<form id="frmLogin" method="POST" action="index_verif.php" class="form-horizontal " role="form">
 								
 						<div style="margin-bottom: 25px" class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>

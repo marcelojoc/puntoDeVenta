@@ -27,9 +27,11 @@ if ( !$_SESSION['uid'] )
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Punto de venta</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-   <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- bootstrap-datepicker -->
+        <link href="css/bootstrap-datepicker.min.css" rel="stylesheet">
 
 
 
@@ -236,20 +238,43 @@ if ( !$_SESSION['uid'] )
 
                 <div class="row">
 
-                    <div class="col-xs-6">
+                    <div class="col-xs-12">
 
                     
-                    <input class="btn btn-success btn-block" type="submit" name="btnModeReglement" value="Efectivo" />
+                    <input class="btn btn-success btn-block" type="submit" name="btnEfectivo" id="btnEfectivo" value="Efectivo" disabled/>
 
-<!--onclick="javascript: verifClic('DIF');" -->
+
                     </div>
 
-                    <div class="col-xs-6">
+              </div>
+
+              <hr>
+              <div class="row">
+
+                    <div class="col-xs-12">
+
+                            <div class="col-xs-6">
+
+                                <input class="btn btn-success btn-block" type="submit" name="btnCCT" id="btnCCT" value="Cuenta Cte" disabled/>
+
+                            </div>
+
+                            <div class="col-xs-6">
+
+
+                                <div class="input-group date">
+                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+
+
+                            </div>
 
                         
                     </div>
 
+
               </div>
+
 
         </div>
   </div>
@@ -405,9 +430,12 @@ echo ('<p>Total :  $ '.$total_valor. '</p>');
 
 
 
- <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
-    <script src="javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/moment.min.js"></script>
+     <script type="text/javascript"  src="javascript/bootstrap-datepicker.min.js"></script> 
+    <script type="text/javascript" src="javascript/ptv_principal.js"></script>
 
-     <script type="text/javascript" src="javascript/ptv_principal.js"></script>
+
   </body>
 </html>

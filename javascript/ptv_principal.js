@@ -5,8 +5,19 @@
 	//si hay algo en el total de venta lo asigno al campo txttotal
 	$('#txttotal').val($('#campototal').val())
 	$('#hiddentxttotal').val($('#campototal').val())
+	
 
-
+// documentacion
+// https://bootstrap-datepicker.readthedocs.io/en/latest/index.html
+    
+		$('.input-group.date').datepicker({
+		format: "dd/mm/yyyy",
+		maxViewMode: 1,
+		clearBtn: true,
+		language: "es",
+		daysOfWeekDisabled: "0",
+		autoclose: true
+		});   
 		
 	});
 
@@ -112,7 +123,7 @@
 
 	function cargatablaLocal(tabla){
 
-		console.log(tabla);
+		//console.log(tabla);
 		localStorage.removeItem('tabla');
 		localStorage.setItem('tabla', JSON.stringify(tabla));
 	}
@@ -167,12 +178,8 @@
 		var baseImp = parseInt ( $('#txtbase').val());
 		var valor_desc=null;
 
-
-
 		//  total parcial de la venta	
 		var total_ht = ( (pUnit * cantidad)*100 ) / 100 ;
-
-
 
 		if ( descuento <= 0 ) {
 
@@ -195,41 +202,39 @@
 
 	function calculoCuenta(){
 
-
-		var recibido= parseFloat($('#txtRecibido').val());
-        var total =   parseFloat($('#txttotal').val());
-
-		var vuelto=   $('#txtVuelto');
+		var recibido	= parseFloat($('#txtRecibido').val()); // seteo los componentes del form 
+        var total 		=   parseFloat($('#txttotal').val());
+		var btnEfectivo = $('#btnEfectivo');
+		var estadoBtn   = true;    							  // seteado el valor deshabilitado verdadero en el boton efectivo
+		var vuelto		=   $('#txtVuelto');
         var vueltohidden=   $('#hiddentxtVuelto');
 
-
-		if (recibido > total) {    // compruebo el monto de la compra y lo que me paga
+		if (recibido > total) {                              // compruebo el monto de la compra y lo que me paga
 
 		resultat = ((recibido - total) * 100 ) / 100;
 
 		vuelto.val(resultat.toFixed(2));
 		vueltohidden.val(resultat.toFixed(2));
-
+		estadoBtn= false;
 		} else if (recibido == total) {
 
-		vuelto.val(0);
+			vuelto.val(0);
+			estadoBtn= false;
 
 		} else {
 
-		vuelto.val('-');
-
+			vuelto.val('-');
+			estadoBtn= true;
 		}
 
-
-
-
+		btnEfectivo.attr('disabled', estadoBtn);
 	}
+
 
 	function setValorTabla(valor){
 
-
 		$.post( "ajax_query.php", { consulta: "set_valorTabla", dato: valor }, function(data){
 
-			console.log(data);
+			//console.log(data);
 		} );
 	}

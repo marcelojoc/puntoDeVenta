@@ -35,7 +35,7 @@ if ( !$_SESSION['uid'] )
           if( $company->fetch($hidden) ){    // compruebo que el valor exista y sea correcto
 
               $_SESSION["CASHDESK_ID_THIRDPARTY"]=$hidden;
-              header('Location: '.DOL_URL_ROOT.'/cashdesk/affindex.php');
+              header('Location: '.DOL_URL_ROOT.'/cashdesk/affIndex.php');
           }else{
 
             unset($_POST);
@@ -81,7 +81,7 @@ if ( !$_SESSION['uid'] )
 
 <div class="container">    
 	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-		<div class="panel panel-default" >
+		<div class="panel panel-default formcentro" >
 				<!--<div class="panel-heading">
 					<div class="panel-title text-center">Acceso TPV</div>
 					
@@ -91,7 +91,7 @@ if ( !$_SESSION['uid'] )
 
 					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 						
-					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" class="form-horizontal formcentro" role="form">
+					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" class="form-horizontal " role="form" autocomplete="off">
 								
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
