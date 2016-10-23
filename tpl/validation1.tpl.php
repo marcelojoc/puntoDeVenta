@@ -28,6 +28,10 @@ $langs->load("bills");
 		
 	<br>
 
+
+
+
+
 <div class="panel panel-default">
   <div class="panel-heading"><?php echo $langs->trans("Summary"); ?></div>
   <div class="panel-body">
@@ -110,6 +114,8 @@ $langs->load("bills");
 
 		</table>
 
+
+
 		<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=valide_facture">
 			<input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>" />
 			<p class="note_label">
@@ -122,7 +128,7 @@ $langs->load("bills");
 
 			<div class="center">
 				
-				<input class="button" type="submit" name="btnValider" value="<?php echo $langs->trans("ValidateInvoice"); ?>" /><br>
+				<input class="button" type="submit" name="btnValider" value="Validar Factura" /><br>
 
 				<input class="button" type="submit" name="btnValider" value="Generar Remito" /><br>
 
