@@ -6,21 +6,39 @@
 	$('#txttotal').val($('#campototal').val())
 	$('#hiddentxttotal').val($('#campototal').val())
 	
+	// setear fechas de calendario
+	var hoy= $('#date_now').val();			//Valor de fecha del servidor 
+    var inicio = moment(hoy, "DD/MM/YYYY"); // parseo la fecha como fecha en moment
+	var fin    = moment(hoy, "DD/MM/YYYY").add(7, 'd');		// sumo 7 dias para el calendario
+    setCalendar(inicio.format('DD/MM/YYYY'), fin.format('DD/MM/YYYY'))
 
 // documentacion
 // https://bootstrap-datepicker.readthedocs.io/en/latest/index.html
     
+  
+		
+	});
+
+
+function setCalendar(hoy, semana){
+
 		$('.input-group.date').datepicker({
 		format: "dd/mm/yyyy",
+		startDate: hoy,
+		endDate: semana,
 		maxViewMode: 1,
 		clearBtn: true,
 		language: "es",
 		daysOfWeekDisabled: "0",
 		autoclose: true
-		});   
-		
-	});
+		}); 
+}
 
+function verifClic(aChoix) {
+
+	document.getElementById('frmDifference').hdnChoix.value = aChoix;
+
+}
 
 	function get_Products(param= null){
 		

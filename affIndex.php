@@ -2,7 +2,7 @@
 include '../main.inc.php';
 //require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/class/Facturation.class.php';
-
+date_default_timezone_set ('America/Argentina/Buenos_Aires');
 // Test if user logged
 if ( !$_SESSION['uid'] )
 {
@@ -194,7 +194,7 @@ if ( !$_SESSION['uid'] )
 <form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat">
 
 
-
+<input type="hidden" name="hdnChoix" value="">
     <div class="panel panel-default">
     <div class="panel-heading text-center">Importe</div>
     <div class="panel-body">
@@ -241,7 +241,7 @@ if ( !$_SESSION['uid'] )
                     <div class="col-xs-12">
 
                     
-                    <input class="btn btn-success btn-block" type="submit" name="btnEfectivo" id="btnEfectivo" value="Efectivo" disabled/>
+                    <input class="btn btn-success btn-block" type="submit" name="btnEfectivo" onclick="verifClic('ESP');" id="btnEfectivo" value="Efectivo" disabled />
 
 
                     </div>
@@ -255,7 +255,7 @@ if ( !$_SESSION['uid'] )
 
                             <div class="col-xs-6">
 
-                                <input class="btn btn-success btn-block" type="submit" name="btnCCT" id="btnCCT" value="Cuenta Cte" disabled/>
+                                <input class="btn btn-success btn-block" type="submit" onclick="verifClic('DIF');" name="btnModeReglement" id="btnModeReglement" value="Cuenta Cte" disabled/>
 
                             </div>
 
@@ -263,10 +263,9 @@ if ( !$_SESSION['uid'] )
 
 
                                 <div class="input-group date">
-                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                <input id ='date_now' name="date_now" type="hidden" value="<?php echo(date("d/m/Y")); ?>">
+                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div>
-
-
                             </div>
 
                         
@@ -303,19 +302,6 @@ if ( !$_SESSION['uid'] )
       </div>
       <div class="modal-body">
         
-        
-<!--<div class="panel panel-default">
-  <div class="panel-body">
-
-    <address>
-    <strong>Speed x24 l</strong><br>
-    Avenida Principal 123<br>
-    Ciudad, Provincia 00000<br>
-    <abbr title="Phone">Tel:</abbr> 9XX 123 456
-    </address>
-
-  </div>
-</div>-->
 
 <?php 
 

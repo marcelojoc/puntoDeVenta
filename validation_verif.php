@@ -79,10 +79,10 @@ switch ($action)
 
 
 
-
-
 		// Si paiement autre qu'en especes, montant encaisse = prix total
 		$mode_reglement = $obj_facturation->getSetPaymentMode();
+
+
 
 		// ESP es de contado     DIF es el otro...cuenta corriente seria
 		if ( $mode_reglement != 'ESP' ) {
