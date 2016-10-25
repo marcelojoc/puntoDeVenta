@@ -37,6 +37,7 @@ function setCalendar(hoy, semana){
 function verifClic(aChoix) {
 
 	document.getElementById('frmDifference').hdnChoix.value = aChoix;
+	document.getElementById('frmFacturation').submit();
 
 }
 

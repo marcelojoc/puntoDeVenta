@@ -55,10 +55,16 @@ switch ($action)
 		echo($_POST['txtRecibido'].'<br>');
 		echo($_POST['hiddentxtVuelto'].'<br>');
 		echo($_POST['hiddentxttotal'].'<br>');
+		echo ($_POST['hdnChoix'].'<br>');
+
+		echo ($_POST['date_now'].'<br>');
+
+$date = new DateTime($_POST['date_now']);
+echo $date->format('m/d/Y'); // 31.07.2012
 
 		echo($_POST['txtRecibido'].'<br>');
 
-
+exit;
 
 		$obj_facturation->prixTotalTtc($_POST['hiddentxttotal']);
 	
@@ -70,6 +76,8 @@ switch ($action)
 		$invoice=new Facture($db);
 		$invoice->date=dol_now();   // fecha de la factura
 		$invoice->type= Facture::TYPE_STANDARD;  //tipo de factura
+		
+		var_dump($invoice);
 		$num=$invoice->getNextNumRef($company);  // dame el proximo numero de factura para el cliente ....
 
 		$obj_facturation->numInvoice($num);       // asigna el numero nuevo de factura
@@ -109,9 +117,10 @@ switch ($action)
 		}
 
 		
-
+exit;
           $redirection = 'validation.php';
 		//$redirection = 'affIndex_bkp.php?menutpl=validation';
+		
 		break;
 
 

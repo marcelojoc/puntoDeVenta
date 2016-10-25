@@ -16,6 +16,8 @@ if ( !$_SESSION['uid'] )
 
 	$company=new Societe($db);
 	$company->fetch($_SESSION["CASHDESK_ID_THIRDPARTY"]);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -191,7 +193,7 @@ if ( !$_SESSION['uid'] )
 <hr>
 
 <!--onsubmit="javascript: return verifReglement()"-->
-<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat">
+<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat" >
 
 
 <input type="hidden" name="hdnChoix" value="">
