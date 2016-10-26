@@ -40,7 +40,7 @@ $langs->load("bills");
 		<table class="table_resume">
 
 			<tr><td class="resume_label">Factura</td><td><?php  echo $obj_facturation->numInvoice(); ?></td></tr>
-			<tr><td class="resume_label">Total_ht</td><td><?php echo price(price2num($obj_facturation->prixTotalHt(),'MT'),0,$langs,0,0,-1,$conf->currency); ?></td></tr>
+			
 			<?php
 				// Affichage de la tva par taux
 				if ( $obj_facturation->montantTva() ) {
@@ -127,16 +127,23 @@ $langs->load("bills");
 			<p class="note_label"><?php echo $langs->trans("Notes"); ?><br><textarea class="textarea_note" name="txtaNotes"></textarea></p>
 
 			<div class="center">
+
+
+			<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=valide_facture">
 				
 				<input class="button" type="submit" name="btnValider" value="Validar Factura" /><br>
 
-				<input class="button" type="submit" name="btnValider" value="Generar Remito" /><br>
+			</form>
+			<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=crear_remito">
+					<input class="button" type="submit" name="btnValider" value="Generar Remito" /><br>
 
-			<br><a class="lien1" href="affIndex.php?menutpl=facturation"><?php echo $langs->trans("RestartSelling"); ?></a>
-			</div>
-		</form>
+				
+				
+			</form>
 
+		</div>
 
+<br><a class="lien1" href="affIndex.php?menutpl=facturation"><?php echo $langs->trans("RestartSelling"); ?></a>
 
 
 

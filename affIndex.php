@@ -11,7 +11,6 @@ if ( !$_SESSION['uid'] )
 }
 
 
-
 //  $obj_facturation= unserialize($_SESSION['serObjFacturation']);
 
 	$company=new Societe($db);
@@ -72,6 +71,10 @@ if ( !$_SESSION['uid'] )
             $tab_size=count($tab); 
 ?>
         <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-toggle="modal" data-target="#myModal" ><span class="badge success"><?php echo($tab_size); ?></span></span></a></li>
+        <li><a href="deconnexion.php?action=new"  name="link_Nueva" >Nueva Venta</a></li>
+        <li><a href="deconnexion.php?action=salir" name="link_Salir" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+
+
 
       </ul>
 
@@ -109,7 +112,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-<form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" >
+<form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" autocomplete="off">
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
         <div class="row">
 
@@ -193,7 +196,7 @@ if ( !$_SESSION['uid'] )
 <hr>
 
 <!--onsubmit="javascript: return verifReglement()"-->
-<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat" >
+<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat" autocomplete="off">
 
 
 <input type="hidden" name="hdnChoix" value="">

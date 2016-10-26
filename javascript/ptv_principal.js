@@ -20,6 +20,28 @@
 	});
 
 
+
+$( "a[name*='link_']" ).click(function( event ) {
+  event.preventDefault();
+  var url = this.href;
+  var confirmacion="";
+
+	if( this.text == 'Nueva Venta' ){
+
+			confirmacion= 'La venta actual sera cancelada';
+	}else{
+
+			confirmacion= 'Deseas salir de la aplicacion?';
+	}
+	if(confirm(confirmacion)){
+			location.href = url;
+	}else{
+			return false;
+	}
+
+});
+
+
 function setCalendar(hoy, semana){
 
 		$('.input-group.date').datepicker({
@@ -37,6 +59,23 @@ function setCalendar(hoy, semana){
 function verifClic(aChoix) {
 
 	document.getElementById('frmDifference').hdnChoix.value = aChoix;
+
+	/*
+		esto es asi, pueden venir dos strings  'DIF'que es pago postergado y 'ESP' que es de contado efectivo
+		si viene DIF el recibido debe estar en cero, por que no necesito la plata
+		y la fecha del componente datapicker debe ser una fecha valida.
+		
+	==============
+
+	Si viene ESP la fecha debe estar vacia
+	la cantidad debe ser superior al total
+	===================
+
+	Al final dee re direccionar al action del formulario,
+	
+	*/
+
+	
 	//document.getElementById('frmFacturation').submit();
 
 }

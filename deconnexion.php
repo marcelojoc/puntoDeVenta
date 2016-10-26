@@ -1,19 +1,5 @@
 <?php
-/* Copyright (C) 2007-2008 Jeremie Ollivier <jeremie.o@laposte.net>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+
 
 /**
  *	\file       htdocs/cashdesk/deconnexion.php
@@ -30,9 +16,40 @@ if (! defined('NOREQUIRESOC'))   define('NOREQUIRESOC','1');
 require_once '../main.inc.php';
 
 // This destroy tag that say "Point of Sale session is on".
-unset($_SESSION['uid']);
 
-header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
-//session_destroy();
-exit;
 
+
+$obj_facturation = unserialize($_SESSION['serObjFacturation']);
+//unset ($_SESSION['serObjFacturation']);
+
+$action =GETPOST('action');
+
+
+
+switch ($action)
+{
+	case 'new':       //si viene sin datos get  elimina la sesion... login principal
+
+        unset($_SESSION['CASHDESK_ID_THIRDPARTY']);
+        unset($_SESSION['poscart']);
+        unset ($_SESSION['serObjFacturation']);
+        header('Location: '.DOL_URL_ROOT.'/cashdesk/select_client.php');
+        
+		
+	    break;
+
+
+	case 'salir':
+
+        session_destroy();
+        header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
+
+        break;
+
+    default:
+
+        session_destroy();
+        header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
+
+    break;    
+}

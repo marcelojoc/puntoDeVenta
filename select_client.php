@@ -92,7 +92,15 @@ if ( !$_SESSION['uid'] )
 					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 						
 					<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" class="form-horizontal " role="form" autocomplete="off">
-								
+
+          
+              <div class="col-sm-12 controls text-right">
+
+
+              <a class="negro" href="deconnexion.php?action=salir" name="link_Salir" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+
+              </div>
+
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
                 <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="loadComponent(this.value)" class="form-control" placeholder="Codigo Cliente" required/>  
@@ -117,7 +125,10 @@ if ( !$_SESSION['uid'] )
 								</div>
 							</div>
 
-						</form>     
+						</form> 
+
+
+
 
 					</div>                     
 				</div>  
