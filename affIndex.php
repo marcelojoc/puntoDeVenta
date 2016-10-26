@@ -243,7 +243,7 @@ if ( !$_SESSION['uid'] )
                     <div class="col-xs-12">
 
                     
-                    <input class="btn btn-success btn-block" type="submit" name="btnEfectivo" onclick="verifClic('ESP');" id="btnEfectivo" value="Efectivo" disabled />
+                    <input class="btn btn-success btn-block" type="submit" name="btnEfectivo" onclick="verifClic('ESP');" id="btnEfectivo" value="Efectivo" disabled>
 
 
                     </div>
@@ -257,16 +257,17 @@ if ( !$_SESSION['uid'] )
 
                             <div class="col-xs-6">
 
-                                <input class="btn btn-success btn-block" type="submit" onclick="verifClic('DIF');" name="btnModeReglement" id="btnModeReglement" value="Cuenta Cte" disabled/>
+                                <input class="btn btn-success btn-block" type="submit" onclick="verifClic('DIF');" name="btnModeReglement" id="btnModeReglement" value="Cuenta Cte"/>
 
                             </div>
 
                             <div class="col-xs-6">
 
 
-                                <div class="input-group date">
+                                <div class="input-group date ">
                                 <input id ='date_now' name="date_now" type="hidden" value="<?php echo(date("d/m/Y")); ?>">
-                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"  pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}
+"></i></span>
                                 </div>
                             </div>
 

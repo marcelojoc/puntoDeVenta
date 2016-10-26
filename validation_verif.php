@@ -52,19 +52,20 @@ switch ($action)
 	case 'valide_achat':
 
 
-		echo($_POST['txtRecibido'].'<br>');
-		echo($_POST['hiddentxtVuelto'].'<br>');
-		echo($_POST['hiddentxttotal'].'<br>');
-		echo ($_POST['hdnChoix'].'<br>');
+		// echo($_POST['txtRecibido'].'<br>');
+		// echo($_POST['hiddentxtVuelto'].'<br>');
+		// echo($_POST['hiddentxttotal'].'<br>');
+		// echo ($_POST['hdnChoix'].'<br>');
 
-		echo ($_POST['date_now'].'<br>');
+		// echo ($_POST['date_now'].'<br>');
 
-$date = new DateTime($_POST['date_now']);
-echo $date->format('m/d/Y'); // 31.07.2012
+		$orig = $_POST['date_now'];
+		$arr = explode('/', $orig);
+		$newDate = $arr[1].'/'.$arr[0].'/'.$arr[2];
+		// echo ($newDate);
+		// echo($_POST['txtRecibido'].'<br>');
 
-		echo($_POST['txtRecibido'].'<br>');
 
-exit;
 
 		$obj_facturation->prixTotalTtc($_POST['hiddentxttotal']);
 	
@@ -77,7 +78,7 @@ exit;
 		$invoice->date=dol_now();   // fecha de la factura
 		$invoice->type= Facture::TYPE_STANDARD;  //tipo de factura
 		
-		var_dump($invoice);
+		
 		$num=$invoice->getNextNumRef($company);  // dame el proximo numero de factura para el cliente ....
 
 		$obj_facturation->numInvoice($num);       // asigna el numero nuevo de factura
@@ -111,13 +112,13 @@ exit;
 		else
 		{
 		    //$txtDatePaiement=$_POST['txtDatePaiement'];
-		    $datePaiement=dol_mktime(0,0,0,$_POST['txtDatePaiementmonth'],$_POST['txtDatePaiementday'],$_POST['txtDatePaiementyear']);
-		    $txtDatePaiement=dol_print_date($datePaiement,'dayrfc');
-			$obj_facturation->paiementLe($txtDatePaiement);
+		    // $datePaiement=dol_mktime(0,0,0,$_POST['txtDatePaiementmonth'],$_POST['txtDatePaiementday'],$_POST['txtDatePaiementyear']);
+		    // $txtDatePaiement=dol_print_date($datePaiement,'dayrfc');
+			$obj_facturation->paiementLe($newDate);
 		}
 
 		
-exit;
+
           $redirection = 'validation.php';
 		//$redirection = 'affIndex_bkp.php?menutpl=validation';
 		
