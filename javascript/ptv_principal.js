@@ -7,15 +7,14 @@
 	$('#hiddentxttotal').val($('#campototal').val())
 	
 	// setear fechas de calendario
-	var hoy= $('#date_now').val();			//Valor de fecha del servidor 
-    var inicio = moment(hoy, "DD/MM/YYYY"); // parseo la fecha como fecha en moment
-	var fin    = moment(hoy, "DD/MM/YYYY").add(7, 'd');		// sumo 7 dias para el calendario
+	var hoy= $('#date_now').val();							 //Valor de fecha del servidor 
+    var inicio = moment(hoy, "DD/MM/YYYY"); 				// parseo la fecha como fecha en moment
+	var fin    = moment(hoy, "DD/MM/YYYY").add(7, 'd');    // sumo 7 dias para el calendario
     setCalendar(inicio.format('DD/MM/YYYY'), fin.format('DD/MM/YYYY'))
 
-// documentacion
-// https://bootstrap-datepicker.readthedocs.io/en/latest/index.html
+														// documentacion
+													   // https://bootstrap-datepicker.readthedocs.io/en/latest/index.html
     
-  
 		
 	});
 
@@ -56,9 +55,13 @@ function setCalendar(hoy, semana){
 		}); 
 }
 
+
 function verifClic(aChoix) {
 
 	document.getElementById('frmDifference').hdnChoix.value = aChoix;
+}
+
+function verifSubmit() {
 
 	/*
 		esto es asi, pueden venir dos strings  'DIF'que es pago postergado y 'ESP' que es de contado efectivo
@@ -74,9 +77,71 @@ function verifClic(aChoix) {
 	Al final dee re direccionar al action del formulario,
 	
 	*/
-
-	
 	//document.getElementById('frmFacturation').submit();
+
+	var aChoix = document.getElementById('frmDifference').hdnChoix.value;
+
+	if(aChoix == 'DIF'){
+
+		$('#txtRecibido').val('');                // recibido en blanco
+		$('#txtVuelto').val('');				 // vuelto en blanco
+		$('#hiddentxtVuelto').val('');			// vuelto en blanco		
+		var fecha= $('#date_comp').val();      // traigo lo que hay en el componente DP 
+		var hoy  = $('#date_now').val();	  // Valor de fecha del servidor 
+		if(fecha != ''){					 // compruebo que tenha algo, si hay algo valido la fecha, si no lanzo el picker
+											// si esta aca es por que hay algo en el campo
+
+			try {
+				var validaFecha = moment(fecha, "DD/MM/YYYY");  // formateo la fecha y 
+
+				if(validaFecha.isValid()){                    // si esta bien la fecha envio el form  falta ver si no esta entre el rango
+
+						return true;
+				}else{
+
+						return dispararCalendario();   // no es valida la fecha
+
+				}
+
+			}
+				catch(err) {					  // si salta algun error dejo el datapicker vacio y disparo el calendario
+
+				return dispararCalendario();   // algun error en la validacion
+			}
+
+		}else{								// si el DP no tiene nada disparo el calendario y el foco
+
+				return dispararCalendario(); 
+		}
+
+	}else{
+
+											// Si el pago es efectivo solo verifico el monto si es numerico 
+
+			if( !isNaN($('#txtRecibido').val() ) ){
+
+				return true;
+			}else{
+
+				alert('El valor ingresado no es Valido');
+				$('#txtRecibido').val('');
+				return false;
+			}
+
+	}
+
+
+function dispararCalendario(){
+				$('#date_comp').val('');					  // pongo el recibido en 0 disparo el calendario y bloqueo el boton efectivo
+				$('#txtRecibido').val('');					 // pongo en 0 el recibido y el cambio
+				$('#txtVuelto').val('');				
+				$('#hiddentxtVuelto').val('');			   // vuelto en blanco	
+				$('.input-group.date').datepicker('show');
+				$('#btnEfectivo').attr('disabled', true);
+				return false;
+}
+
+
 
 }
 
@@ -261,10 +326,10 @@ function verifClic(aChoix) {
 	function calculoCuenta(){
 
 		var recibido	= parseFloat($('#txtRecibido').val()); // seteo los componentes del form 
-        var total 		=   parseFloat($('#txttotal').val());
+        var total 		= parseFloat($('#txttotal').val());
 		var btnEfectivo = $('#btnEfectivo');
 		var estadoBtn   = true;    							  // seteado el valor deshabilitado verdadero en el boton efectivo
-		var vuelto		=   $('#txtVuelto');
+		var vuelto		= $('#txtVuelto');
         var vueltohidden=   $('#hiddentxtVuelto');
 
 		if (recibido > total) {                              // compruebo el monto de la compra y lo que me paga

@@ -111,6 +111,9 @@ switch ($action)
 		}
 		else
 		{
+
+			$obj_facturation->montantEncaisse('RESET');    // borro  los datos de recibido  y cambio
+			$obj_facturation->montantRendu('RESET');
 		    //$txtDatePaiement=$_POST['txtDatePaiement'];
 		    // $datePaiement=dol_mktime(0,0,0,$_POST['txtDatePaiementmonth'],$_POST['txtDatePaiementday'],$_POST['txtDatePaiementyear']);
 		    // $txtDatePaiement=dol_print_date($datePaiement,'dayrfc');

@@ -196,7 +196,7 @@ if ( !$_SESSION['uid'] )
 <hr>
 
 <!--onsubmit="javascript: return verifReglement()"-->
-<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat" autocomplete="off">
+<form id="frmDifference"  method="post"  action="validation_verif.php?action=valide_achat" onsubmit="return verifSubmit();"  autocomplete="off">
 
 
 <input type="hidden" name="hdnChoix" value="">
@@ -269,7 +269,7 @@ if ( !$_SESSION['uid'] )
 
                                 <div class="input-group date ">
                                 <input id ='date_now' name="date_now" type="hidden" value="<?php echo(date("d/m/Y")); ?>">
-                                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"  pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}
+                                <input type="text" class="form-control" id ='date_comp'><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"  pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}
 "></i></span>
                                 </div>
                             </div>
