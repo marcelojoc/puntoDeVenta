@@ -361,3 +361,63 @@ function dispararCalendario(){
 			//console.log(data);
 		} );
 	}
+
+
+
+
+
+
+
+
+	function pruebaRemito(param= null){
+		
+		$.ajax(
+				{
+				url : 'http://localhost/dolibar_local/htdocs/commande/card.php?id=6',
+				type: "POST",
+				data : {
+						action: 'builddoc',
+						token: '083ab704e6d787d6ad9867c05b9700e3',
+						},
+				
+
+				success : function(json) {
+						console.log(json);
+				//loadComponent(json);
+				},
+
+				error : function(xhr, status) {
+					alert('Disculpe, existió un problema '+ status + xhr );
+				},
+
+
+		})
+
+	}
+
+
+	function envioRemito(param= null){
+		
+		$.ajax(
+				{
+				url : 'http://localhost/dolibar_local/htdocs/compta/facture.php?facid=42&action=presend&mode=init',
+				type: "POST",
+				data : {
+						action: 'builddoc',
+						token: '083ab704e6d787d6ad9867c05b9700e3',
+						},
+				
+
+				success : function(json) {
+						console.log(json);
+				//loadComponent(json);
+				},
+
+				error : function(xhr, status) {
+					alert('Disculpe, existió un problema '+ status + xhr );
+				},
+
+
+		})
+
+	}

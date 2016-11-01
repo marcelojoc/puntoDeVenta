@@ -32,128 +32,173 @@ $langs->load("bills");
 
 
 
-<div class="panel panel-default">
-  <div class="panel-heading"><?php echo $langs->trans("Summary"); ?></div>
-  <div class="panel-body">
+    <div class="panel panel-default">
+    <div class="panel-heading">Resumen</div>
+    <div class="panel-body">
 
 
-		<table class="table_resume">
+        
 
-			<tr><td class="resume_label">Factura</td><td><?php  echo $obj_facturation->numInvoice(); ?></td></tr>
-			
+    <table class="table table-bordered table-responsive">
+
+
+
+        <tbody>
+        <tr>
+            <td>Factura</td>
+            <td> <?php echo $obj_facturation->numInvoice(); ?></td>
+
+        </tr>
+        <tr>
+
+            <?php
+                // Affichage de la tva par taux
+                if ( $obj_facturation->montantTva() ) {
+
+                    echo ('<td>IVA</td> <td>'.price(price2num($obj_facturation->montantTva(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td>');
+
+                }
+                else
+                {
+
+                    echo ('<td>IVA</td>  <td>'.$langs->trans("NoVAT").'</td>');
+
+                }
+            ?>
+        </tr>
+
+        <tr>
+            <td>TOTAL</td>
+            <td><?php echo price(price2num($obj_facturation->prixTotalTtc(),'MT'),0,$langs,0,0,-1,$conf->currency); ?></td>
+
+        </tr>
+
+            <tr>
+            <td>Forma de pago</td>
+            <td>
+                
+                
+                        <?php
+                switch ($obj_facturation->getSetPaymentMode())
+                {
+                    case 'ESP':
+                        echo $langs->trans("Cash");
+                        $filtre='courant=2';
+                        if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"]))
+                            $selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"];
+                        break;
+                    case 'CB':
+                        echo $langs->trans("CreditCard");
+                        $filtre='courant=1';
+                        if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CB"]))
+                            $selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CB"];
+                        break;
+                    case 'CHQ':
+                        echo $langs->trans("Cheque");
+                        $filtre='courant=1';
+                        if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"]))
+                            $selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"];
+                        break;
+                    case 'DIF':
+                        echo $langs->trans("Reported");
+                        $filtre='courant=1 OR courant=2';
+                        $selected='';
+                        break;
+                    default:
+                        $filtre='courant=1 OR courant=2';
+                        $selected='';
+                }
+
+                ?>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+                <?php
+                    // Affichage des infos en fonction du mode de paiement
+                    if ( $obj_facturation->getsetPaymentMode() == 'DIF' ) {
+
+                        echo ('<td class="resume_label">'.$langs->trans("DateEcheance").'</td><td>'.$obj_facturation->paiementLe().'</td>');
+
+                    } else {
+
+                        echo ('<td class="resume_label">'.$langs->trans("Received").'</td><td>'.price(price2num($obj_facturation->montantEncaisse(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td>');
+
+                    }
+
+				 ?>
+
+        </tr>
+
+		<tr>
+
 			<?php
-				// Affichage de la tva par taux
-				if ( $obj_facturation->montantTva() ) {
-
-					echo ('<tr><td class="resume_label">'.$langs->trans("VAT").'</td><td>'.price(price2num($obj_facturation->montantTva(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td></tr>');
-
-				}
-				else
-				{
-
-					echo ('<tr><td class="resume_label">'.$langs->trans("VAT").'</td><td>'.$langs->trans("NoVAT").'</td></tr>');
-
-				}
-			?>
-			<tr><td class="resume_label"><?php echo $langs->trans("TotalTTC"); ?> </td><td><?php echo price(price2num($obj_facturation->prixTotalTtc(),'MT'),0,$langs,0,0,-1,$conf->currency); ?></td></tr>
-			<tr><td class="resume_label"><?php echo $langs->trans("PaymentMode"); ?> </td><td>
-			<?php
-			switch ($obj_facturation->getSetPaymentMode())
-			{
-				case 'ESP':
-					echo $langs->trans("Cash");
-					$filtre='courant=2';
-					if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"]))
-						$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CASH"];
-					break;
-				case 'CB':
-					echo $langs->trans("CreditCard");
-					$filtre='courant=1';
-					if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CB"]))
-						$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CB"];
-					break;
-				case 'CHQ':
-					echo $langs->trans("Cheque");
-					$filtre='courant=1';
-					if (!empty($_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"]))
-						$selected = $_SESSION["CASHDESK_ID_BANKACCOUNT_CHEQUE"];
-					break;
-				case 'DIF':
-					echo $langs->trans("Reported");
-					$filtre='courant=1 OR courant=2';
-					$selected='';
-					break;
-				default:
-					$filtre='courant=1 OR courant=2';
-					$selected='';
-			}
-
-			?>
-			</td></tr>
-
-			<?php
-				// Affichage des infos en fonction du mode de paiement
-				if ( $obj_facturation->getsetPaymentMode() == 'DIF' ) {
-
-					echo ('<tr><td class="resume_label">'.$langs->trans("DateEcheance").'</td><td>'.$obj_facturation->paiementLe().'</td></tr>');
-
-				} else {
-
-					echo ('<tr><td class="resume_label">'.$langs->trans("Received").'</td><td>'.price(price2num($obj_facturation->montantEncaisse(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td></tr>');
-
-				}
-
 				// Affichage du montant rendu (reglement en especes)
 				if ( $obj_facturation->montantRendu() ) {
 
-					echo ('<tr><td class="resume_label">'.$langs->trans("Change").'</td><td>'.price(price2num($obj_facturation->montantRendu(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td></tr>');
+					echo ('<td class="resume_label">'.$langs->trans("Change").'</td><td>'.price(price2num($obj_facturation->montantRendu(),'MT'),0,$langs,0,0,-1,$conf->currency).'</td>');
 
 				}
 
 			?>
 
-		</table>
+		</tr>
+
+        <form id="frmValidation" class="" method="post" action="validation_verif.php?action=valide_facture">
+        <input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>" />
 
 
 
-		<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=valide_facture">
-			<input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>" />
-			<p class="note_label">
-				<?php
-					echo $langs->trans("BankToPay"). "<br>";
-					$form->select_comptes($selected,'cashdeskbank',0,$filtre);
-				?>
-			</p>
-			<p class="note_label"><?php echo $langs->trans("Notes"); ?><br><textarea class="textarea_note" name="txtaNotes"></textarea></p>
+            <tr>
+            <td>Nota</td>
+            <td><p><textarea class="textarea_note" name="txtaNotes" rows="4" cols="30"></textarea></p></td>
 
-			<div class="center">
+        </tr>
+        <tr>
+        <td colspan="2">
+            
+                <input class="btn btn-success btn-block" type="submit" name="btnValider" value="Validar Factura" /><br>    
+        </td>
+        </tr>
+        </form>
+        <tr>
+            <td colspan="2">
+                
+                            <form id="frmValidation"  method="post" action="validation_verif.php?action=crear_remito">
+                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito" disabled/><br>
 
-
-			<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=valide_facture">
-				
-				<input class="button" type="submit" name="btnValider" value="Validar Factura" /><br>
-
-			</form>
-			<form id="frmValidation" class="formulaire2" method="post" action="validation_verif.php?action=crear_remito">
-					<input class="button" type="submit" name="btnValider" value="Generar Remito" /><br>
-
-				
-				
-			</form>
-
-		</div>
-
-<br><a class="lien1" href="affIndex.php?menutpl=facturation"><?php echo $langs->trans("RestartSelling"); ?></a>
+                        
+                        
+                            </form>
+                
+                
+                
+            </td>
+        </tr>
 
 
+        <tr>
+            <td colspan="2">
+                
+                <a class="btn btn-default btn-block" href="affIndex.php?menutpl=facturation" role="button" >Retomar la venta</a>   
+                
+            </td>
+        </tr>
+
+        </tbody>
+    
+    </table>
 
 
-  </div>
+    
+    </div> <!--cierre div panel body-->
+
+
+    </div> <!--cierre div panel default-->
 </div>
-
-
-	</div>
-
  </body>
 
 

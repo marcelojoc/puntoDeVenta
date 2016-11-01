@@ -135,7 +135,7 @@ switch ($action)
 
 
 
-		var_dump($_SESSION['poscart']);
+		//var_dump($_SESSION['poscart']);
 
 
 

@@ -223,6 +223,10 @@ $respuesta=null;
 
 
 
+              
+
+
+
         case 'get_products':   // busca productos del almacen del vendedor y su Stock  y lo envia para cargar el select html
 
                 $sql='SELECT p.rowid, p.ref, p.label, p.tva_tx, p.fk_product_type, ps.reel 
