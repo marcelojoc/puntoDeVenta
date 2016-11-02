@@ -56,6 +56,7 @@ exit;
 
 <body>
 
+<br>
     <div class="container">
 
 
@@ -72,12 +73,12 @@ exit;
             <div class="panel-body">
                 
                 
-<p><a class="lien1" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?action=builddoc&facid=<?php echo $_GET['facid']; ?>" target="_blank">Ver Factura</a></p>
-<br>
-<p><a class="lien1" href="#" target="_blank">Enviar por Email</a></p>
-<br>
-<p><a class="lien1" href="#" onclick="Javascript: popupTicket(); return(false);"><?php echo $langs->trans("PrintTicket"); ?></a></p>
-
+            <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?action=builddoc&facid=<?php echo $_GET['facid']; ?>" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Ver Factura</a></p>
+            <br>
+            <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?facid=<?php echo $_GET['facid']; ?>&action=presend&mode=init" target="_blank"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar por Email</a></p>
+            <br>
+            <p><a class="btn btn-info btn-block" href="#" onclick="Javascript: popupTicket(); return(false);" disabled="disabled"> <span class="glyphicon glyphicon-print" aria-hidden="true"></span> <?php echo $langs->trans("PrintTicket"); ?></a></p>
+            <br>
 
 
 
@@ -100,8 +101,6 @@ exit;
                 
 
                 <p> Error en la creacion de la factura</p>
-
-
 
 
                 <input class="btn btn-success btn-block" type="submit" id="newVenta" name="newVenta" value="Nueva Venta">
