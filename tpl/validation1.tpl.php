@@ -37,7 +37,7 @@ $langs->load("bills");
     <div class="panel-body">
 
 
-        
+        <?php var_dump($_SESSION);?>
 
     <table class="table table-bordered table-responsive">
 

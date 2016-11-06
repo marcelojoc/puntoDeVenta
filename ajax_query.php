@@ -217,7 +217,7 @@ $respuesta=null;
 
                 $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 
-                var_dump($obj_facturation);
+               // var_dump($obj_facturation);
 
               break;
 

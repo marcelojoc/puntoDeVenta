@@ -77,9 +77,11 @@ exit;
             <br>
             <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?facid=<?php echo $_GET['facid']; ?>&action=presend&mode=init" target="_blank"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar por Email</a></p>
             <br>
-            <p><a class="btn btn-info btn-block" href="#" onclick="Javascript: popupTicket(); return(false);" disabled="disabled"> <span class="glyphicon glyphicon-print" aria-hidden="true"></span> <?php echo $langs->trans("PrintTicket"); ?></a></p>
+            <p><a class="btn btn-info btn-block" href="#"  disabled="disabled"> <span class="glyphicon glyphicon-print" aria-hidden="true"></span> <?php echo $langs->trans("PrintTicket"); ?></a></p>
             <br>
 
+
+<!--     onclick="Javascript: popupTicket(); return(false);"     -->
 
 
                 <input class="btn btn-success btn-block" type="submit" id="newVenta" name="newVenta"  value="Nueva Venta">
