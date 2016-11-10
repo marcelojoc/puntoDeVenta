@@ -50,7 +50,7 @@ $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 //unset ($_SESSION['serObjFacturation']);
 
 $action =GETPOST('action');
-$bankaccountid=GETPOST('cashdeskbank');
+$bankaccountid=$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'];
 
 switch ($action)
 {
@@ -113,15 +113,18 @@ switch ($action)
 		} else {
 			$montant = $_POST['txtRecibido'];            // cantidad 
 		}
+		
 
 		if ( $mode_reglement != 'DIF') {
 			$obj_facturation->montantEncaisse($montant); // importe en efectivo
-
+			$obj_facturation->paiementLe('RESET');
 			//Determination de la somme rendue
 			$total = $obj_facturation->prixTotalTtc();
 			$encaisse = $obj_facturation->montantEncaisse(); // saldo en efectivo
 
 			$obj_facturation->montantRendu($encaisse - $total);
+			
+
 		}
 		else
 		{
@@ -151,13 +154,47 @@ switch ($action)
 
 		//var_dump($_SESSION['poscart']);
 
+		$id = (GETPOST('id', 'int') ? GETPOST('id', 'int') : GETPOST('orderid', 'int'));
+		$ref = GETPOST('ref', 'alpha');
+		$socid = $_SESSION['CASHDESK_ID_THIRDPARTY'];  // el id del Cliente al que le estas vendiendo
+		//$action = GETPOST('action', 'alpha');
+		$confirm = GETPOST('confirm', 'alpha');
+		$lineid = GETPOST('lineid', 'int');
+		$origin = GETPOST('origin', 'alpha');
+		$originid = (GETPOST('originid', 'int') ? GETPOST('originid', 'int') : GETPOST('origin_id', 'int')); // For backward compatibility
+
+		// PDF
+		$hidedetails = (GETPOST('hidedetails', 'int') ? GETPOST('hidedetails', 'int') : (! empty($conf->global->MAIN_GENERATE_DOCUMENTS_HIDE_DETAILS) ? 1 : 0));
+		$hidedesc = (GETPOST('hidedesc', 'int') ? GETPOST('hidedesc', 'int') : (! empty($conf->global->MAIN_GENERATE_DOCUMENTS_HIDE_DESC) ? 1 : 0));
+		$hideref = (GETPOST('hideref', 'int') ? GETPOST('hideref', 'int') : (! empty($conf->global->MAIN_GENERATE_DOCUMENTS_HIDE_REF) ? 1 : 0));
+
+		if (! empty($user->societe_id))
+			$socid = $user->societe_id;
+		$result = restrictedArea($user, 'commande', $id);
+
+		$object = new Commande($db);
+		$extrafields = new ExtraFields($db);
+
+//var_dump($object);
+
+$numer= $object->getNextNumRef(124);
+
+echo($numer);
+
+
+var_dump($object->getLinesArray());
+
+
+		exit;
 
 if ($action == 'crear_remito' && $user->rights->commande->creer)
 	{
 
         
-		$datecommande = dol_mktime(12, 0, 0, GETPOST('remonth'), GETPOST('reday'), GETPOST('reyear'));
-		$datelivraison = dol_mktime(12, 0, 0, GETPOST('liv_month'), GETPOST('liv_day'), GETPOST('liv_year'));
+		$datecommande =  date("m-d-Y");
+
+		$datelivraison = date("m-d-Y");
+
 
 		if ($datecommande == '') {
 			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentities('Date')), null, 'errors');
@@ -178,20 +215,20 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			$db->begin();
 
 			$object->date_commande = $datecommande;
-			$object->note_private = GETPOST('note_private');
-			$object->note_public = GETPOST('note_public');
+			$object->note_private = 'setear nota privada';
+			$object->note_public = GETPOST('txtaNotes');
 			$object->source = GETPOST('source_id');
 			$object->fk_project = GETPOST('projectid');
-			$object->ref_client = GETPOST('ref_client');
-			$object->modelpdf = GETPOST('model');
-			$object->cond_reglement_id = GETPOST('cond_reglement_id');
-			$object->mode_reglement_id = GETPOST('mode_reglement_id');
+			$object->ref_client = " ref Cliente Willy";
+			$object->modelpdf = 'einstein';
+			$object->cond_reglement_id = '1';
+			$object->mode_reglement_id = '4';
 	        $object->fk_account = GETPOST('fk_account', 'int');
-			$object->availability_id = GETPOST('availability_id');
-			$object->demand_reason_id = GETPOST('demand_reason_id');
+			$object->availability_id = '2';
+			$object->demand_reason_id = '6';
 			$object->date_livraison = $datelivraison;
-	        $object->shipping_method_id = GETPOST('shipping_method_id', 'int');
-            $object->warehouse_id = GETPOST('warehouse_id', 'int');
+	        $object->shipping_method_id = '2';
+            $object->warehouse_id = $_SESSION['CASHDESK_ID_WAREHOUSE'];
 			$object->fk_delivery_address = GETPOST('fk_address');
 			$object->contactid = GETPOST('contactid');
 			$object->fk_incoterms = GETPOST('incoterm_id', 'int');
@@ -321,8 +358,9 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 					// Required extrafield left blank, error message already defined by setOptionalsFromPost()
 					$action = 'create';
 				}
-			} else {
-				// Fill array 'array_options' with data from add form
+			} 
+			else {
+				//Fill array 'array_options' with data from add form
 				$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
 				if ($ret < 0) $error++;
 
@@ -363,25 +401,100 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			if ($object_id > 0 && ! $error)
 			{
 				$db->commit();
-				header('Location: ' . $_SERVER["PHP_SELF"] . '?id=' . $object_id);
-				exit();
+				//header('Location: ' . $_SERVER["PHP_SELF"] . '?id=' . $object_id);
+
+				$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
+				
 			} else {
 				$db->rollback();
 				$action = 'create';
 				setEventMessages($object->error, $object->errors, 'errors');
 			}
 		}
+
+
+
+		
 	}
+		break;
 
 
 
 
+/*
+ INSERT INTO `dolibar`.`llx_commandedet`(`rowid`,`fk_commande`,`fk_parent_line`,`fk_product`,`label`,`description`,`tva_tx`,`localtax1_tx`,`localtax1_type`,`localtax2_tx`,`localtax2_type`,`qty`,`remise_percent`,`remise`,`fk_remise_except`,`price`,`subprice`,`total_ht`,`total_tva`,`total_localtax1`,`total_localtax2`,`total_ttc`,`product_type`,`date_start`,`date_end`,`info_bits`,`buy_price_ht`,`fk_product_fournisseur_price`,`special_code`,`rang`,`fk_unit`,`import_key`) VALUES ( NULL,'11',NULL,'2','label2','lo que debe decir el remito 2',NULL,'0.000',NULL,'0.000',NULL,NULL,'0','0',NULL,NULL,'0.00000000','0.00000000','0.00000000','0.00000000','0.00000000','0.00000000','0',NULL,NULL,'0','0.00000000',NULL,'0','0',NULL,NULL); 
+
+*/
 
 
 
+// Bloque de validacion de remito y descuento de Stock
+
+// if ($action == 'confirm_validate' && $confirm == 'yes' &&
+//         ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->commande->creer))
+//        	|| (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->commande->order_advance->validate)))
+// 	)
+// 	{
+// 		$idwarehouse = GETPOST('idwarehouse');
+
+// 	    $qualified_for_stock_change=0;
+// 		if (empty($conf->global->STOCK_SUPPORTS_SERVICES))
+// 		{
+// 		   	$qualified_for_stock_change=$object->hasProductsOrServices(2);
+// 		}
+// 		else
+// 		{
+// 		   	$qualified_for_stock_change=$object->hasProductsOrServices(1);
+// 		}
+
+// 		// Check parameters
+// 		if (! empty($conf->stock->enabled) && ! empty($conf->global->STOCK_CALCULATE_ON_VALIDATE_ORDER) && $qualified_for_stock_change)
+// 		{
+// 			if (! $idwarehouse || $idwarehouse == -1)
+// 			{
+// 				$error++;
+// 				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+// 				$action='';
+// 			}
+// 		}
+
+// 		if (! $error) {
+// 			$result = $object->valid($user, $idwarehouse);
+// 			if ($result >= 0)
+// 			{
+// 				// Define output language
+// 				if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE))
+// 				{
+// 					$outputlangs = $langs;
+// 					$newlang = '';
+// 					if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id')) $newlang = GETPOST('lang_id','alpha');
+// 					if ($conf->global->MAIN_MULTILANGS && empty($newlang))	$newlang = $object->thirdparty->default_lang;
+// 					if (! empty($newlang)) {
+// 						$outputlangs = new Translate("", $conf);
+// 						$outputlangs->setDefaultLang($newlang);
+// 					}
+// 					$model=$object->modelpdf;
+// 					$ret = $object->fetch($id); // Reload to get new records
+
+// 					$object->generateDocument($model, $outputlangs, $hidedetails, $hidedesc, $hideref);
+// 				}
+// 			}
+// 			else
+// 			{
+// 				setEventMessages($object->error, $object->errors, 'errors');
+// 			}
+// 		}
+// 	}
+
+	//  cierre de validacion de remito y descuento de almacen Stock
 
 
-	break;
+
+	
+
+
+
+	
 
 
 

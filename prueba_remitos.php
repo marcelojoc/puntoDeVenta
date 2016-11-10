@@ -37,12 +37,6 @@ $hideref = (GETPOST('hideref', 'int') ? GETPOST('hideref', 'int') : (! empty($co
 
 
 
-if (! empty($user->societe_id))
-	$socid = $user->societe_id;
-$result = restrictedArea($user, 'commande', $id);
-
-$object = new Commande($db);
-$extrafields = new ExtraFields($db);
 
 
 var_dump($_POST);
@@ -53,9 +47,9 @@ var_dump($_GET);
 
 echo('<br>');
 
-var_dump($_SESSION['poscart']);
+var_dump($_SESSION);
 
-
+exit;
 	// Add order
 if ($action == 'add' && $user->rights->commande->creer)
 	{

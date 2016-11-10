@@ -139,11 +139,13 @@ class Facturation
 
         
         $vatrowid = $this->tva();
+
         
         $tmp = getTaxesFromId($vatrowid);
         $vat_rate = $tmp['rate'];
         $vat_npr = $tmp['npr'];
-        
+
+
         $localtaxarray = getLocalTaxesFromRate($vatrowid, 0, $societe, $mysoc, 1);
         
         // Define part of HT, VAT, TTC

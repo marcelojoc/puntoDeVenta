@@ -39,6 +39,11 @@ $langs->load("bills");
 
         <?php var_dump($_SESSION);?>
 
+
+         <br>
+
+         <?php var_dump(unserialize($_SESSION['serObjFacturation']));?>
+
     <table class="table table-bordered table-responsive">
 
 
@@ -121,7 +126,7 @@ $langs->load("bills");
                     // Affichage des infos en fonction du mode de paiement
                     if ( $obj_facturation->getsetPaymentMode() == 'DIF' ) {
 
-                        echo ('<td class="resume_label">'.$langs->trans("DateEcheance").'</td><td>'.$obj_facturation->paiementLe().'</td>');
+                        echo ('<td class="resume_label"> Fecha de Vencimiento </td><td>'.$obj_facturation->paiementLe().'</td>');
 
                     } else {
 
