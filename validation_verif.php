@@ -185,7 +185,7 @@ echo($numer);
 var_dump($object->getLinesArray());
 
 
-		exit;
+		
 
 if ($action == 'crear_remito' && $user->rights->commande->creer)
 	{

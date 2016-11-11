@@ -23,12 +23,15 @@ $redireccion = GETPOST('newVenta', 'alpha');
 echo($redireccion);
     
 
-if(isset($redireccion) && $redireccion== 'Nueva Venta' ){
-
-
 unset ($_SESSION['poscart']);
 unset ($_SESSION['CASHDESK_ID_THIRDPARTY']);
 unset ($_SESSION['serObjFacturation']);
+
+if(isset($redireccion) && $redireccion== 'Nueva Venta' ){
+
+    // unset ($_SESSION['poscart']);
+    // unset ($_SESSION['CASHDESK_ID_THIRDPARTY']);
+    // unset ($_SESSION['serObjFacturation']);
 
     header('Location: '.DOL_URL_ROOT.'/cashdesk/select_client.php');
 

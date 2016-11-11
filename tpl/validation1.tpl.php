@@ -3,7 +3,11 @@ $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 //unset ($_SESSION['serObjFacturation']);
 $langs->load("main");
 $langs->load("bills");
+    if(!isset($_SESSION['CASHDESK_ID_THIRDPARTY'])){  // si entra y no hay cliente asignaod vuelve al form de seleccion
 
+    $redirection='select_client.php';
+    header('Location: '.$redirection);
+    }
 // Object $form must de defined
 ?>
 
@@ -37,12 +41,12 @@ $langs->load("bills");
     <div class="panel-body">
 
 
-        <?php var_dump($_SESSION);?>
+        <?php //var_dump($_SESSION);?>
 
 
          <br>
 
-         <?php var_dump(unserialize($_SESSION['serObjFacturation']));?>
+         <?php //var_dump(unserialize($_SESSION['serObjFacturation']));?>
 
     <table class="table table-bordered table-responsive">
 
@@ -173,13 +177,11 @@ $langs->load("bills");
             <td colspan="2">
                 
                             <form id="frmValidation"  method="post" action="validation_verif.php?action=crear_remito">
-                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito" disabled/><br>
+                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/><br>
 
                         
                         
                             </form>
-                
-                
                 
             </td>
         </tr>

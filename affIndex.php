@@ -22,6 +22,8 @@ if ( !$_SESSION['uid'] )
     $redirection='select_client.php';
     header('Location: '.$redirection);
     }
+
+    //var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +33,7 @@ if ( !$_SESSION['uid'] )
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Punto de venta</title>
+    <title>Punto de venta </title>
 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +60,7 @@ if ( !$_SESSION['uid'] )
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Punto de venta</a>
+      <a class="navbar-brand" href="#">Vendedor <small><?php  echo($_SESSION['firstname']);  ?> </small> </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,6 +76,8 @@ if ( !$_SESSION['uid'] )
             $tab = $_SESSION['poscart'];        // asigno lo que hay en el carrito
 
             $tab_size=count($tab); 
+
+
 ?>
         <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" data-toggle="modal" data-target="#myModal" ><span class="badge success"><?php echo($tab_size); ?></span></span></a></li>
         <li><a href="deconnexion.php?action=new"  name="link_Nueva" >Nueva Venta</a></li>
@@ -95,16 +99,8 @@ if ( !$_SESSION['uid'] )
 
     <form action="affIndex.php" metod="POST" name="formProduct" autocomplete="off">
 
-        <div class="col-xs-5">
-            <div class="input-group">
-                <input id="txtref" name="txtref" class="form-control" placeholder="ref" type="text"/>
-                <span class="input-group-addon"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
 
-            </div>
-
-        <!--<input id="textinput" name="textinput" type="text" placeholder="cantidad" class="form-control input-md">-->
-        </div>
-        <div class="col-xs-7 ">
+        <div class="col-xs-12 ">
         
             <select class="form-control input-md" name="selectProduct" id="selectProduct" onchange="get_valProduct()" >
 
@@ -117,7 +113,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-<form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" autocomplete="off">
+<form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" autocomplete="off"  onsubmit="return valNums($('#txtcantidad'))" >
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
         <div class="row">
 
@@ -187,7 +183,7 @@ if ( !$_SESSION['uid'] )
                 <div class="col-xs-12">
 
             
-            <input class="btn btn-success btn-block" type="submit" id="sbmtEnvoyer" value="Añadir">
+            <input class="btn btn-success btn-block" type="submit" id="sbmtEnvoyer" value="Añadir"  >
                 </div>
 
                 
@@ -240,7 +236,10 @@ if ( !$_SESSION['uid'] )
 
 
 
+<?php
 
+    if($tab_size > 0){
+?>
     <div class="panel panel-default">
         <div class="panel-heading text-center">Medio de Pago</div>
             <div class="panel-body">
@@ -288,6 +287,11 @@ if ( !$_SESSION['uid'] )
 
         </div>
   </div>
+<?php
+    }
+
+?>
+
 
 </form>   <!-- CIERRO EL FORMULARIO DE ENVIO DE PAGO -->
 

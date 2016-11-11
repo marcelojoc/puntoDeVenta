@@ -176,7 +176,7 @@ function dispararCalendario(){
 
 
 
-	function loadComponent(data ){
+	function loadComponent(data ){   // completa el desplegable con los productos
 
 	// cargo el select de productos siempre que tenga Stock
 		
@@ -190,14 +190,14 @@ function dispararCalendario(){
 
 						opcion= ''
 					}
-					select.append('<option value="'+value.id_product+'" '+ opcion + '>'+value.nom_product + ' - '+value.stock_product+'</option>');
+					select.append('<option value="'+value.id_product+'" '+ opcion + '>'+value.nom_product + ' | '+value.stock_product+'</option>');
 				
 			});
 			get_valProduct();
 	}
 
 
-	function get_valProduct(){
+	function get_valProduct(){      // carga Local de la tabla de precios y carga valores de lo seleccionado
 
 		var param= $('#selectProduct').val();  // seteo el valor seleccionado del Select
 		
@@ -230,7 +230,7 @@ function dispararCalendario(){
 	}
 
 
-	function cargaValores(datos){
+	function cargaValores(datos){     // carga valores de los productos seleccionados
 
 		var stock= $('#txtstock');
 		var pUnit= $('#txtPunit');
@@ -244,7 +244,7 @@ function dispararCalendario(){
 
 	}
 
-	function cargatablaLocal(tabla){
+	function cargatablaLocal(tabla){             // lee y re escribe tabla en local Storage para tabla 
 
 		//console.log(tabla);
 		localStorage.removeItem('tabla');
@@ -354,7 +354,7 @@ function dispararCalendario(){
 	}
 
 
-	function setValorTabla(valor){
+	function setValorTabla(valor){  // actualiza con el nuevo precio el objeto con los datos
 
 		$.post( "ajax_query.php", { consulta: "set_valorTabla", dato: valor }, function(data){
 
@@ -363,11 +363,21 @@ function dispararCalendario(){
 	}
 
 
+function valNums(comp){   // valido que los campos introducidos sean numeros enteros..
+
+
+console.log(comp);
+
+
+
+
+}
 
 
 
 
 
+// solo de prueba
 
 	function pruebaRemito(param= null){
 		
@@ -421,3 +431,5 @@ function dispararCalendario(){
 		})
 
 	}
+
+	//  fin prueba de remitos 
