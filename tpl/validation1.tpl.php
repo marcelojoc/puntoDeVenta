@@ -177,7 +177,7 @@ $langs->load("bills");
             <td colspan="2">
                 
                             <form id="frmValidation"  method="post" action="validation_verif.php?action=crear_remito">
-                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/><br>
+                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/ disabled><br>
 
                         
                         

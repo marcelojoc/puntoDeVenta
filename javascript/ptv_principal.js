@@ -193,7 +193,7 @@ function dispararCalendario(){
 					select.append('<option value="'+value.id_product+'" '+ opcion + '>'+value.nom_product + ' | '+value.stock_product+'</option>');
 				
 			});
-			get_valProduct();
+		get_valProduct();
 	}
 
 
@@ -213,7 +213,7 @@ function dispararCalendario(){
 
 				success : function(json) {
 						
-						console.log(json);
+						//console.log(json);
 						cargatablaLocal(json.tabla_desc);
 						cargaValores(json.datos_prod);
 						$('#txtcantidad').val('');
@@ -358,7 +358,6 @@ function dispararCalendario(){
 
 		$.post( "ajax_query.php", { consulta: "set_valorTabla", dato: valor }, function(data){
 
-			//console.log(data);
 		} );
 	}
 
@@ -366,7 +365,19 @@ function dispararCalendario(){
 function valNums(comp){   // valido que los campos introducidos sean numeros enteros..
 
 
-console.log(comp);
+var dato = parseInt(comp.val());
+
+	if(!isNaN(dato)){
+
+		return true;
+	}else{
+
+		comp.val('');
+		comp.focus();
+		return false;
+
+	}
+
 
 
 

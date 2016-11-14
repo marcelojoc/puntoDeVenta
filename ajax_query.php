@@ -275,16 +275,32 @@ $respuesta=null;
         case 'getAll':        // busca clientes de acuerdo al codigo asociado al vendedor
 
 
-                $sql="
-                
-                SELECT  llx_societe.code_client, 
-                llx_societe.rowid , 
-                llx_societe.nom
+                if( $codVendedor <= 0){
 
-                FROM    llx_societe, llx_societe_extrafields
-                WHERE   llx_societe_extrafields.vendedor = $codVendedor
-                AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
-                // AND     code_client LIKE '".$dato."%'";
+                        $sql="
+                                SELECT  llx_societe.code_client, 
+                                llx_societe.rowid , 
+                                llx_societe.nom
+
+                                FROM llx_societe
+
+                                WHERE code_client != 'NULL'  
+                        ";
+
+                }else{
+
+                        $sql="
+                        
+                        SELECT  llx_societe.code_client, 
+                        llx_societe.rowid , 
+                        llx_societe.nom
+
+                        FROM    llx_societe, llx_societe_extrafields
+                        WHERE   llx_societe_extrafields.vendedor = $codVendedor
+                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
+                        // AND     code_client LIKE '".$dato."%'";
+                }
+
 
                 $resql=$db->query($sql);
 
