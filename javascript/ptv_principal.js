@@ -163,10 +163,13 @@ function dispararCalendario(){
 
 				error : function(xhr, status) {
 					alert('Disculpe, existió un problema '+ status + xhr );
+					location.reload(true);
+
 				},
 
 				// código a ejecutar sin importar si la petición falló o no
 				complete : function(xhr, status) {
+
 					//loadComponent("");
 				}
 
@@ -178,11 +181,36 @@ function dispararCalendario(){
 
 	function loadComponent(data ){   // completa el desplegable con los productos
 
+
+
+/*
+Esto se genera una unica vez en la venta
+
+se crea una instancia de almacenamiento local donde va a estar el Stock temporal
+Si esta creada no debe crearla nuevamente, esto debe quedar guardado
+El loop debe escribir en el Option seleccionable de productos en base a lo que ve en el LS.
+
+
+Cuando es precionado el boton añadir , debe hacer el descuento en el localStorage
+
+ */
+
+
+	if(!localStorage.getItem('tmpStock') === true ){ // compruebo la existencia de LS para tmpStock
+
+		localStorage.setItem('tmpStock', JSON.stringify(data)); // si no esta creada, entonces la creo
+
+	}
+
+	var listProduct= JSON.parse(localStorage.getItem('tmpStock'));
+
+
+
 	// cargo el select de productos siempre que tenga Stock
 		
 		var select =$('#selectProduct');
 		var opcion= '';
-			$.each(data, function(id,value){
+			$.each(listProduct, function(id,value){
 
 					if(value.stock_product <= 0){
 					opcion= 'disabled'
@@ -278,13 +306,11 @@ function dispararCalendario(){
 						$('#txtPunit').val(value.descuento);
 						setValorTabla(value.descuento);
 					}
-
 			}
 		
 		});
 
 		calcularTotal();
-
 	}
 
 
@@ -365,11 +391,52 @@ function dispararCalendario(){
 function valNums(comp){   // valido que los campos introducidos sean numeros enteros..
 
 
-var dato = parseInt(comp.val());
+var dato = parseInt(comp.val());  
 
 	if(!isNaN(dato)){
 
-		return true;
+		var stock = $('#txtstock').val();  		// traigo el valor de Stock del producto seleccionado
+
+		if(stock != ""){       			   		// compruebo si no esta vacio el Stock
+
+			if (dato > parseInt(stock) ){		// compruebo que el valor sea menor 
+
+				alert('La cantidad supera el Stock del producto');
+				comp.val('');
+				comp.focus();
+				return false;
+
+			}else{
+
+				/*	En este punto debe descontar del Stock virtual almacenado en el Ls*/
+
+				var idProducto = $('#selectProduct').val() 			// tengo el id del producto seleccionado
+				var stockLocal = JSON.parse(localStorage.getItem('tmpStock'));
+
+
+					$.each(stockLocal, function(id,value){  		// recorro el array de Stock
+
+						if(value.id_product == idProducto ){		// macheo el producto con el id que viene del Select 
+							value.stock_product -= dato;			// descuento del numero de Stock local
+						}
+
+					});
+					localStorage.removeItem('tmpStock');
+					localStorage.setItem('tmpStock', JSON.stringify(stockLocal));
+
+
+
+				return true; // si el numero es correcto deja enviar los datos al carro.
+			}
+
+
+		}else{
+
+			return false;
+
+		}
+
+
 	}else{
 
 		comp.val('');
@@ -377,10 +444,6 @@ var dato = parseInt(comp.val());
 		return false;
 
 	}
-
-
-
-
 
 }
 
@@ -444,3 +507,21 @@ var dato = parseInt(comp.val());
 	}
 
 	//  fin prueba de remitos 
+
+
+
+	function descontarStock(elem){   // funcion que descuenta el Stock temporal 
+
+		elem.preventDefault();
+		var cantidad = elem.dataset.cantidad;
+		var idProducto = elem.dataset.producto;
+		var stockLocal = JSON.parse(localStorage.getItem('tmpStock'));
+
+
+
+
+		console.log (elem)
+
+
+
+	}

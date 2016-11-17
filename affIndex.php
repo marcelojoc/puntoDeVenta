@@ -34,7 +34,8 @@ if ( !$_SESSION['uid'] )
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Punto de venta </title>
-
+        
+        <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-theme.min.css" rel="stylesheet">
@@ -323,6 +324,7 @@ if ( !$_SESSION['uid'] )
 
 if ($tab_size <= 0) {
     
+    
     print '
         <div class="panel panel-default">
         <div class="panel-body">
@@ -364,7 +366,7 @@ for ($i=0;$i < $tab_size;$i++)
 
         </p>
 
-        <a href ="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'"   class="btn btn-danger btn-xs pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <a id= "idcar_'.$i.'" href ="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'"   class="btn btn-danger btn-xs pull-right"  data-producto="'.$tab[$i]['fk_article'].'" data-cantidad="'.$tab[$i]['qte'].'"  onClick="descontarStock(this)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
         <div class="clearfix"></div>
         </div>');
 
