@@ -10,6 +10,15 @@ var todo=null;
 		
 	}
 
+localStorage.removeItem('tmpStock');
+	// if(localStorage.getItem('tmpStock') === true ){ // compruebo la existencia de LS para tmpStock
+
+	// 	// si esta creada, entonces la elimino
+		
+	// 	localStorage.removeItem('tmpStock');
+	// }
+
+
 });
 
 function asignarCodigo(){

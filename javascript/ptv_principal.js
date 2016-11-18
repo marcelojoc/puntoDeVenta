@@ -212,7 +212,7 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		var opcion= '';
 			$.each(listProduct, function(id,value){
 
-					if(value.stock_product <= 0){
+					if(value.stock_product <= 0 || value.stock_product == null){
 					opcion= 'disabled'
 					}else{
 
@@ -225,10 +225,12 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 	}
 
 
-	function get_valProduct(){      // carga Local de la tabla de precios y carga valores de lo seleccionado
+	function get_valProduct(){      			// carga Local de la tabla de precios y carga valores de lo seleccionado
 
-		var param= $('#selectProduct').val();  // seteo el valor seleccionado del Select
-		
+		var param= $('#selectProduct').val();  	// seteo el valor seleccionado del Select
+
+		if( param != null ){      				// si el Stock no tiene nada no debe actualizar nada
+
 		$.ajax(
 				{
 				url : 'ajax_query.php',
@@ -255,6 +257,10 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 
 		})
 
+
+			
+		}
+
 	}
 
 
@@ -264,7 +270,28 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		var pUnit= $('#txtPunit');
 		var hidden= $('#hiddenpUnit');
 
-		stock.val(datos.stock_product);
+		if(!localStorage.getItem('tmpStock') === true ){ // compruebo la existencia de LS para tmpStock
+
+			// si no esta creada, entonces completo como siempre
+			stock.val(datos.stock_product);
+		}else{
+
+			var stockLocal = JSON.parse(localStorage.getItem('tmpStock'));
+
+
+			$.each(stockLocal, function(id,value){  		// recorro el array de Stock
+
+			if(value.id_product == datos.prod_id ){		// macheo el producto con el id que viene del ajax de get_valProduct()
+						
+			stock.val(value.stock_product);				// pongo el valor del Stock en local que hay
+			}
+
+			});
+
+
+		}
+
+		
 
 		var precio = parseFloat(datos.prod_precio)
 		pUnit.val(precio.toFixed(2));
@@ -510,18 +537,24 @@ var dato = parseInt(comp.val());
 
 
 
-	function descontarStock(elem){   // funcion que descuenta el Stock temporal 
 
-		elem.preventDefault();
-		var cantidad = elem.dataset.cantidad;
-		var idProducto = elem.dataset.producto;
-		var stockLocal = JSON.parse(localStorage.getItem('tmpStock'));
+$('a[id*="idcar"]').on('click', function(e){      		// funcion que se ejecuta en cada eliminacion de producto del carro
 
+	e.preventDefault();									// detengo el evento que redirecciona
+	var url = $(this).attr('href'); 
+	var cantidad = parseInt($(this).attr('data-cantidad'));		// obtengo los datos de cantidad
+	var idProducto = $(this).attr('data-producto')		// obtengo los datos de id producto
 
+	var stockLocal = JSON.parse(localStorage.getItem('tmpStock'));
+	$.each(stockLocal, function(id,value){  		// recorro el array de Stock
 
+		if(value.id_product == idProducto ){		// macheo el producto con el id que viene del Select 
+			value.stock_product += cantidad;			// descuento del numero de Stock local
+		}
 
-		console.log (elem)
+	});
+	localStorage.removeItem('tmpStock');
+	localStorage.setItem('tmpStock', JSON.stringify(stockLocal));
+	window.location.href = url;
 
-
-
-	}
+});

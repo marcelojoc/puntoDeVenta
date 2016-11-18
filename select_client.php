@@ -67,7 +67,7 @@ if ( !$_SESSION['uid'] )
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Punto de venta</title>
-
+    <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
@@ -80,6 +80,9 @@ if ( !$_SESSION['uid'] )
 
 
 <div class="container">    
+
+
+
 	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 		<div class="panel panel-default formcentro" >
 				<!--<div class="panel-heading">

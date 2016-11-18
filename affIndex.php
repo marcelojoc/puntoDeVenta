@@ -321,8 +321,9 @@ if ( !$_SESSION['uid'] )
 
 <?php 
 
-
+var_dump($_SESSION['poscart']);
 if ($tab_size <= 0) {
+    
     
     
     print '
@@ -366,7 +367,7 @@ for ($i=0;$i < $tab_size;$i++)
 
         </p>
 
-        <a id= "idcar_'.$i.'" href ="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'"   class="btn btn-danger btn-xs pull-right"  data-producto="'.$tab[$i]['fk_article'].'" data-cantidad="'.$tab[$i]['qte'].'"  onClick="descontarStock(this)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <a id= "idcar_'.$i.'" href ="facturation_verif.php?action=suppr_article&suppr_id='.$tab[$i]['id'].'"   class="btn btn-danger btn-xs pull-right"  data-producto="'.$tab[$i]['fk_article'].'" data-cantidad="'.$tab[$i]['qte'].'" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
         <div class="clearfix"></div>
         </div>');
 

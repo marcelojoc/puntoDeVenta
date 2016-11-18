@@ -29,6 +29,7 @@ require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 
 $obj_facturation = unserialize($_SESSION['serObjFacturation']);
+
 unset ($_SESSION['serObjFacturation']);
 
 
@@ -186,6 +187,7 @@ switch ( $_GET['action'] )
 		break;
 
 	case 'suppr_article':
+
 		$obj_facturation->supprArticle($_GET['suppr_id']);
 
 		$redirection = DOL_URL_ROOT.'/cashdesk/affIndex.php?menutpl=facturation';
