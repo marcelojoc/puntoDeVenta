@@ -162,7 +162,7 @@ switch ($action)
 		$lineid = GETPOST('lineid', 'int');
 		$origin = GETPOST('origin', 'alpha');
 		$originid = (GETPOST('originid', 'int') ? GETPOST('originid', 'int') : GETPOST('origin_id', 'int')); // For backward compatibility
-
+		$totalPrice = GETPOST('hidenTotal', 'alpha');
 		// PDF
 		$hidedetails = (GETPOST('hidedetails', 'int') ? GETPOST('hidedetails', 'int') : (! empty($conf->global->MAIN_GENERATE_DOCUMENTS_HIDE_DETAILS) ? 1 : 0));
 		$hidedesc = (GETPOST('hidedesc', 'int') ? GETPOST('hidedesc', 'int') : (! empty($conf->global->MAIN_GENERATE_DOCUMENTS_HIDE_DESC) ? 1 : 0));
@@ -177,12 +177,12 @@ switch ($action)
 
 //var_dump($object);
 
-$numer= $object->getNextNumRef(124);
+// $numer= $object->getNextNumRef(124);
 
-echo($numer);
+// echo($numer);
 
 
-var_dump($object->getLinesArray());
+// var_dump($object->getLinesArray());
 
 
 		
@@ -191,9 +191,9 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 	{
 
         
-		$datecommande =  date("m-d-Y");
+		$datecommande =  date("Y-m-d");
 
-		$datelivraison = date("m-d-Y");
+		$datelivraison = date("Y-m-d");
 
 
 		if ($datecommande == '') {
@@ -215,11 +215,11 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			$db->begin();
 
 			$object->date_commande = $datecommande;
-			$object->note_private = 'setear nota privada';
+			$object->note_private = 'Generada por '.$_SESSION['firstname'].' '.$_SESSION['lastname'];
 			$object->note_public = GETPOST('txtaNotes');
 			$object->source = GETPOST('source_id');
 			$object->fk_project = GETPOST('projectid');
-			$object->ref_client = " ref Cliente Willy";
+			$object->ref_client = " ref-".$_SESSION['firstname'];  
 			$object->modelpdf = 'einstein';
 			$object->cond_reglement_id = '1';
 			$object->mode_reglement_id = '4';
@@ -234,130 +234,14 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			$object->fk_incoterms = GETPOST('incoterm_id', 'int');
 			$object->location_incoterms = GETPOST('location_incoterms', 'alpha');
 
+
+
 			// If creation from another object of another module (Example: origin=propal, originid=1)
 			if (! empty($origin) && ! empty($originid))
 			{
-				// Parse element/subelement (ex: project_task)
-				$element = $subelement = $origin;
-				if (preg_match('/^([^_]+)_([^_]+)/i', $origin, $regs)) {
-					$element = $regs [1];
-					$subelement = $regs [2];
-				}
 
-				// For compatibility
-				if ($element == 'order') {
-					$element = $subelement = 'commande';
-				}
-				if ($element == 'propal') {
-					$element = 'comm/propal';
-					$subelement = 'propal';
-				}
-				if ($element == 'contract') {
-					$element = $subelement = 'contrat';
-				}
 
-				$object->origin = $origin;
-				$object->origin_id = $originid;
 
-				// Possibility to add external linked objects with hooks
-				$object->linked_objects [$object->origin] = $object->origin_id;
-				$other_linked_objects = GETPOST('other_linked_objects', 'array');
-				if (! empty($other_linked_objects)) {
-					$object->linked_objects = array_merge($object->linked_objects, $other_linked_objects);
-				}
-
-				// Fill array 'array_options' with data from add form
-				$ret = $extrafields->setOptionalsFromPost($extralabels, $object);
-				if ($ret < 0) $error++;
-
-				if (! $error)
-				{
-					$object_id = $object->create($user);
-
-					if ($object_id > 0)
-					{
-						dol_include_once('/' . $element . '/class/' . $subelement . '.class.php');
-
-						$classname = ucfirst($subelement);
-						$srcobject = new $classname($db);
-
-						dol_syslog("Try to find source object origin=" . $object->origin . " originid=" . $object->origin_id . " to add lines");
-						$result = $srcobject->fetch($object->origin_id);
-						if ($result > 0)
-						{
-							$lines = $srcobject->lines;
-							if (empty($lines) && method_exists($srcobject, 'fetch_lines'))
-							{
-								$srcobject->fetch_lines();
-								$lines = $srcobject->lines;
-							}
-
-							$fk_parent_line = 0;
-							$num = count($lines);
-
-							for($i = 0; $i < $num; $i ++)
-							{
-								$label = (! empty($lines[$i]->label) ? $lines[$i]->label : '');
-								$desc = (! empty($lines[$i]->desc) ? $lines[$i]->desc : '');
-								$product_type = (! empty($lines[$i]->product_type) ? $lines[$i]->product_type : 0);
-
-								// Dates
-								// TODO mutualiser
-								$date_start = $lines[$i]->date_debut_prevue;
-								if ($lines[$i]->date_debut_reel)
-									$date_start = $lines[$i]->date_debut_reel;
-								if ($lines[$i]->date_start)
-									$date_start = $lines[$i]->date_start;
-								$date_end = $lines[$i]->date_fin_prevue;
-								if ($lines[$i]->date_fin_reel)
-									$date_end = $lines[$i]->date_fin_reel;
-								if ($lines[$i]->date_end)
-									$date_end = $lines[$i]->date_end;
-
-									// Reset fk_parent_line for no child products and special product
-								if (($lines[$i]->product_type != 9 && empty($lines[$i]->fk_parent_line)) || $lines[$i]->product_type == 9) {
-									$fk_parent_line = 0;
-								}
-
-								// Extrafields
-								if (empty($conf->global->MAIN_EXTRAFIELDS_DISABLED) && method_exists($lines[$i], 'fetch_optionals')) 							// For avoid conflicts if
-								                                                                                                      // trigger used
-								{
-									$lines[$i]->fetch_optionals($lines[$i]->rowid);
-									$array_options = $lines[$i]->array_options;
-								}
-
-								$result = $object->addline($desc, $lines[$i]->subprice, $lines[$i]->qty, $lines[$i]->tva_tx, $lines[$i]->localtax1_tx, $lines[$i]->localtax2_tx, $lines[$i]->fk_product, $lines[$i]->remise_percent, $lines[$i]->info_bits, $lines[$i]->fk_remise_except, 'HT', 0, $date_start, $date_end, $product_type, $lines[$i]->rang, $lines[$i]->special_code, $fk_parent_line, $lines[$i]->fk_fournprice, $lines[$i]->pa_ht, $label, $array_options, $lines[$i]->fk_unit, $object->origin, $lines[$i]->rowid);
-
-								if ($result < 0) {
-									$error++;
-									break;
-								}
-
-								// Defined the new fk_parent_line
-								if ($result > 0 && $lines[$i]->product_type == 9) {
-									$fk_parent_line = $result;
-								}
-							}
-
-							// Hooks
-							$parameters = array('objFrom' => $srcobject);
-							$reshook = $hookmanager->executeHooks('createFrom', $parameters, $object, $action); // Note that $action and $object may have been
-							                                                                               // modified by hook
-							if ($reshook < 0)
-								$error++;
-						} else {
-							setEventMessages($srcobject->error, $srcobject->errors, 'errors');
-							$error++;
-						}
-					} else {
-						setEventMessages($object->error, $object->errors, 'errors');
-						$error++;
-					}
-				} else {
-					// Required extrafield left blank, error message already defined by setOptionalsFromPost()
-					$action = 'create';
-				}
 			} 
 			else {
 				//Fill array 'array_options' with data from add form
@@ -366,18 +250,16 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 
 				if (! $error)
 				{
+
+					
 					$object_id = $object->create($user);
 
-					// If some invoice's lines already known
-					$NBLINES = 8;
-					for($i = 1; $i <= $NBLINES; $i ++) {
-						if ($_POST['idprod' . $i]) {
-							$xid = 'idprod' . $i;
-							$xqty = 'qty' . $i;
-							$xremise = 'remise_percent' . $i;
-							$object->add_product($_POST[$xid], $_POST[$xqty], $_POST[$xremise]);
-						}
+					// Aqui va el loop para guardar en la bd los productos con los precios nuevos
+
+
+
 					}
+
 				}
 			}
 
@@ -403,7 +285,145 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 				$db->commit();
 				//header('Location: ' . $_SERVER["PHP_SELF"] . '?id=' . $object_id);
 
-				$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
+					// Get content of cart
+					$tab_liste = $_SESSION['poscart'];
+
+
+					$sql=  "INSERT INTO `dolibar`.`llx_commandedet`(`rowid`,`fk_commande`,`fk_parent_line`,
+					`fk_product`,`label`,`description`,`tva_tx`,`localtax1_tx`,`localtax1_type`,`localtax2_tx`,
+					`localtax2_type`,`qty`,`remise_percent`,`remise`,`fk_remise_except`,`price`,`subprice`,
+					`total_ht`,`total_tva`,`total_localtax1`,`total_localtax2`,`total_ttc`,`product_type`,
+					`date_start`,`date_end`,`info_bits`,`buy_price_ht`,`fk_product_fournisseur_price`,
+					`special_code`,`rang`,`fk_unit`,`import_key`)";
+
+
+
+					// Loop on each line into cart
+					$tab_liste_size=count($tab_liste);
+					$db->begin(); // Debut transaction
+					for ($i=0; $i < $tab_liste_size; $i++)
+					{
+
+						$postcart = "VALUES ( NULL,'$object_id',
+						NULL,'".$tab_liste[$i]['fk_article']."',
+						'".$tab_liste[$i]['label']."',
+						'".$tab_liste[$i]['label']."',
+						NULL,
+						'".$tab_liste[$i]['total_localtax1']."',
+						NULL,'".$tab_liste[$i]['total_localtax2']."',
+						'0',
+						'".$tab_liste[$i]['qte']."',
+						'".$tab_liste[$i]['remise_percent']."',
+						'".$tab_liste[$i]['remise']."',
+						'0',
+						'".$tab_liste[$i]['price']."',
+						'".$tab_liste[$i]['price_ttc']."',
+						'".$tab_liste[$i]['total_ht']."',
+						'".$tab_liste[$i]['total_vat']."',
+						'0.00000000',
+						'0.00000000',
+						'".$tab_liste[$i]['total_ttc']."',
+						'0',NULL,NULL,
+						'0','0.00000000',
+						NULL,'0','1',NULL,NULL)";
+
+						
+
+// echo($sql.$postcart);
+
+// echo('<br>');
+
+// echo($tab_liste[$i]['label']);
+
+// 						exit;
+						$db->query($sql.$postcart);
+
+						$db->commit(); // Valide
+
+
+
+
+						//========================================================
+
+
+						$updatePrice = "UPDATE `dolibar`.`llx_commande` SET `total_ht`='$totalPrice',`total_ttc`='$totalPrice' WHERE `rowid`='$object_id'"; 
+					
+						$db->begin();
+
+						$db->query($updatePrice);
+
+						$db->commit(); // Valide
+
+//==================================================================================0
+
+								$idwarehouse = $_SESSION['CASHDESK_ID_WAREHOUSE'];
+
+										$qualified_for_stock_change=0;
+										if (empty($conf->global->STOCK_SUPPORTS_SERVICES))
+										{
+											$qualified_for_stock_change=$object->hasProductsOrServices(2);
+										}
+										else
+										{
+											$qualified_for_stock_change=$object->hasProductsOrServices(1);
+										}
+
+										// Check parameters
+										if (! empty($conf->stock->enabled) && ! empty($conf->global->STOCK_CALCULATE_ON_VALIDATE_ORDER) && $qualified_for_stock_change)
+										{
+											if (! $idwarehouse || $idwarehouse == -1)
+											{
+												$error++;
+												setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+												$action='';
+											}
+										}
+
+										if (! $error) {
+											$result = $object->valid($user, $idwarehouse);
+											if ($result >= 0)
+											{
+												// Define output language
+												if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE))
+												{
+													$outputlangs = $langs;
+													$newlang = '';
+													if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id')) $newlang = GETPOST('lang_id','alpha');
+													if ($conf->global->MAIN_MULTILANGS && empty($newlang))	$newlang = $object->thirdparty->default_lang;
+													if (! empty($newlang)) {
+														$outputlangs = new Translate("", $conf);
+														$outputlangs->setDefaultLang($newlang);
+													}
+													$model=$object->modelpdf;
+													$ret = $object->fetch($id); // Reload to get new records
+
+													$object->generateDocument($model, $outputlangs, $hidedetails, $hidedesc, $hideref);
+												}
+											}
+											else
+											{
+												setEventMessages($object->error, $object->errors, 'errors');
+											}
+										}
+
+
+
+
+
+
+
+
+
+
+						//===================================================Genera el comprobante de venta
+
+										
+
+
+					}
+
+				$redirection = 'validation_verif.php?action=valide_facture';
+				//$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
 				
 			} else {
 				$db->rollback();
@@ -412,90 +432,7 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			}
 		}
 
-
-
-		
-	}
 		break;
-
-
-
-
-/*
- INSERT INTO `dolibar`.`llx_commandedet`(`rowid`,`fk_commande`,`fk_parent_line`,`fk_product`,`label`,`description`,`tva_tx`,`localtax1_tx`,`localtax1_type`,`localtax2_tx`,`localtax2_type`,`qty`,`remise_percent`,`remise`,`fk_remise_except`,`price`,`subprice`,`total_ht`,`total_tva`,`total_localtax1`,`total_localtax2`,`total_ttc`,`product_type`,`date_start`,`date_end`,`info_bits`,`buy_price_ht`,`fk_product_fournisseur_price`,`special_code`,`rang`,`fk_unit`,`import_key`) VALUES ( NULL,'11',NULL,'2','label2','lo que debe decir el remito 2',NULL,'0.000',NULL,'0.000',NULL,NULL,'0','0',NULL,NULL,'0.00000000','0.00000000','0.00000000','0.00000000','0.00000000','0.00000000','0',NULL,NULL,'0','0.00000000',NULL,'0','0',NULL,NULL); 
-
-*/
-
-
-
-// Bloque de validacion de remito y descuento de Stock
-
-// if ($action == 'confirm_validate' && $confirm == 'yes' &&
-//         ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->commande->creer))
-//        	|| (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->commande->order_advance->validate)))
-// 	)
-// 	{
-// 		$idwarehouse = GETPOST('idwarehouse');
-
-// 	    $qualified_for_stock_change=0;
-// 		if (empty($conf->global->STOCK_SUPPORTS_SERVICES))
-// 		{
-// 		   	$qualified_for_stock_change=$object->hasProductsOrServices(2);
-// 		}
-// 		else
-// 		{
-// 		   	$qualified_for_stock_change=$object->hasProductsOrServices(1);
-// 		}
-
-// 		// Check parameters
-// 		if (! empty($conf->stock->enabled) && ! empty($conf->global->STOCK_CALCULATE_ON_VALIDATE_ORDER) && $qualified_for_stock_change)
-// 		{
-// 			if (! $idwarehouse || $idwarehouse == -1)
-// 			{
-// 				$error++;
-// 				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
-// 				$action='';
-// 			}
-// 		}
-
-// 		if (! $error) {
-// 			$result = $object->valid($user, $idwarehouse);
-// 			if ($result >= 0)
-// 			{
-// 				// Define output language
-// 				if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE))
-// 				{
-// 					$outputlangs = $langs;
-// 					$newlang = '';
-// 					if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id')) $newlang = GETPOST('lang_id','alpha');
-// 					if ($conf->global->MAIN_MULTILANGS && empty($newlang))	$newlang = $object->thirdparty->default_lang;
-// 					if (! empty($newlang)) {
-// 						$outputlangs = new Translate("", $conf);
-// 						$outputlangs->setDefaultLang($newlang);
-// 					}
-// 					$model=$object->modelpdf;
-// 					$ret = $object->fetch($id); // Reload to get new records
-
-// 					$object->generateDocument($model, $outputlangs, $hidedetails, $hidedesc, $hideref);
-// 				}
-// 			}
-// 			else
-// 			{
-// 				setEventMessages($object->error, $object->errors, 'errors');
-// 			}
-// 		}
-// 	}
-
-	//  cierre de validacion de remito y descuento de almacen Stock
-
-
-
-	
-
-
-
-	
-
 
 
 

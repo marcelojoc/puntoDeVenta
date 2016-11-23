@@ -42,7 +42,7 @@ $langs->load("bills");
     <div class="panel-body">
 
 
-        <?php //var_dump($_SESSION);?>
+        <?php //var_dump( $_SESSION);?>
 
 
          <br>
@@ -178,7 +178,11 @@ $langs->load("bills");
             <td colspan="2">
                 
                             <form id="frmValidation"  method="post" action="validation_verif.php?action=crear_remito">
-                            <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/ disabled><br>
+
+
+                                <input type="hidden" name="hidenTotal" value="<?php echo ($obj_facturation->prixTotalTtc()); ?>" />
+
+                                <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/ ><br>
 
                         
                         

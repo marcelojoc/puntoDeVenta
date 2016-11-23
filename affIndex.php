@@ -321,7 +321,7 @@ if ( !$_SESSION['uid'] )
 
 <?php 
 
-var_dump($_SESSION['poscart']);
+var_dump($_SESSION);
 if ($tab_size <= 0) {
     
     

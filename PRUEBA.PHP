@@ -67,10 +67,7 @@ var ckeditorFilebrowserImageBrowseUrl = '/dolibar_local/htdocs/core/filemanagerd
 <h1></h1>
 
 
-<?php  $datecommande =   date("m-d-Y");
-
-
-
+<?php  $datecommande =   date("Y-m-d");
 
 
 echo($datecommande);
