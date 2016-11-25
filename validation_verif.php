@@ -50,6 +50,7 @@ $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 //unset ($_SESSION['serObjFacturation']);
 
 $action =GETPOST('action');
+
 $bankaccountid=$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'];
 
 switch ($action)
@@ -282,6 +283,13 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 			// End of object creation, we show it
 			if ($object_id > 0 && ! $error)
 			{
+
+				
+
+
+				// echo($object_id);
+
+				// exit;
 				$db->commit();
 				//header('Location: ' . $_SERVER["PHP_SELF"] . '?id=' . $object_id);
 
@@ -422,7 +430,7 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 
 					}
 
-				$redirection = 'validation_verif.php?action=valide_facture';
+				$redirection = 'validation_verif.php?action=valide_facture&comId='.$object_id;
 				//$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
 				
 			} else {
@@ -443,6 +451,8 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 
 
 	case 'valide_facture':
+
+	$idComprobante = GETPOST('comId');
 
 		$now=dol_now();
 
@@ -672,7 +682,30 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 		{
 			$db->commit();
 			//$redirection = 'affIndex.php?menutpl=validation_ok&facid='.$id;	// Ajout de l'id de la facture, pour l'inclure dans un lien pointant directement vers celle-ci dans Dolibarr
+
+			//========================================================
+
+
+//    
+
+				$linkOperation = "INSERT INTO `dolibar`.`llx_element_element`
+				(`rowid`,`fk_source`,`sourcetype`,`fk_target`,`targettype`)
+				VALUES ( NULL,'".$idComprobante."','commande','".$id."','facture')"; 
+
+
+				$db->begin();
+
+				$db->query($linkOperation);
+
+				$db->commit(); // Valide
+
+			//==================================================================================0
+
+		
 			$redirection = 'validacion_ok.php?menutpl=validation_ok&facid='.$id;
+
+
+
 
 		}
 		else

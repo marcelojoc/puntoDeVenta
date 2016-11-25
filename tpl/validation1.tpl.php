@@ -157,8 +157,8 @@ $langs->load("bills");
 
 		</tr>
 
-        <form id="frmValidation" class="" method="post" action="validation_verif.php?action=valide_facture">
-        <input type="hidden" name="token" value="<?php echo $_SESSION['newtoken']; ?>" />
+        <!--<form id="frmValidation" class="" method="post" action="validation_verif.php?action=valide_facture">
+        <input type="hidden" name="token" value="<?php //echo $_SESSION['newtoken']; ?>" />
 
 
 
@@ -173,7 +173,7 @@ $langs->load("bills");
                 <input class="btn btn-success btn-block" type="submit" name="btnValider" value="Generar Comprobante" /><br>    
         </td>
         </tr>
-        </form>
+        </form>-->
         <tr>
             <td colspan="2">
                 
@@ -182,7 +182,7 @@ $langs->load("bills");
 
                                 <input type="hidden" name="hidenTotal" value="<?php echo ($obj_facturation->prixTotalTtc()); ?>" />
 
-                                <input class="btn btn-info btn-block" type="submit" name="btnValider" value="Generar Remito"/ ><br>
+                                <input class="btn btn-info btn-block btn-lg" type="submit" name="btnValider" value="Generar Remito"/><br>
 
                         
                         
