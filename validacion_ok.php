@@ -66,22 +66,22 @@ exit;
         <div class="panel panel-default">
         <div class="panel-heading text-center">Venta Terminada</div>
          <form  action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id= "formSelClient" />   
-<?php   
+        <?php   
 
-    // valido que lleguen los datos correctos si la factura esta bien 
+            // valido que lleguen los datos correctos si la factura esta bien 
 
-    if($page == 'validation_ok'  && isset( $fid )){
-?>
+            if($page == 'validation_ok'  && isset( $fid )){
+        ?>
 
-            <div class="panel-body">
-                
-                
-            <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?action=builddoc&facid=<?php echo $_GET['facid']; ?>" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Ver Factura</a></p>
-            <br>
-            <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?facid=<?php echo $_GET['facid']; ?>&action=presend&mode=init" target="_blank"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar por Email</a></p>
-            <br>
-            <p><a class="btn btn-info btn-block" href="#"  disabled="disabled"> <span class="glyphicon glyphicon-print" aria-hidden="true"></span> <?php echo $langs->trans("PrintTicket"); ?></a></p>
-            <br>
+        <div class="panel-body">
+            
+            
+        <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?action=builddoc&facid=<?php echo $_GET['facid']; ?>" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Ver Comprobante</a></p>
+        <br>
+        <p><a class="btn btn-info btn-block" href="<?php echo DOL_URL_ROOT ?>/compta/facture.php?facid=<?php echo $_GET['facid']; ?>&action=presend&mode=init" target="_blank"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Enviar Comprobante por Email</a></p>
+        <br>
+        
+        <br>
 
 
 <!--     onclick="Javascript: popupTicket(); return(false);"     -->
