@@ -55,7 +55,7 @@ $langs->load("bills");
 
         <tbody>
         <tr>
-            <td>Factura</td>
+            <td>Comprobante de Venta</td>
             <td> <?php echo $obj_facturation->numInvoice(); ?></td>
 
         </tr>

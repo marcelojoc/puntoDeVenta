@@ -297,7 +297,7 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 					$tab_liste = $_SESSION['poscart'];
 
 
-					$sql=  "INSERT INTO `dolibar`.`llx_commandedet`(`rowid`,`fk_commande`,`fk_parent_line`,
+					$sql=  "INSERT INTO `llx_commandedet`(`rowid`,`fk_commande`,`fk_parent_line`,
 					`fk_product`,`label`,`description`,`tva_tx`,`localtax1_tx`,`localtax1_type`,`localtax2_tx`,
 					`localtax2_type`,`qty`,`remise_percent`,`remise`,`fk_remise_except`,`price`,`subprice`,
 					`total_ht`,`total_tva`,`total_localtax1`,`total_localtax2`,`total_ttc`,`product_type`,
@@ -354,7 +354,7 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 						//========================================================
 
 
-						$updatePrice = "UPDATE `dolibar`.`llx_commande` SET `total_ht`='$totalPrice',`total_ttc`='$totalPrice' WHERE `rowid`='$object_id'"; 
+						$updatePrice = "UPDATE `llx_commande` SET `total_ht`='$totalPrice',`total_ttc`='$totalPrice' WHERE `rowid`='$object_id'"; 
 					
 						$db->begin();
 
@@ -688,7 +688,7 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 
 //    
 
-				$linkOperation = "INSERT INTO `dolibar`.`llx_element_element`
+				$linkOperation = "INSERT INTO `llx_element_element`
 				(`rowid`,`fk_source`,`sourcetype`,`fk_target`,`targettype`)
 				VALUES ( NULL,'".$idComprobante."','commande','".$id."','facture')"; 
 
