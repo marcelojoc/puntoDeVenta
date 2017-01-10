@@ -297,6 +297,11 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		pUnit.val(precio.toFixed(2));
 		hidden.val(precio.toFixed(2));
 
+
+
+
+
+
 	}
 
 	function cargatablaLocal(tabla){             // lee y re escribe tabla en local Storage para tabla 
@@ -310,6 +315,8 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 	// recibe el dato de cantidad  y hace el calculo
 	function calculos(el){
 
+
+		var pack= 24;
 		//consulto localStorage 
 		var tabla = JSON.parse(localStorage.tabla);
 		var e = parseInt(el);
@@ -337,9 +344,76 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		
 		});
 
+
+
+
+
+
+
+
+
 		calcularTotal();
 	}
 
+
+
+
+function getPack(cantidad, pack){
+
+	if(cantidad >= pack){
+
+		var tabla = JSON.parse(localStorage.tabla);
+
+
+		var entero = Math.floor(cantidad/pack);
+
+		var unidades = cantidad - (entero* pack)
+
+
+
+
+
+
+	}else{
+
+		return cantidad;
+
+	}
+
+	
+
+
+
+
+}
+
+
+
+
+
+// Esta funcion verifica si existe tabla de descuentos por pack
+
+function isPack(tabla){
+
+
+		$.each( tabla, function( key, value ) {
+		
+		//  verificar si el valor es el maximo, utiliza un -1 para simbolizar el maximo de Stock
+
+			if(value.max == '0'){
+				return true;
+
+			}else{
+
+				return false;
+			}
+		
+		});
+
+
+
+
+}
 
 
 	function calcularTotal(){
