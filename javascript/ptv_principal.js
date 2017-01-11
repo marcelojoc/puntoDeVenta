@@ -317,7 +317,35 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 
 
 		var pack= 24;
-		//consulto localStorage 
+
+		if(isPack()){
+
+
+
+			alert('prueba exitosa');
+
+
+
+
+
+
+		}else{
+
+				calculoSimple(el);
+				calcularTotal();
+
+		}
+		
+	}
+
+
+
+
+
+function calculoSimple(el){
+
+
+//consulto localStorage 
 		var tabla = JSON.parse(localStorage.tabla);
 		var e = parseInt(el);
 
@@ -347,17 +375,22 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 
 
 
+}
 
 
 
 
 
-		calcularTotal();
-	}
 
 
 
 
+
+
+
+
+
+// funcion encargada de devolver los packs  y unidades por separado
 function getPack(cantidad, pack){
 
 	if(cantidad >= pack){
@@ -370,12 +403,16 @@ function getPack(cantidad, pack){
 		var unidades = cantidad - (entero* pack)
 
 
-
+		return {'pack': entero,
+				'unidad': unidades
+				}
 
 
 
 	}else{
-
+		alt = {'pack': 0,
+				'unidad': cantidad
+				}
 		return cantidad;
 
 	}
@@ -393,25 +430,24 @@ function getPack(cantidad, pack){
 
 // Esta funcion verifica si existe tabla de descuentos por pack
 
-function isPack(tabla){
+function isPack(){
 
+		var retorno = false;
+		var tabla = JSON.parse(localStorage.tabla);
 
 		$.each( tabla, function( key, value ) {
 		
 		//  verificar si el valor es el maximo, utiliza un -1 para simbolizar el maximo de Stock
 
 			if(value.max == '0'){
-				return true;
+				retorno= true;
 
-			}else{
-
-				return false;
 			}
 		
 		});
 
 
-
+	return retorno;
 
 }
 
