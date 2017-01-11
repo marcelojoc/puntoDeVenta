@@ -243,7 +243,7 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 
 				success : function(json) {
 						
-						//console.log(json);
+						console.log(json);
 						cargatablaLocal(json.tabla_desc);
 						cargaValores(json.datos_prod);
 						$('#txtcantidad').val('');
@@ -321,8 +321,8 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		if(isPack()){
 
 
-
-			alert('prueba exitosa');
+			var cantidad = getPack(el, pack)
+			
 
 
 
@@ -345,7 +345,7 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 function calculoSimple(el){
 
 
-//consulto localStorage 
+	//consulto localStorage 
 		var tabla = JSON.parse(localStorage.tabla);
 		var e = parseInt(el);
 
@@ -373,8 +373,6 @@ function calculoSimple(el){
 		});
 
 
-
-
 }
 
 
@@ -396,30 +394,20 @@ function getPack(cantidad, pack){
 	if(cantidad >= pack){
 
 		var tabla = JSON.parse(localStorage.tabla);
-
-
 		var entero = Math.floor(cantidad/pack);
-
 		var unidades = cantidad - (entero* pack)
-
 
 		return {'pack': entero,
 				'unidad': unidades
 				}
 
-
-
 	}else{
 		alt = {'pack': 0,
 				'unidad': cantidad
 				}
-		return cantidad;
+		return alt;
 
 	}
-
-	
-
-
 
 
 }

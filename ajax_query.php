@@ -78,9 +78,9 @@ $respuesta=null;
 
 
 
-
+//  cambio de p.price  a  p.price_ttc
             $sql= '
-                SELECT p.rowid, p.ref, p.price, p.tva_tx, p.recuperableonly, 
+                SELECT p.rowid, p.ref, p.price_ttc, p.tva_tx, p.recuperableonly, 
                 ps.reel FROM llx_product AS p 
                 LEFT JOIN llx_product_stock AS ps 
                 ON p.rowid = ps.fk_product 
