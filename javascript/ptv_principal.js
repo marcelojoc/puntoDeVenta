@@ -323,8 +323,12 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 
 			var cantidad = getPack(el, pack)
 			
+			var totalU = valorUnidad (cantidad.unidad);
+			var totalP = valorPack (cantidad.pack);
 
 
+
+			$('#txtbase').val('$'+ (totalU + totalP));
 
 
 
@@ -337,6 +341,76 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 		}
 		
 	}
+
+
+
+
+
+	function valorPack (pack){    // esta funcion devuelve el valor de las unidades de a cuenro a la tabla escalnada
+
+		//consulto localStorage 
+		var tabla = JSON.parse(localStorage.tabla);
+		var p = parseInt(pack);
+		var valorPack = 0;
+		$.each( tabla, function( key, value ) {   // bucle condicional sobre tabla de descuentos
+		
+			if(value.max == 0){       // condicion para los packs
+				if (value.min == p){
+
+					valorPack= parseFloat(value.descuento);
+				}
+				
+
+			}
+		});    // cierro el each
+
+		// modificar  estoooooooooooooooooooooooooooooooooooooooooo
+
+				if (valorPack==0){
+
+				valorPack= 80;
+				}
+
+		return  (p * valorPack);
+
+
+	} // cierro la funcion
+
+
+
+
+	function valorUnidad (unidades){    // esta funcion devuelve el valor de las unidades de a cuenro a la tabla escalnada
+
+		//consulto localStorage 
+		var tabla = JSON.parse(localStorage.tabla);
+		var u = parseInt(unidades);
+		var valorUnidades = 0;
+		$.each( tabla, function( key, value ) {
+		
+		
+			if(value.max != 0){
+
+
+				if(value.max == '-1'){
+				value.max= 10000000000000;
+
+				}
+				if(u >= parseInt(value.min) && u <= parseInt(value.max)){
+
+						if(value.descuento !=0){
+
+							valorUnidades=  (u * value.descuento );
+						}
+				}
+
+			}
+
+		});    // cierro el each
+
+		return parseFloat(valorUnidades);
+
+
+	} // cierro la funcion
 
 
 

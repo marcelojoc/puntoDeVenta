@@ -160,7 +160,7 @@ $respuesta=null;
                                                 
                                                 $datos_producto= array(
                                                                         'prod_id'=> $obj->rowid,
-                                                                        'prod_precio'=>$obj->price,
+                                                                        'prod_precio'=>$obj->price_ttc,
                                                                         'stock_product'=> $obj->reel
                                                 );
 
