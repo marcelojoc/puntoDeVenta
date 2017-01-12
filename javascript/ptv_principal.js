@@ -371,7 +371,7 @@ Cuando es precionado el boton añadir , debe hacer el descuento en el localStora
 				valorPack= 80;
 				}
 
-		return  (p * valorPack);
+		return  (p * valorPack.toFixed(2));
 
 
 	} // cierro la funcion

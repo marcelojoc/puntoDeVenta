@@ -158,7 +158,7 @@ if ( !$_SESSION['uid'] )
                         </div>
                         
                     </td>
-                    <td><input id="txtbase" name="txtbase" type="text"  class="form-control input-md" value="$0.00" disabled></td>
+                    <td><input id="txtbase" name="txtbase" type="text"  class="form-control input-md" value="$0.00" ></td>
                     <td>        <select class="form-control input-md">
                                 <option value="1">0</option>
 
@@ -414,7 +414,7 @@ for ($i=0;$i < $tab_size;$i++)
 echo('<input id ="campototal" type="hidden" value="'.$total_valor.'">');
 echo ('<p>Total :  $ '.$total_valor. '</p>');
 
-
+var_dump($tab);
 ?>
 
 

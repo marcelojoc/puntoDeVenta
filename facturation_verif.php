@@ -171,6 +171,10 @@ switch ( $_GET['action'] )
 
 	case 'ajout_article':	// We have clicked on button "Add product"
 
+// var_dump($_POST);
+
+// 	exit;
+
 		if (! empty($obj_facturation->id))	// A product was previously selected and stored in session, so we can add it
 		{
 		    dol_syslog("facturation_verif save vat ".$_POST['selTva']);
