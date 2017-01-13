@@ -80,3 +80,46 @@ function loadComponent( filtro){
 
     
 }
+
+
+// recibo el parametro a buscar y lo paso por el filtro
+// esta funcion crea a partir de todos los clientes una lista temporal acorde a los criterios de busqueda
+function filtrar (filtro){
+
+var lista= [];
+var buscar= filtro.toUpperCase();
+var tmpValor= "";
+
+		$.each(todo, function(id,value){
+/**
+ * el valor debo pasarlo a String 
+ * Luego a mayuscula
+ * busco en el arreglo el criterios
+ * si se cumple lo guardo al objeto en la lista
+ * si no se cumple borro la variable temporal String y paso al siguiente registro
+ * 
+ */
+
+			tmpValor=JSON.stringify(value);
+			tmpValor.toUpperCase();
+			var pp = alt.search("M");
+
+				
+
+
+		});
+
+
+
+}
+
+
+function cargarComponent(listaTmp){
+
+	var select =$('#selCliente');
+	select.html('');
+		$.each(listaTmp, function(id,value){
+				select.append('<option value="'+value.id_cliente+'">'+value.cod_cliente + ' - '+value.nombre+'</option>');
+		});
+	
+}

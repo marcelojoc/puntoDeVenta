@@ -280,11 +280,12 @@ $respuesta=null;
                         $sql="
                                 SELECT  llx_societe.code_client, 
                                 llx_societe.rowid , 
-                                llx_societe.nom
+                                llx_societe.nom, llx_societe.address
 
                                 FROM llx_societe
 
                                 WHERE code_client != 'NULL'  
+                                ORDER BY code_client ASC
                         ";
 
                 }else{
@@ -293,11 +294,13 @@ $respuesta=null;
                         
                         SELECT  llx_societe.code_client, 
                         llx_societe.rowid , 
-                        llx_societe.nom
+                        llx_societe.nom, llx_societe.address
 
                         FROM    llx_societe, llx_societe_extrafields
                         WHERE   llx_societe_extrafields.vendedor = $codVendedor
-                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object";
+                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object
+                        ORDER BY code_client ASC
+                        ";
                         // AND     code_client LIKE '".$dato."%'";
                 }
 
@@ -319,7 +322,8 @@ $respuesta=null;
                                                 $respuesta[]= array(
                                                                         'id_cliente'=> $obj->rowid,
                                                                         'cod_cliente'=>$obj->code_client,
-                                                                        'nombre'=> $obj->nom
+                                                                        'nombre'=> $obj->nom,
+                                                                        'direccion'=> $obj->address,
                                                 );
                                                 //print $obj->name_alias;
                                         }

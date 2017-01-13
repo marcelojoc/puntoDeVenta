@@ -79,7 +79,7 @@ if ( !$_SESSION['uid'] )
 <body>
 
 
-<div class="container">    
+<div class="container-fluid">    
 
 
 
@@ -119,6 +119,25 @@ if ( !$_SESSION['uid'] )
 
 							<div style="margin-top:10px" class="form-group">
 								<!-- Button -->
+
+<div class="col-sm-12">
+
+    <div class="panel panel-default">
+        
+            <div class="panel-body">
+
+
+                        <div class="text-left">
+	                       
+	                        <p><i class="glyphicon glyphicon-user"></i> Numero Cliente: 0039 333 12 68 347</p>
+	                        <p><i class="glyphicon glyphicon-user"></i> Nombre: Andia_Agency</p>
+	                        <p><i class="glyphicon glyphicon-user"></i> Direccion: Via Principe Amedeo 9, 10100, Torino, TO, Italy</p>
+                        </div>
+
+            </div>
+    </div>
+</div>
+
 
 								<div class="col-sm-12 controls">
 									
