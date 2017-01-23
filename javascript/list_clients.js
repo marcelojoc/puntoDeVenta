@@ -21,16 +21,39 @@ localStorage.removeItem('tmpStock');
 
 });
 
-function asignarCodigo(){
+function asignarCodigo(valor){
 
-$('#hiddenCode').val( $('#selCliente').val())
+ $('#hiddenCode').val( $('#selCliente').val())
 
-var codClient= $('#selCliente option:selected').text();
+ var codClient= $('#selCliente option:selected').text();
 
-$('#txtcodigo').val( codClient.replace(/\D/g,''));
+// $('#txtcodigo').val( codClient.replace(/\D/g,''));
 
+console.log(codClient);
+
+rellenarPanel (codClient.split('-'));
 
 };
+
+
+
+function rellenarPanel(datos){    // funcion encargada de lipiar el panel y re escribir los datos
+
+limpiarPanel();
+$('#datosPanel').html('<p><i class="glyphicon glyphicon-user"></i> codigo: ' + datos[0] +' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1] +'</p>   <p><i class="glyphicon glyphicon-user"></i> Direccion: '+ datos[2] +'</p>');
+
+}
+
+
+function limpiarPanel(){
+
+		 $('#datosPanel').html('<p><i class="glyphicon glyphicon-user"></i> codigo: </p> <p><i class="glyphicon glyphicon-user"></i> Nombre: </p> <p><i class="glyphicon glyphicon-user"></i> Direccion: </p>');                       
+	                                                
+}
+
+
+
+
 
 function get_MyClient(param= null){
     
@@ -102,14 +125,20 @@ var tmpValor= "";
 
 			tmpValor=JSON.stringify(value);
 			tmpValor.toUpperCase();
-			var pp = alt.search("M");
+			var pp = tmpValor.search(buscar);
 
-				
+				if (pp != -1){
+
+					// tengo que volver a generar el objeto
+					// y guardarlo en el array  lista[]
+					lista.push(JSON.parse(tmpValor));
+
+				}
 
 
 		});
-
-
+limpiarPanel();     // limpio el panel de abajo
+cargarComponent(lista) // cargo el select con los datos nuevos
 
 }
 
@@ -119,7 +148,7 @@ function cargarComponent(listaTmp){
 	var select =$('#selCliente');
 	select.html('');
 		$.each(listaTmp, function(id,value){
-				select.append('<option value="'+value.id_cliente+'">'+value.cod_cliente + ' - '+value.nombre+'</option>');
+				select.append('<option value="'+value.id_cliente+'">'+value.cod_cliente + ' - '+value.nombre+ ' - '+value.direccion+'</option>');
 		});
 	
 }

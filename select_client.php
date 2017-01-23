@@ -106,7 +106,7 @@ if ( !$_SESSION['uid'] )
 
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
-                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="loadComponent(this.value)" class="form-control" placeholder="Codigo Cliente" required/>  
+                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="filtrar(this.value)" class="form-control" placeholder="Codigo Cliente" required/>  
 
               </div>
 							
@@ -127,11 +127,11 @@ if ( !$_SESSION['uid'] )
             <div class="panel-body">
 
 
-                        <div class="text-left">
+                        <div class="text-left" id="datosPanel">
 	                       
-	                        <p><i class="glyphicon glyphicon-user"></i> Numero Cliente: 0039 333 12 68 347</p>
-	                        <p><i class="glyphicon glyphicon-user"></i> Nombre: Andia_Agency</p>
-	                        <p><i class="glyphicon glyphicon-user"></i> Direccion: Via Principe Amedeo 9, 10100, Torino, TO, Italy</p>
+	                        <p><i class="glyphicon glyphicon-user"></i> codigo: </p>
+	                        <p><i class="glyphicon glyphicon-user"></i> Nombre: </p>
+	                        <p><i class="glyphicon glyphicon-user"></i> Direccion: </p>
                         </div>
 
             </div>
