@@ -107,7 +107,7 @@ if ( !$_SESSION['uid'] )
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
                 
-                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="filtrar(this.value)" class="form-control" placeholder="Buscar" required/>  
+                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="filtrar(this.value)" class="form-control" placeholder="Buscar" />  
 
               </div>
 
