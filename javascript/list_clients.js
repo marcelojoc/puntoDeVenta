@@ -27,9 +27,6 @@ function asignarCodigo(valor){
 
  var codClient= $('#selCliente option:selected').text();
 
-// $('#txtcodigo').val( codClient.replace(/\D/g,''));
-
-console.log(codClient);
 
 rellenarPanel (codClient.split('-'));
 

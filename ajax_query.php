@@ -223,9 +223,6 @@ $respuesta=null;
 
 
 
-              
-
-
 
         case 'get_products':   // busca productos del almacen del vendedor y su Stock  y lo envia para cargar el select html
 
@@ -234,7 +231,7 @@ $respuesta=null;
                 LEFT JOIN llx_product_stock AS ps ON p.rowid = ps.fk_product 
                 AND ps.fk_entrepot = '. $_SESSION['CASHDESK_ID_WAREHOUSE'] .' WHERE p.entity IN (1) 
                 AND p.tosell = 1 
-                AND p.fk_product_type = 0  ORDER BY label';
+                AND p.fk_product_type = 0  ORDER BY ref';
 
                 $resql=$db->query($sql);
 
