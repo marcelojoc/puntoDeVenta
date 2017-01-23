@@ -106,9 +106,12 @@ if ( !$_SESSION['uid'] )
 
               <div style="margin-bottom: 25px" class="input-group">
                 <input type="hidden" id="hiddenCode"  name="hiddenCode" value="" >
-                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="filtrar(this.value)" class="form-control" placeholder="Codigo Cliente" required/>  
+                
+                <input name="txtcodigo" type="text" id="txtcodigo" onkeyup="filtrar(this.value)" class="form-control" placeholder="Buscar" required/>  
 
               </div>
+
+
 							
               <div style="margin-bottom: 25px" class="input-group">
                 <select  id="selCliente" name"selCliente" onclick ="asignarCodigo();" onchange ="asignarCodigo()" class="form-control" required>
@@ -129,9 +132,9 @@ if ( !$_SESSION['uid'] )
 
                         <div class="text-left" id="datosPanel">
 	                       
-	                        <p><i class="glyphicon glyphicon-user"></i> codigo: </p>
+	                        <p><i class="glyphicon glyphicon-tags"></i> codigo: </p>
 	                        <p><i class="glyphicon glyphicon-user"></i> Nombre: </p>
-	                        <p><i class="glyphicon glyphicon-user"></i> Direccion: </p>
+	                        <p><i class="glyphicon glyphicon-home"></i> Direccion: </p>
                         </div>
 
             </div>

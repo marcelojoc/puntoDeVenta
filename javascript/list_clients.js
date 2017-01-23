@@ -37,14 +37,14 @@ rellenarPanel (codClient.split('-'));
 function rellenarPanel(datos){    // funcion encargada de lipiar el panel y re escribir los datos
 
 limpiarPanel();
-$('#datosPanel').html('<p><i class="glyphicon glyphicon-user"></i> codigo: ' + datos[0] +' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1] +'</p>   <p><i class="glyphicon glyphicon-user"></i> Direccion: '+ datos[2] +'</p>');
+$('#datosPanel').html('<p><i class="glyphicon glyphicon-tags"></i> codigo: ' + datos[0] +' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1] +'</p>   <p><i class="glyphicon glyphicon-home"></i> Direccion: '+ datos[2] +'</p>');
 
 }
 
 
 function limpiarPanel(){
 
-		 $('#datosPanel').html('<p><i class="glyphicon glyphicon-user"></i> codigo: </p> <p><i class="glyphicon glyphicon-user"></i> Nombre: </p> <p><i class="glyphicon glyphicon-user"></i> Direccion: </p>');                       
+		 $('#datosPanel').html('<p><i class="glyphicon glyphicon-tags"></i> codigo: </p> <p><i class="glyphicon glyphicon-user"></i> Nombre: </p> <p><i class="glyphicon glyphicon-home"></i> Direccion: </p>');                       
 	                                                
 }
 
@@ -77,7 +77,7 @@ function get_MyClient(param= null){
 
 			// código a ejecutar sin importar si la petición falló o no
 			complete : function(xhr, status) {
-				loadComponent("");
+				cargarComponent(todo);
 			}
 
 	})
