@@ -123,23 +123,23 @@ if ( !$_SESSION['uid'] )
 							<div style="margin-top:10px" class="form-group">
 								<!-- Button -->
 
-<div class="col-sm-12">
+                  <div class="col-sm-12">
 
-    <div class="panel panel-default">
-        
-            <div class="panel-body">
+                      <div class="panel panel-default">
+                          
+                              <div class="panel-body">
 
 
-                        <div class="text-left" id="datosPanel">
-	                       
-	                        <p><i class="glyphicon glyphicon-tags"></i> codigo: </p>
-	                        <p><i class="glyphicon glyphicon-user"></i> Nombre: </p>
-	                        <p><i class="glyphicon glyphicon-home"></i> Direccion: </p>
-                        </div>
+                                          <div class="text-left" id="datosPanel">
+                                          
+                                            <p><i class="glyphicon glyphicon-tags"></i> codigo: </p>
+                                            <p><i class="glyphicon glyphicon-user"></i> Nombre: </p>
+                                            <p><i class="glyphicon glyphicon-home"></i> Direccion: </p>
+                                          </div>
 
-            </div>
-    </div>
-</div>
+                              </div>
+                      </div>
+                  </div>
 
 
 								<div class="col-sm-12 controls">
@@ -157,6 +157,18 @@ if ( !$_SESSION['uid'] )
 
 					</div>                     
 				</div>  
+
+
+
+
+          <div class="col-sm-12 controls text-center">
+
+
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Resumen de ventas
+</button>
+          </div>
+
 	</div>
 
 </div> 
