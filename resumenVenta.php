@@ -1,6 +1,8 @@
 <?php
 include '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
+require_once DOL_DOCUMENT_ROOT.'/product/stock/class/entrepot.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 
 $langs->load("admin");
 $langs->load("cashdesk");
@@ -11,6 +13,8 @@ if ( !$_SESSION['uid'] )
 	header('Location: '.DOL_URL_ROOT.'/cashdesk/login.php');
 	exit;
 }
+
+var_dump($_SESSION);
 
 ?>
 
@@ -38,7 +42,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-    <div class="container"><h3>Nombre del Vendedor</h3></div>
+                    <div class="container"><h3> Vendedor <?php echo($_SESSION['lastname']) ?></h3></div>
 
 
 
@@ -55,6 +59,91 @@ if ( !$_SESSION['uid'] )
                                 
                                 <!--este es el bloque de tab1-->
 
+
+
+
+
+<?php
+
+
+
+$form=new Form($db);
+$productstatic=new Product($db);
+
+    $id=$_SESSION['CASHDESK_ID_WAREHOUSE'];
+	if ($id)
+	{
+		$object = new Entrepot($db);
+		$result = $object->fetch($id);
+		if ($result < 0)
+		{
+			dol_print_error($db);
+		}
+
+		/*
+		 * Affichage fiche
+		 */
+		if ($action <> 'edit' && $action <> 're-edit')
+        
+		{
+
+
+			print '<table class="border" width="100%">';
+
+        	$calcproductsunique=$object->nb_different_products();
+			$calcproducts=$object->nb_products();
+
+	        // Total nb of different products
+	        print '<tr><td>'.$langs->trans("NumberOfDifferentProducts").'</td><td colspan="3">';
+	        print empty($calcproductsunique['nb'])?'0':$calcproductsunique['nb'];
+	        print "</td></tr>";
+
+			// Nb of products
+			print '<tr><td>'.$langs->trans("NumberOfProducts").'</td><td colspan="3">';
+			print empty($calcproducts['nb'])?'0':$calcproducts['nb'];
+			print "</td></tr>";
+
+
+			// Last movement
+			$sql = "SELECT max(m.datem) as datem";
+			$sql .= " FROM ".MAIN_DB_PREFIX."stock_mouvement as m";
+			$sql .= " WHERE m.fk_entrepot = '".$object->id."'";
+			$resqlbis = $db->query($sql);
+			if ($resqlbis)
+			{
+				$obj = $db->fetch_object($resqlbis);
+				$lastmovementdate=$db->jdate($obj->datem);
+			}
+			else
+			{
+				dol_print_error($db);
+			}
+			print '<tr><td>'.$langs->trans("LastMovement").'</td><td colspan="3">';
+			if ($lastmovementdate)
+			{
+			    print dol_print_date($lastmovementdate,'dayhour').' ';
+			}
+			else
+			{
+			     print $langs->trans("None");
+			}
+			print "</td></tr>";
+
+			print "</table>";
+
+			print '</div>';
+
+
+
+
+?>
+
+
+
+
+
+
+
                                 <div class="container">
                                 <h2>Stock Actual</h2>
                 
@@ -62,42 +151,185 @@ if ( !$_SESSION['uid'] )
                                         <thead>
                                             <tr>
                                             <th>Producto</th>
-                                            <th>cantidad</th>
-
+                                            <th>Etiqueta</th>
+                                            <th>Unidades</th>
                                             </tr>
                                         </thead>
                                             <tbody>
+
+
+
                                             <tr>
                                                 <td>John</td>
                                                 <td>Doe</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mary</td>
-                                                <td>Moe</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mary</td>
-                                                <td>Moe</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mary</td>
-                                                <td>Moe</td>
                                             </tr>
 
                                             </tbody>
                                     </table>
 
-
                                 <hr>    
 
-
                                 <h4>Cantidad Comprobantes   - 26</h4>   
-
-
                                 <h4>Monto Total   <strong>$3.568,50</strong></h4>
-
-
                                 </div>
+
+
+
+<?php
+
+
+
+
+			/* ************************************************************************** */
+			/*                                                                            */
+			/* Affichage de la liste des produits de l'entrepot                           */
+			/*                                                                            */
+			/* ************************************************************************** */
+			print '<br> <br><br><br><br><br>';
+
+			print '<table class="noborder" width="100%">';
+			print "<tr class=\"liste_titre\">";
+			print_liste_field_titre($langs->trans("Product"),"", "p.ref","&amp;id=".$id,"","",$sortfield,$sortorder);
+			print_liste_field_titre($langs->trans("Label"),"", "p.label","&amp;id=".$id,"","",$sortfield,$sortorder);
+            print_liste_field_titre($langs->trans("Units"),"", "ps.reel","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
+            print_liste_field_titre($langs->trans("AverageUnitPricePMPShort"),"", "ps.pmp","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
+			print_liste_field_titre($langs->trans("EstimatedStockValueShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
+            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("SellPriceMin"),"", "p.price","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
+            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("EstimatedStockValueSellShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
+			if ($user->rights->stock->mouvement->creer) print_liste_field_titre('');
+			if ($user->rights->stock->creer)            print_liste_field_titre('');
+			print "</tr>\n";
+
+			$totalunit=0;
+			$totalvalue=$totalvaluesell=0;
+
+			$sql = "SELECT p.rowid as rowid, p.ref, p.label as produit, p.fk_product_type as type, p.pmp as ppmp, p.price, p.price_ttc, p.entity,";
+			$sql.= " ps.pmp, ps.reel as value";
+			$sql.= " FROM ".MAIN_DB_PREFIX."product_stock as ps, ".MAIN_DB_PREFIX."product as p";
+			$sql.= " WHERE ps.fk_product = p.rowid";
+			$sql.= " AND ps.reel <> 0";	// We do not show if stock is 0 (no product in this warehouse)
+			$sql.= " AND ps.fk_entrepot = ".$object->id;
+			$sql.= $db->order($sortfield,$sortorder);
+
+
+			dol_syslog('List products', LOG_DEBUG);
+			$resql = $db->query($sql);
+			if ($resql)
+			{
+				$num = $db->num_rows($resql);
+				$i = 0;
+				$var=True;
+				while ($i < $num)
+				{
+					$objp = $db->fetch_object($resql);
+
+					// Multilangs
+					if (! empty($conf->global->MAIN_MULTILANGS)) // si l'option est active
+					{
+						$sql = "SELECT label";
+						$sql.= " FROM ".MAIN_DB_PREFIX."product_lang";
+						$sql.= " WHERE fk_product=".$objp->rowid;
+						$sql.= " AND lang='". $langs->getDefaultLang() ."'";
+						$sql.= " LIMIT 1";
+
+						$result = $db->query($sql);
+						if ($result)
+						{
+							$objtp = $db->fetch_object($result);
+							if ($objtp->label != '') $objp->produit = $objtp->label;
+						}
+					}
+
+					$var=!$var;
+					//print '<td>'.dol_print_date($objp->datem).'</td>';
+					print "<tr ".$bc[$var].">";
+					print "<td>";
+					$productstatic->id=$objp->rowid;
+                    $productstatic->ref = $objp->ref;
+                    $productstatic->label = $objp->produit;
+					$productstatic->type=$objp->type;
+					$productstatic->entity=$objp->entity;
+					print $productstatic->getNomUrl(1,'stock',16);
+					print '</td>';
+					print '<td>'.$objp->produit.'</td>';
+
+					print '<td align="right">'.$objp->value.'</td>';
+					$totalunit+=$objp->value;
+
+                    // Price buy PMP
+					print '<td align="right">'.price(price2num($objp->ppmp,'MU')).'</td>';
+                    // Total PMP
+					print '<td align="right">'.price(price2num($objp->ppmp*$objp->value,'MT')).'</td>';
+					$totalvalue+=price2num($objp->ppmp*$objp->value,'MT');
+
+                    // Price sell min
+                    if (empty($conf->global->PRODUIT_MULTIPRICES))
+                    {
+                        $pricemin=$objp->price;
+                        print '<td align="right">';
+                        print price(price2num($pricemin,'MU'),1);
+                        print '</td>';
+                        // Total sell min
+                        print '<td align="right">';
+                        print price(price2num($pricemin*$objp->value,'MT'),1);
+                        print '</td>';
+                    }
+                    $totalvaluesell+=price2num($pricemin*$objp->value,'MT');
+
+
+					print "</tr>";
+					$i++;
+				}
+				$db->free($resql);
+
+				print '<tr class="liste_total"><td class="liste_total" colspan="2">'.$langs->trans("Total").'</td>';
+				print '<td class="liste_total" align="right">'.$totalunit.'</td>';
+				print '<td class="liste_total">&nbsp;</td>';
+                print '<td class="liste_total" align="right">'.price(price2num($totalvalue,'MT')).'</td>';
+                if (empty($conf->global->PRODUIT_MULTIPRICES))
+                {
+                    print '<td class="liste_total">&nbsp;</td>';
+                    print '<td class="liste_total" align="right">'.price(price2num($totalvaluesell,'MT')).'</td>';
+                }
+                print '<td class="liste_total">&nbsp;</td>';
+				print '<td class="liste_total">&nbsp;</td>';
+				print '</tr>';
+
+			}
+			else
+			{
+				dol_print_error($db);
+			}
+			print "</table>\n";
+		}
+
+
+
+		
+	}
+
+
+
+$db->close();
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                                 <!--fin de bloque tab1-->
