@@ -14,7 +14,6 @@ if ( !$_SESSION['uid'] )
 	exit;
 }
 
-var_dump($_SESSION);
 
 ?>
 
@@ -60,8 +59,7 @@ var_dump($_SESSION);
                                 <!--este es el bloque de tab1-->
 
 
-
-
+<br>
 
 <?php
 
@@ -84,24 +82,9 @@ $productstatic=new Product($db);
 		 * Affichage fiche
 		 */
 		if ($action <> 'edit' && $action <> 're-edit')
-        
+
 		{
 
-
-			print '<table class="border" width="100%">';
-
-        	$calcproductsunique=$object->nb_different_products();
-			$calcproducts=$object->nb_products();
-
-	        // Total nb of different products
-	        print '<tr><td>'.$langs->trans("NumberOfDifferentProducts").'</td><td colspan="3">';
-	        print empty($calcproductsunique['nb'])?'0':$calcproductsunique['nb'];
-	        print "</td></tr>";
-
-			// Nb of products
-			print '<tr><td>'.$langs->trans("NumberOfProducts").'</td><td colspan="3">';
-			print empty($calcproducts['nb'])?'0':$calcproducts['nb'];
-			print "</td></tr>";
 
 
 			// Last movement
@@ -118,20 +101,18 @@ $productstatic=new Product($db);
 			{
 				dol_print_error($db);
 			}
-			print '<tr><td>'.$langs->trans("LastMovement").'</td><td colspan="3">';
+
 			if ($lastmovementdate)
 			{
-			    print dol_print_date($lastmovementdate,'dayhour').' ';
+			   print'<h5>Ultimo movimiento de Stock <strong>'.dol_print_date($lastmovementdate,'dayhour').'</strong></h5>';
 			}
 			else
 			{
 			     print $langs->trans("None");
 			}
-			print "</td></tr>";
 
-			print "</table>";
 
-			print '</div>';
+			
 
 
 
@@ -147,58 +128,19 @@ $productstatic=new Product($db);
                                 <div class="container">
                                 <h2>Stock Actual</h2>
                 
-                                    <table class="table table-striped table-responsive table-bordered">
+                                    <table class="table table-striped table-responsive table-bordered ">
                                         <thead>
                                             <tr>
+                                            <th>ref</th>
                                             <th>Producto</th>
-                                            <th>Etiqueta</th>
                                             <th>Unidades</th>
                                             </tr>
                                         </thead>
                                             <tbody>
 
 
-
-                                            <tr>
-                                                <td>John</td>
-                                                <td>Doe</td>
-                                            </tr>
-
-                                            </tbody>
-                                    </table>
-
-                                <hr>    
-
-                                <h4>Cantidad Comprobantes   - 26</h4>   
-                                <h4>Monto Total   <strong>$3.568,50</strong></h4>
-                                </div>
-
-
-
 <?php
 
-
-
-
-			/* ************************************************************************** */
-			/*                                                                            */
-			/* Affichage de la liste des produits de l'entrepot                           */
-			/*                                                                            */
-			/* ************************************************************************** */
-			print '<br> <br><br><br><br><br>';
-
-			print '<table class="noborder" width="100%">';
-			print "<tr class=\"liste_titre\">";
-			print_liste_field_titre($langs->trans("Product"),"", "p.ref","&amp;id=".$id,"","",$sortfield,$sortorder);
-			print_liste_field_titre($langs->trans("Label"),"", "p.label","&amp;id=".$id,"","",$sortfield,$sortorder);
-            print_liste_field_titre($langs->trans("Units"),"", "ps.reel","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            print_liste_field_titre($langs->trans("AverageUnitPricePMPShort"),"", "ps.pmp","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-			print_liste_field_titre($langs->trans("EstimatedStockValueShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("SellPriceMin"),"", "p.price","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("EstimatedStockValueSellShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-			if ($user->rights->stock->mouvement->creer) print_liste_field_titre('');
-			if ($user->rights->stock->creer)            print_liste_field_titre('');
-			print "</tr>\n";
 
 			$totalunit=0;
 			$totalvalue=$totalvaluesell=0;
@@ -241,58 +183,38 @@ $productstatic=new Product($db);
 					}
 
 					$var=!$var;
-					//print '<td>'.dol_print_date($objp->datem).'</td>';
-					print "<tr ".$bc[$var].">";
-					print "<td>";
+
+
+
+
 					$productstatic->id=$objp->rowid;
                     $productstatic->ref = $objp->ref;
                     $productstatic->label = $objp->produit;
 					$productstatic->type=$objp->type;
 					$productstatic->entity=$objp->entity;
-					print $productstatic->getNomUrl(1,'stock',16);
-					print '</td>';
-					print '<td>'.$objp->produit.'</td>';
 
-					print '<td align="right">'.$objp->value.'</td>';
+
+
+print '
+                                            <tr ><td>'.$productstatic->ref.'</td>
+                                                <td>'.$productstatic->label.'</td>
+                                                <td class="text-center">'.$objp->value.'</td>
+
+                                            </tr>
+';
+					
 					$totalunit+=$objp->value;
 
-                    // Price buy PMP
-					print '<td align="right">'.price(price2num($objp->ppmp,'MU')).'</td>';
-                    // Total PMP
-					print '<td align="right">'.price(price2num($objp->ppmp*$objp->value,'MT')).'</td>';
-					$totalvalue+=price2num($objp->ppmp*$objp->value,'MT');
-
-                    // Price sell min
-                    if (empty($conf->global->PRODUIT_MULTIPRICES))
-                    {
-                        $pricemin=$objp->price;
-                        print '<td align="right">';
-                        print price(price2num($pricemin,'MU'),1);
-                        print '</td>';
-                        // Total sell min
-                        print '<td align="right">';
-                        print price(price2num($pricemin*$objp->value,'MT'),1);
-                        print '</td>';
-                    }
-                    $totalvaluesell+=price2num($pricemin*$objp->value,'MT');
-
-
-					print "</tr>";
 					$i++;
 				}
+
+
 				$db->free($resql);
 
-				print '<tr class="liste_total"><td class="liste_total" colspan="2">'.$langs->trans("Total").'</td>';
-				print '<td class="liste_total" align="right">'.$totalunit.'</td>';
-				print '<td class="liste_total">&nbsp;</td>';
-                print '<td class="liste_total" align="right">'.price(price2num($totalvalue,'MT')).'</td>';
-                if (empty($conf->global->PRODUIT_MULTIPRICES))
-                {
-                    print '<td class="liste_total">&nbsp;</td>';
-                    print '<td class="liste_total" align="right">'.price(price2num($totalvaluesell,'MT')).'</td>';
-                }
-                print '<td class="liste_total">&nbsp;</td>';
-				print '<td class="liste_total">&nbsp;</td>';
+				print '<tr class="liste_total"><td colspan="2">Total Unidades</td>';
+				print '<td class="text-center">'.$totalunit.'</td>';
+
+
 				print '</tr>';
 
 			}
@@ -300,7 +222,7 @@ $productstatic=new Product($db);
 			{
 				dol_print_error($db);
 			}
-			print "</table>\n";
+			
 		}
 
 
@@ -313,37 +235,31 @@ $productstatic=new Product($db);
 $db->close();
 
 ?>
+                                            <!--aqui termina la tabla-->
+                                            </tbody>
+                                    </table>
+
+                                <hr>    
+
+                                <h4>Cantidad Comprobantes   - 26</h4>   
+                                <h4>Monto Total   <strong>$3.568,50</strong></h4>
+                                </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                </div>
 
                                 <!--fin de bloque tab1-->
 
 
 
-                                </div>
+                               
                             <div id="menu1" class="tab-pane fade">
 
 
                             <!--  inicio del bloque de tab 2-->
 
                                 <div class="container">
-                                <h2>Stock Actual</h2>
+                                <h2>Comprobantes</h2>
                 
                                     <table class="table table-striped table-responsive table-bordered text-center">
                                         <thead>
@@ -461,9 +377,6 @@ $db->close();
 
                             <!--fin de bloque tab 2-->
 
-
-                            <h3>Aqio van los comprobantes</h3>
-                            <p>Some content in menu 1.</p>
                             </div>
 
                         </div>
