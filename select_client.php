@@ -164,9 +164,9 @@ if ( !$_SESSION['uid'] )
           <div class="col-sm-12 controls text-center">
 
 
-<button type="button" class="btn btn-default btn-lg">
+<a class="btn btn-default btn-lg" href="resumenVenta.php">
   <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Resumen de ventas
-</button>
+</a>
           </div>
 
 	</div>

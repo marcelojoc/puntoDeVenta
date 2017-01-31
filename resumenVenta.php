@@ -58,11 +58,9 @@ if ( !$_SESSION['uid'] )
                                 
                                 <!--este es el bloque de tab1-->
 
-
 <br>
 
 <?php
-
 
 
 $form=new Form($db);
@@ -112,17 +110,8 @@ $productstatic=new Product($db);
 			}
 
 
-			
-
-
-
 
 ?>
-
-
-
-
-
 
 
                                 <div class="container">
@@ -222,10 +211,25 @@ print '
 			{
 				dol_print_error($db);
 			}
+
+
+            $hoy=date("Y-m-d");
+            $sqlTotal = "SELECT SUM(amount) AS total FROM llx_bank  WHERE llx_bank.fk_account = ". $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH']."  AND llx_bank.datev BETWEEN '".$hoy."' AND '".$hoy."' LIMIT 1";
+			$restotal = $db->query($sqlTotal);
+            $num = $db->num_rows($restotal);
+             // si devuelve producto  entro al proceso
+             if ($num){
+
+                        $obj = $db->fetch_object($restotal);
+                        if ($obj)
+                        {
+                            
+                            $total= round($obj->total,2);
+
+                        }
+             }
 			
 		}
-
-
 
 		
 	}
@@ -236,13 +240,12 @@ $db->close();
 
 ?>
                                             <!--aqui termina la tabla-->
-                                            </tbody>
+                                      </tbody>
                                     </table>
 
                                 <hr>    
 
-                                <h4>Cantidad Comprobantes   - 26</h4>   
-                                <h4>Monto Total   <strong>$3.568,50</strong></h4>
+                                <h4>Monto Total   <strong> <?php echo($total); ?> </strong></h4>
                                 </div>
 
 
@@ -280,96 +283,69 @@ $db->close();
 
 
                                             </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
 
 
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>                                            
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
-
-
-                                            </tr>                                                                                        
+                                                                                        
                                             </tbody>
                                     </table>
+
+
+
+<!--codigo de tabla         -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!--codigo de tabla         -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 </div>
 
 
@@ -393,6 +369,17 @@ $db->close();
                 </div>
 
 <hr>
+
+
+
+
+
+
+<?php
+
+
+
+?>
 
 
 
