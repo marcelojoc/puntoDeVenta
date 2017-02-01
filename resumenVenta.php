@@ -41,7 +41,28 @@ if ( !$_SESSION['uid'] )
 
 
 
-                    <div class="container"><h3> Vendedor <?php echo($_SESSION['lastname']) ?></h3></div>
+                    <div class="container ">
+                        
+                        
+                        <div class="col-xs-10"> 
+
+                            <h3> Vendedor <?php echo($_SESSION['lastname']) ?></h3>
+
+                        </div>
+                         <div class="col-xs-2 text-right"> 
+                            <br>
+                            <a id="singlebutton" name="singlebutton" class="btn btn-default" href="select_client.php">Volver</a>
+
+                        </div>                       
+
+                    
+                    
+                    
+                        
+
+                    
+                    
+                    </div>
 
 
 
@@ -236,7 +257,7 @@ print '
 
 
 
-$db->close();
+
 
 ?>
                                             <!--aqui termina la tabla-->
@@ -275,14 +296,56 @@ $db->close();
                                             </tr>
                                         </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>09:27</td>
-                                                <td>Cliente cliente</td>
-                                                <td>$400</td>
-                                                <td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>
 
 
-                                            </tr>
+<?php
+                $sql="SELECT b.rowid, b.dateo AS DO, b.datev 
+                AS dv, b.amount, b.label, DATE_FORMAT(b.tms,'%d/%m/%Y a las %H:%i') AS tms, ba.rowid 
+                AS bankid, ba.ref AS bankref, ba.label AS banklabel, s.rowid AS socid, s.nom AS thirdparty 
+                FROM llx_bank_account AS ba, llx_bank AS b LEFT JOIN llx_bank_url AS bu1 ON bu1.fk_bank = b.rowid AND bu1.type='company' 
+                LEFT JOIN llx_societe AS s ON bu1.url_id = s.rowid 
+                LEFT JOIN llx_bank_url AS bu2 ON bu2.fk_bank = b.rowid AND bu2.type='payment_vat' 
+                LEFT JOIN llx_tva AS t ON bu2.url_id = t.rowid 
+                LEFT JOIN llx_bank_url AS bu3 ON bu3.fk_bank = b.rowid AND bu3.type='payment_salary' 
+                LEFT JOIN llx_payment_salary AS sal ON bu3.url_id = sal.rowid WHERE b.fk_account=".$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH']." 
+                AND b.fk_account = ba.rowid 
+                AND ba.entity IN (1) 
+                AND (b.datev BETWEEN '".$hoy."' AND '".$hoy."') 
+                ORDER BY b.datev ASC,b.datec ASC";
+
+                $resql=$db->query($sql);
+
+                if ($resql)
+                {
+                        $num = $db->num_rows($resql);
+                        $i = 0;
+                        if ($num)
+                        {
+                                while ($i < $num)
+                                {
+                                        $obj = $db->fetch_object($resql);
+                                        if ($obj)
+                                        {
+
+                                            print '<tr>';
+                                                print '<td>'.$obj->tms.'</td>';
+                                                print '<td>'.$obj->thirdparty.'</td>';
+                                                print '<td>'.round($obj->amount,2).'</td>';
+                                                print '<td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>';
+                                            print '</tr>';
+
+                                        }
+                                        $i++;
+                                }
+                        }
+                }else{
+
+                        $respuesta = 'hay un error en la conexion';
+                }
+
+                $db->close();
+
+?>
 
 
                                                                                         
@@ -305,28 +368,6 @@ $db->close();
 
 
 <!--codigo de tabla         -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -369,17 +410,6 @@ $db->close();
                 </div>
 
 <hr>
-
-
-
-
-
-
-<?php
-
-
-
-?>
 
 
 
