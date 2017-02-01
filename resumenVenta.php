@@ -266,7 +266,7 @@ print '
 
                                 <hr>    
 
-                                <h4>Monto Total   <strong> <?php echo($total); ?> </strong></h4>
+                                <h4>Monto Total   <strong>$ <?php echo($total); ?> </strong></h4>
                                 </div>
 
 
