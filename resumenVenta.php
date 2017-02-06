@@ -177,7 +177,7 @@ $productstatic=new Product($db);
 						$sql.= " AND lang='". $langs->getDefaultLang() ."'";
 						$sql.= " LIMIT 1";
 
-                        $stock_print=
+                      
 
 						$result = $db->query($sql);
 						if ($result)
@@ -417,10 +417,10 @@ $_SESSION['stock_print']= $stock_print;
 $_SESSION['stock_total']= $stock_total;
 
 
-// var_dump($stock_print);
-// var_dump($_SESSION['stock_print']);
 
-// var_dump($_SESSION['stock_total']);
+var_dump($_SESSION);
+
+var_dump($_SESSION['stock_total']);
 
 
 ?>
