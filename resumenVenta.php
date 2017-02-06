@@ -418,9 +418,9 @@ $_SESSION['stock_total']= $stock_total;
 
 
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
-var_dump($_SESSION['stock_total']);
+// var_dump($_SESSION['stock_total']);
 
 
 ?>

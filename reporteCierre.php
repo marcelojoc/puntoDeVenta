@@ -144,11 +144,11 @@ if (isset($_SESSION["stock_print"]) && isset($_SESSION["stock_total"])){
         $pdf->Output( "tmp_repo/".$file_name , "F");
 
         // descargar Cliente
-        $pdf->Output( $file_name , "I");
+        $pdf->Output( $file_name , "D");
         //liberar variables
 
-        // unset($_SESSION["stock_print"]) ;
-        // unset($_SESSION["stock_total"]);
+        unset($_SESSION["stock_print"]) ;
+        unset($_SESSION["stock_total"]);
 
 
 
