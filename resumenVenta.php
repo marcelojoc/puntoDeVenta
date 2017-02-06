@@ -7,6 +7,11 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 $langs->load("admin");
 $langs->load("cashdesk");
 
+$stock_print=array();
+$stock_total=array();
+$comprobante_print=[];
+
+
 // Test if user logged
 if ( !$_SESSION['uid'] )
 {
@@ -16,9 +21,6 @@ if ( !$_SESSION['uid'] )
 
 
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -36,10 +38,7 @@ if ( !$_SESSION['uid'] )
 
         <body>
 
-
                 <div class="container">    
-
-
 
                     <div class="container ">
                         
@@ -55,12 +54,6 @@ if ( !$_SESSION['uid'] )
 
                         </div>                       
 
-                    
-                    
-                    
-                        
-
-                    
                     
                     </div>
 
@@ -184,6 +177,8 @@ $productstatic=new Product($db);
 						$sql.= " AND lang='". $langs->getDefaultLang() ."'";
 						$sql.= " LIMIT 1";
 
+                        $stock_print=
+
 						$result = $db->query($sql);
 						if ($result)
 						{
@@ -216,6 +211,18 @@ print '
 					$totalunit+=$objp->value;
 
 					$i++;
+
+                    // cargo los valores del Stock en el array
+                    array_push($stock_print,[  'id'=>(string)$objp->rowid,
+                                    'ref'=>(string)$objp->ref,
+                                    'nombre'=>(string)$objp->produit,
+                                    'tipo'=>(string)$objp->type,
+                                    'entity'=>(string)$objp->entity,
+                                    'cantidad'=>(string)$objp->value                
+                                    ]);
+
+
+
 				}
 
 
@@ -246,6 +253,10 @@ print '
                         {
                             
                             $total= round($obj->total,2);
+
+                            // aqui guardo el valor total de ventas
+
+                            $stock_total=array('total'=> $total);
 
                         }
              }
@@ -302,6 +313,7 @@ print '
                 $sql="SELECT b.rowid, b.dateo AS DO, b.datev 
                 AS dv, b.amount, b.label, DATE_FORMAT(b.tms,'%d/%m/%Y a las %H:%i') AS tms, ba.rowid 
                 AS bankid, ba.ref AS bankref, ba.label AS banklabel, s.rowid AS socid, s.nom AS thirdparty 
+                , s.code_client AS codigo 
                 FROM llx_bank_account AS ba, llx_bank AS b LEFT JOIN llx_bank_url AS bu1 ON bu1.fk_bank = b.rowid AND bu1.type='company' 
                 LEFT JOIN llx_societe AS s ON bu1.url_id = s.rowid 
                 LEFT JOIN llx_bank_url AS bu2 ON bu2.fk_bank = b.rowid AND bu2.type='payment_vat' 
@@ -345,44 +357,14 @@ print '
 
                 $db->close();
 
+
+
 ?>
 
 
                                                                                         
                                             </tbody>
                                     </table>
-
-
-
-<!--codigo de tabla         -->
-
-
-
-
-
-
-
-
-
-
-
-
-<!--codigo de tabla         -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -406,7 +388,7 @@ print '
 
                 <div class="container">
 
-                    <input class="btn btn-primary btn-block" name="sbmtConnexion" type="submit" value="Imprimir cierre" />
+                    <a class="btn btn-primary btn-block" href="reporteCierre.php" >Imprimir cierre<a/>
                 </div>
 
 <hr>
@@ -425,3 +407,20 @@ print '
 
 
 
+
+
+
+<?php
+
+$_SESSION['stock_print']= $stock_print;
+
+$_SESSION['stock_total']= $stock_total;
+
+
+// var_dump($stock_print);
+// var_dump($_SESSION['stock_print']);
+
+// var_dump($_SESSION['stock_total']);
+
+
+?>
