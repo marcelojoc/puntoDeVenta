@@ -139,7 +139,7 @@ if (isset($_SESSION["stock_print"]) && isset($_SESSION["stock_total"])){
 
 
 
-        $file_name = str_replace ( " " , "_" , $_SESSION["lastname"] ). date("d-m-Y").".pdf";
+        $file_name = str_replace ( " " , "_" , $_SESSION["lastname"] )."_". date("d-m-Y").".pdf";
         // guardar en server
         $pdf->Output( "tmp_repo/".$file_name , "F");
 
