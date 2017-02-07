@@ -294,38 +294,26 @@ print '
                             <!--  inicio del bloque de tab 2-->
 
                                 <div class="container">
-                                <h2>Comprobantes</h2>
-                
-                                    <table class="table table-striped table-responsive table-bordered text-center">
-                                        <thead>
-                                            <tr>
-                                            <th>Hora</th>
-                                            <th>Cliente</th>
-                                            <th>Monto</th>
-                                            <th>Accion</th>
 
-                                            </tr>
-                                        </thead>
-                                            <tbody>
+
 
 
 <?php
-                $sql="SELECT b.rowid, b.dateo AS DO, b.datev 
-                AS dv, b.amount, b.label, DATE_FORMAT(b.tms,'%d/%m/%Y a las %H:%i') AS tms, ba.rowid 
-                AS bankid, ba.ref AS bankref, ba.label AS banklabel, s.rowid AS socid, s.nom AS thirdparty 
-                , s.code_client AS codigo 
-                FROM llx_bank_account AS ba, llx_bank AS b LEFT JOIN llx_bank_url AS bu1 ON bu1.fk_bank = b.rowid AND bu1.type='company' 
-                LEFT JOIN llx_societe AS s ON bu1.url_id = s.rowid 
-                LEFT JOIN llx_bank_url AS bu2 ON bu2.fk_bank = b.rowid AND bu2.type='payment_vat' 
-                LEFT JOIN llx_tva AS t ON bu2.url_id = t.rowid 
-                LEFT JOIN llx_bank_url AS bu3 ON bu3.fk_bank = b.rowid AND bu3.type='payment_salary' 
-                LEFT JOIN llx_payment_salary AS sal ON bu3.url_id = sal.rowid WHERE b.fk_account=".$_SESSION['CASHDESK_ID_BANKACCOUNT_CASH']." 
-                AND b.fk_account = ba.rowid 
-                AND ba.entity IN (1) 
-                AND (b.datev BETWEEN '".$hoy."' AND '".$hoy."') 
-                ORDER BY b.datev ASC,b.datec ASC";
 
-                $resql=$db->query($sql);
+$sql_f= "SELECT f.rowid, f.facnumber, 
+                f.total , f.datef, 
+                f.fk_soc, s.nom, s.code_client
+        FROM `llx_facture` AS f   
+        LEFT JOIN llx_societe AS s 
+        ON f.fk_soc = s.rowid 
+        AND f.fk_user_author = ". $_SESSION['uid'] ."
+        WHERE  f.datef = '". date("Y-m-d") ."'";
+
+
+$sql_d= "";
+
+
+                $resql=$db->query($sql_f);
 
                 if ($resql)
                 {
@@ -339,12 +327,64 @@ print '
                                         if ($obj)
                                         {
 
-                                            print '<tr>';
-                                                print '<td>'.$obj->tms.'</td>';
-                                                print '<td>'.$obj->thirdparty.'</td>';
-                                                print '<td>'.round($obj->amount,2).'</td>';
-                                                print '<td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>';
-                                            print '</tr>';
+
+
+
+print '<div class="col-xs-4">';
+
+print '<h4>Comprobante</h4>';
+        
+print '<p>Cliente:   <strong> '.$obj->nom.' </strong></p>';
+print '<p>Codigo:   <strong>'. $obj->code_client.' </strong></p>';
+
+print'<p>Monto:   <strong> $ '. round($obj->total,2).' </strong></p>';
+
+
+print '</div>';
+
+
+
+?>
+
+ 
+<div class="col-xs-8">
+
+    
+        <h4>Detalle</h4>
+            <table class="table table-striped table-responsive table-bordered text-center">
+                <thead>
+                    <tr>
+                    <th>Fecha</th>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>valor</th>
+
+                    </tr>
+                </thead>
+                    <tbody>
+
+                            <td><?php echo $obj->rowid ?></td>
+                            <td>aaaaaaaa</td>
+                            <td>aaaaaaaa</td>
+                            <td>aaaaaaaa</td>
+
+                    </tbody>
+                 </table>
+
+</div>
+
+
+
+<?php
+
+
+
+                                            // print '<tr>';
+                                            //     print '<td>'.$obj->tms.'</td>';
+                                            //     print '<td>'.$obj->thirdparty.'</td>';
+                                            //     print '<td>'.round($obj->amount,2).'</td>';
+                                            //     print '<td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>';
+                                            // print '</tr>';
 
                                         }
                                         $i++;
@@ -358,27 +398,20 @@ print '
                 $db->close();
 
 
-
 ?>
 
 
-                                                                                        
-                                            </tbody>
-                                    </table>
 
+</div>
 
-
-
-                                </div>
-
-
+<hr>
 
 
                             <!--fin de bloque tab 2-->
 
-                            </div>
+</div>
 
-                        </div>
+                        
 
 
 
@@ -418,7 +451,7 @@ $_SESSION['stock_total']= $stock_total;
 
 
 
-// var_dump($_SESSION);
+ //var_dump($_SESSION);
 
 // var_dump($_SESSION['stock_total']);
 
