@@ -300,17 +300,17 @@ print '
 
 <?php
 
+//cargo los comprobantes del vendedor y fecha de hoy
 $sql_f= "SELECT f.rowid, f.facnumber, 
                 f.total , f.datef, 
                 f.fk_soc, s.nom, s.code_client
-        FROM `llx_facture` AS f   
-        LEFT JOIN llx_societe AS s 
-        ON f.fk_soc = s.rowid 
-        AND f.fk_user_author = ". $_SESSION['uid'] ."
-        WHERE  f.datef = '". date("Y-m-d") ."'";
+                FROM `llx_facture` AS f   
+                INNER JOIN llx_societe AS s 
+                ON f.fk_soc = s.rowid 
+                WHERE  f.datef = '". date("Y-m-d") ."' AND f.fk_user_author = ". $_SESSION['uid'] ;
 
 
-$sql_d= "";
+
 
 
                 $resql=$db->query($sql_f);
@@ -318,12 +318,18 @@ $sql_d= "";
                 if ($resql)
                 {
                         $num = $db->num_rows($resql);
+
+                    
                         $i = 0;
                         if ($num)
                         {
                                 while ($i < $num)
                                 {
+
+
                                         $obj = $db->fetch_object($resql);
+
+                                        
                                         if ($obj)
                                         {
 
@@ -357,18 +363,51 @@ print '</div>';
                     <th>Fecha</th>
                     <th>producto</th>
                     <th>cantidad</th>
-                    <th>valor</th>
 
                     </tr>
                 </thead>
+
+
                     <tbody>
 
-                            <td><?php echo $obj->rowid ?></td>
-                            <td>aaaaaaaa</td>
-                            <td>aaaaaaaa</td>
-                            <td>aaaaaaaa</td>
+<?php   
+
+// consulta para traer el detalle de cada comprobante
+$sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$obj->rowid;
+
+
+$resp=$db->query($sql_d);
+                if ($resp)
+                {
+                    $cont = $db->num_rows($resp);
+
+                    if ($cont)
+                    {
+                        
+
+                        //foreach ($objeto as $dato)
+                        for($j = 1; $j<= $cont ; $j++)
+                        {   
+                            $dato= $db->fetch_object($resp);
+                            
+                                print'<tr>';
+                                print '<td>'. $obj->datef.'</td>';
+                                print '<td>'. $dato->description .'</td>';
+                                print '<td>'. $dato->qty .'</td>';
+                                print'</tr>';
+
+                        }
+
+
+                    }
+
+                }
+
+
+?>
 
                     </tbody>
+
                  </table>
 
 </div>
@@ -377,14 +416,6 @@ print '</div>';
 
 <?php
 
-
-
-                                            // print '<tr>';
-                                            //     print '<td>'.$obj->tms.'</td>';
-                                            //     print '<td>'.$obj->thirdparty.'</td>';
-                                            //     print '<td>'.round($obj->amount,2).'</td>';
-                                            //     print '<td><button type="button" class="btn btn-warning btn-xs">eliminar</button></td>';
-                                            // print '</tr>';
 
                                         }
                                         $i++;
