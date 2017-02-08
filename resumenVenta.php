@@ -3,6 +3,7 @@ include '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/cashdesk/include/environnement.php';
 require_once DOL_DOCUMENT_ROOT.'/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT.'/cashdesk/class/reporte.class.php';
 
 $langs->load("admin");
 $langs->load("cashdesk");
@@ -77,8 +78,20 @@ if ( !$_SESSION['uid'] )
 <?php
 
 
+
 $form=new Form($db);
 $productstatic=new Product($db);
+$hoy =date("Y-m-d");
+
+// creo una instancia de reporte.. asigno datos de usuario
+$reporte=new Reporte($db, $_SESSION['uid'], $hoy, $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] );
+
+
+// $pibe= $reporte->get_monto_caja();
+// print $reporte->get_monto_caja()['total'] ;
+
+
+
 
     $id=$_SESSION['CASHDESK_ID_WAREHOUSE'];
 	if ($id)
@@ -136,7 +149,7 @@ $productstatic=new Product($db);
                                             <tr>
                                             <th>ref</th>
                                             <th>Producto</th>
-                                            <th>Unidades</th>
+                                            <th>Unidades actuales</th>
                                             </tr>
                                         </thead>
                                             <tbody>
@@ -240,26 +253,6 @@ print '
 				dol_print_error($db);
 			}
 
-
-            $hoy=date("Y-m-d");
-            $sqlTotal = "SELECT SUM(amount) AS total FROM llx_bank  WHERE llx_bank.fk_account = ". $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH']."  AND llx_bank.datev BETWEEN '".$hoy."' AND '".$hoy."' LIMIT 1";
-			$restotal = $db->query($sqlTotal);
-            $num = $db->num_rows($restotal);
-             // si devuelve producto  entro al proceso
-             if ($num){
-
-                        $obj = $db->fetch_object($restotal);
-                        if ($obj)
-                        {
-                            
-                            $total= round($obj->total,2);
-
-                            // aqui guardo el valor total de ventas
-
-                            $stock_total=array('total'=> $total);
-
-                        }
-             }
 			
 		}
 
@@ -277,7 +270,16 @@ print '
 
                                 <hr>    
 
-                                <h4>Monto Total   <strong>$ <?php echo($total); ?> </strong></h4>
+                                <h4>Monto Total caja  <strong>$ <?php echo $reporte->get_monto_caja()['total']; ?> </strong></h4>
+
+                                <h4>Monto Total comprobantes  <strong>$ <?php echo $reporte->get_monto_comprobantes()['total'];  ?> </strong></h4>
+
+                            
+
+
+<?php  //var_dump($reporte->get_all_products());  ?>
+
+
                                 </div>
 
 
@@ -292,155 +294,155 @@ print '
 
 
                             <!--  inicio del bloque de tab 2-->
-
+                                <br>
                                 <div class="container">
 
 
 
 
-<?php
+                                    <?php
 
-//cargo los comprobantes del vendedor y fecha de hoy
-$sql_f= "SELECT f.rowid, f.facnumber, 
-                f.total , f.datef, 
-                f.fk_soc, s.nom, s.code_client
-                FROM `llx_facture` AS f   
-                INNER JOIN llx_societe AS s 
-                ON f.fk_soc = s.rowid 
-                WHERE  f.datef = '". date("Y-m-d") ."' AND f.fk_user_author = ". $_SESSION['uid'] ;
-
-
+                                    //cargo los comprobantes del vendedor y fecha de hoy
+                                    $sql_f= "SELECT f.rowid, f.facnumber, 
+                                                    f.total , f.datef, 
+                                                    f.fk_soc, s.nom, s.code_client
+                                                    FROM `llx_facture` AS f   
+                                                    INNER JOIN llx_societe AS s 
+                                                    ON f.fk_soc = s.rowid 
+                                                    WHERE  f.datef = '". $hoy ."' AND f.fk_user_author = ". $_SESSION['uid'] ;
 
 
 
-                $resql=$db->query($sql_f);
-
-                if ($resql)
-                {
-                        $num = $db->num_rows($resql);
-
-                    
-                        $i = 0;
-                        if ($num)
-                        {
-                                while ($i < $num)
-                                {
 
 
-                                        $obj = $db->fetch_object($resql);
+                                                    $resql=$db->query($sql_f);
+
+                                                    if ($resql)
+                                                    {
+                                                            $num = $db->num_rows($resql);
+
+                                                        
+                                                            $i = 0;
+                                                            if ($num)
+                                                            {
+                                                                    while ($i < $num)
+                                                                    {
+
+
+                                                                            $obj = $db->fetch_object($resql);
+
+                                                                            
+                                                                            if ($obj)
+                                                                            {
+
+
+
+
+                                    print '<div class="col-xs-4">';
+
+                                    print '<h4>Comprobante</h4>';
+                                            
+                                    print '<p>Cliente:   <strong> '.$obj->nom.' </strong></p>';
+                                    print '<p>Codigo:   <strong>'. $obj->code_client.' </strong></p>';
+
+                                    print'<p>Monto:   <strong> $ '. round($obj->total,2).' </strong></p>';
+
+
+                                    print '</div>';
+
+
+
+                                    ?>
+
+                                    
+                                    <div class="col-xs-8">
 
                                         
-                                        if ($obj)
-                                        {
+                                            <h4>Detalle</h4>
+                                                <table class="table table-striped table-responsive table-bordered text-center">
+                                                    <thead>
+                                                        <tr>
+                                                        <th>Fecha</th>
+                                                        <th>producto</th>
+                                                        <th>cantidad</th>
+
+                                                        </tr>
+                                                    </thead>
+
+
+                                                        <tbody>
+
+                                    <?php   
+
+                                    // consulta para traer el detalle de cada comprobante
+                                    $sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$obj->rowid;
+
+
+                                    $resp=$db->query($sql_d);
+                                                    if ($resp)
+                                                    {
+                                                        $cont = $db->num_rows($resp);
+
+                                                        if ($cont)
+                                                        {
+                                                            
+                                                            //foreach ($objeto as $dato)
+                                                            for($j = 1; $j<= $cont ; $j++)
+                                                            {   
+                                                                $dato= $db->fetch_object($resp);
+                                                                
+                                                                    print'<tr>';
+                                                                    print '<td>'. $obj->datef.'</td>';
+                                                                    print '<td>'. $dato->description .'</td>';
+                                                                    print '<td>'. $dato->qty .'</td>';
+                                                                    print'</tr>';
+
+                                                            }
+
+
+                                                        }
+
+                                                    }
+
+
+                                    ?>
+
+                                                        </tbody>
+
+                                                    </table>
+<br>
+                                    </div>
 
 
 
-
-print '<div class="col-xs-4">';
-
-print '<h4>Comprobante</h4>';
-        
-print '<p>Cliente:   <strong> '.$obj->nom.' </strong></p>';
-print '<p>Codigo:   <strong>'. $obj->code_client.' </strong></p>';
-
-print'<p>Monto:   <strong> $ '. round($obj->total,2).' </strong></p>';
+                                    <?php
 
 
-print '</div>';
+                                                                            }
+                                                                            $i++;
+                                                                    }
+                                                            }
+                                                    }else{
+
+                                                            $respuesta = 'hay un error en la conexion';
+                                                    }
+
+                                                    $db->close();
 
 
+                                    ?>
 
-?>
+                                    <br>
+                                    
 
- 
-<div class="col-xs-8">
+                                </div>  <!--fin de bloque container-->
 
-    
-        <h4>Detalle</h4>
-            <table class="table table-striped table-responsive table-bordered text-center">
-                <thead>
-                    <tr>
-                    <th>Fecha</th>
-                    <th>producto</th>
-                    <th>cantidad</th>
-
-                    </tr>
-                </thead>
+                                <hr>
 
 
-                    <tbody>
+                                                            
 
-<?php   
-
-// consulta para traer el detalle de cada comprobante
-$sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$obj->rowid;
-
-
-$resp=$db->query($sql_d);
-                if ($resp)
-                {
-                    $cont = $db->num_rows($resp);
-
-                    if ($cont)
-                    {
-                        
-
-                        //foreach ($objeto as $dato)
-                        for($j = 1; $j<= $cont ; $j++)
-                        {   
-                            $dato= $db->fetch_object($resp);
-                            
-                                print'<tr>';
-                                print '<td>'. $obj->datef.'</td>';
-                                print '<td>'. $dato->description .'</td>';
-                                print '<td>'. $dato->qty .'</td>';
-                                print'</tr>';
-
-                        }
-
-
-                    }
-
-                }
-
-
-?>
-
-                    </tbody>
-
-                 </table>
-
-</div>
-
-
-
-<?php
-
-
-                                        }
-                                        $i++;
-                                }
-                        }
-                }else{
-
-                        $respuesta = 'hay un error en la conexion';
-                }
-
-                $db->close();
-
-
-?>
-
-
-
-</div>
-
-<hr>
-
-
-                            <!--fin de bloque tab 2-->
-
-</div>
+                           </div><!--fin de bloque tab 2-->
 
                         
 

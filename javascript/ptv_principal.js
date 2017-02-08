@@ -5,7 +5,8 @@
 	//si hay algo en el total de venta lo asigno al campo txttotal
 	$('#txttotal').val($('#campototal').val())
 	$('#hiddentxttotal').val($('#campototal').val())
-	
+	$('#txtRecibido').val($('#campototal').val())
+	calculoCuenta();
 	// setear fechas de calendario
 	var hoy= $('#date_now').val();							 //Valor de fecha del servidor 
     var inicio = moment(hoy, "DD/MM/YYYY"); 				// parseo la fecha como fecha en moment
@@ -15,7 +16,6 @@
 														// documentacion
 													   // https://bootstrap-datepicker.readthedocs.io/en/latest/index.html
     
-		
 	});
 
 
