@@ -350,7 +350,9 @@ print '
 
                                     print '</div>';
 
+                                    // aqui guardo en la sesion los clientes que compraron
 
+                                    $detalle_cliente[]=$obj;
 
                                     ?>
 
@@ -410,22 +412,31 @@ print '
                                                         </tbody>
 
                                                     </table>
-<br>
+                                        <br>
                                     </div>
 
 
 
                                     <?php
 
-
-                                                                            }
-                                                                            $i++;
-                                                                    }
-                                                            }
+                                                                        }
+                                                                        $i++;
+                                                                }
+                                                        }
                                                     }else{
 
                                                             $respuesta = 'hay un error en la conexion';
                                                     }
+
+//  var_dump($reporte->detalle_comprobante(100));
+
+// $datos= $reporte->detalle_comprobante(101);
+
+
+//  foreach($datos as $d){
+
+//         echo($d->description);
+//  }
 
                                                     $db->close();
 
@@ -480,8 +491,7 @@ print '
 
 $_SESSION['stock_print']= $stock_print;
 
-$_SESSION['stock_total']= $stock_total;
-
+$_SESSION['detalle_cliente']= $detalle_cliente;
 
 
  //var_dump($_SESSION);

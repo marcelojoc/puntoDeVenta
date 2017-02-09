@@ -1,5 +1,6 @@
 <?php
 
+
 class Reporte {
 
 	var $db;
@@ -28,7 +29,6 @@ class Reporte {
     function get_monto_caja()
     {
 
-       
         $sqlTotal = "SELECT SUM(amount) AS total FROM llx_bank  WHERE llx_bank.fk_account = ". $this->caja ."  AND llx_bank.datev BETWEEN '".$this->hoy."' AND '".$this->hoy."' LIMIT 1";
         
         $restotal = $this->db->query($sqlTotal);
@@ -119,12 +119,6 @@ class Reporte {
 
                         array_push($productos, $dato );
 
-                        // print'<tr>';
-                        // print '<td>'. $obj->datef.'</td>';
-                        // print '<td>'. $dato->description .'</td>';
-                        // print '<td>'. $dato->qty .'</td>';
-                        // print'</tr>';
-
                 }
 
 
@@ -142,8 +136,38 @@ class Reporte {
 
 
 
+// esta funcion trae el detalle del comprobante indicado...
+function detalle_comprobante($id_comprobante)
+{
+
+$data;
+$sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$id_comprobante;
+
+        $resp=$this->db->query($sql_d);
+                if ($resp)
+                {
+                    $cont = $this->db->num_rows($resp);
+
+                    if ($cont)
+                    {
+                        
+                        //foreach ($objeto as $dato)
+                        for($j = 1; $j<= $cont ; $j++)
+                        {   
+                            $dato= $this->db->fetch_object($resp);
+
+                                $data[]= $dato;
+
+                        }
 
 
+                    }
+
+                }
+                return $data;
+
+
+}
 
 
 
