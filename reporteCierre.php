@@ -197,7 +197,7 @@ class PDF extends FPDF
 
 
 
-if (isset($_SESSION["stock_print"]) && isset($_SESSION["stock_total"])){
+if (isset($_SESSION["stock_print"]) && isset($_SESSION["detalle_cliente"])){
 
 //if (true){
 
@@ -236,13 +236,15 @@ if (isset($_SESSION["stock_print"]) && isset($_SESSION["stock_total"])){
         //liberar variables
 
         unset($_SESSION["stock_print"]) ;
-        unset($_SESSION["stock_total"]);
+        unset($_SESSION["detalle_cliente"]);
 
 
 
 }else{
 
-    echo "No hay datos disponibles para imprimir";
+    echo "No hay datos disponibles para imprimir o  el reporte ya fue descargado";
+    echo"<br>";
+    echo"<a  href= 'resumenVenta.php' >Volver al resumen</a>";
 }
 
 
