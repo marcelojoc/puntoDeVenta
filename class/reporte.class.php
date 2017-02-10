@@ -3,14 +3,11 @@
 
 class Reporte {
 
-	var $db;
+	var $db;      // instancia de conexion
+	var $vendedor;// id del vendedor
+	var $hoy;       //fecha de hoy para la base de datos
+    var $caja;      // caja asociada al vendedor
 
-	var $vendedor;
-	var $hoy;
-    var $caja;
-	// var $reponse;
-
-	// var $sqlQuery;
 
 	function __construct($db, $vendedor, $hoy,$caja)
 	{
@@ -20,8 +17,6 @@ class Reporte {
         $this->caja= $caja;
 		//$this->reponse(null);
 	}
-
-
 
 
 
@@ -53,8 +48,6 @@ class Reporte {
     }
 
 
-
-
 // este metodo devuelve el valor de todos los comprobantes del dia 
 
     function get_monto_comprobantes()  
@@ -71,29 +64,62 @@ class Reporte {
         $restotal = $this->db->query($sqlTotal_comp);
         $num = $this->db->num_rows($restotal);
         // si devuelve producto  entro al proceso
-        if ($num){
+        if ($num)
+        {
 
-        $obj = $this->db->fetch_object($restotal);
+            $obj = $this->db->fetch_object($restotal);
             if ($obj)
             {
                 
                 $total= round($obj->total,2);
-
                 // aqui guardo el valor total de ventas
                 $comprobante_total=array('total'=> $total);
-
             }
         }
 
         return $comprobante_total;
+
+    }
+
+
+    function get_cantidad_unidades()
+    {
+
+        $comprobantes= $this->get_comprobantes();
+        $productos   = $this->get_all_products();
+
+
+        foreach ($comprobantes as $num_comprobante)
+        
+        {
+
+
+
+                $datos[]=  $num_comprobante->rowid;
+
+
+        }
+
+
+
+
+            return [ $productos, $datos] ;
+
 
 
     }
 
 
 
+    function cantidad_vendidas($id_producto, $id_detalle)
+    {
 
-    function get_cantidad_unidades(){}
+        // aqui en base al id del comprobante  saco las unidades vendidas de cada producto
+
+        // SELECT SUM(qty) FROM `llx_facturedet` WHERE `fk_facture` = 105 AND `fk_product`= 2
+
+
+    }
 
 
 
@@ -118,7 +144,6 @@ class Reporte {
                     
 
                         array_push($productos, $dato );
-
                 }
 
 
@@ -134,14 +159,47 @@ class Reporte {
 
 
 
+function get_comprobantes(){
+
+    $sql= "SELECT f.rowid, f.facnumber, 
+                    f.total , f.datef, 
+                    f.fk_soc, s.nom, s.code_client
+                    FROM `llx_facture` AS f   
+                    INNER JOIN llx_societe AS s 
+                    ON f.fk_soc = s.rowid 
+                    WHERE  f.datef = '". $this->hoy ."' AND f.fk_user_author = ". $this->vendedor ;
+
+    $resp=$this->db->query($sql);
+        if ($resp)
+        {
+            $cont = $this->db->num_rows($resp);
+
+            if ($cont)
+            {
+                
+                //foreach ($objeto as $dato)
+                for($j = 1; $j<= $cont ; $j++)
+                {   
+                    $dato= $this->db->fetch_object($resp);
+
+                        $data[]= $dato;
+
+                }
 
 
-// esta funcion trae el detalle del comprobante indicado...
-function detalle_comprobante($id_comprobante)
-{
+            }
 
-$data;
-$sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$id_comprobante;
+        }
+    return $data;
+
+}
+
+    // esta funcion trae el detalle del comprobante indicado...
+    function detalle_comprobante($id_comprobante)
+    {
+
+        $data;
+        $sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk_facture = ".$id_comprobante;
 
         $resp=$this->db->query($sql_d);
                 if ($resp)
@@ -164,13 +222,42 @@ $sql_d= "SELECT d.rowid, d.description, d.qty FROM llx_facturedet  AS d WHERE fk
                     }
 
                 }
-                return $data;
+        return $data;
 
 
-}
+    }
 
 
 
+
+
+    function cantidad_comprobantes(){
+
+        $sql_comp = "
+        
+        SELECT COUNT(*) AS comprobante
+        FROM `llx_facture` AS f   
+        INNER JOIN llx_societe AS s 
+        ON f.fk_soc = s.rowid 
+        WHERE  f.datef = '".$this->hoy ."' AND f.fk_user_author =".$this->vendedor;
+        
+        $restotal = $this->db->query($sql_comp);
+        $num = $this->db->num_rows($restotal);
+        // si devuelve producto  entro al proceso
+        if ($num)
+        {
+
+            $obj = $this->db->fetch_object($restotal);
+            if ($obj)
+            {
+
+                $comprobante_total=array('comprobantes'=> $obj->comprobante);
+            }
+        }
+
+        return $comprobante_total;
+        
+    }
 
 
 }

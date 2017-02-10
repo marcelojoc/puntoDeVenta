@@ -142,7 +142,7 @@ $reporte=new Reporte($db, $_SESSION['uid'], $hoy, $_SESSION['CASHDESK_ID_BANKACC
 
 
                                 <div class="container">
-                                <h2>Stock Actual</h2>
+                                <h3>Stock Actual</h3>
                 
                                     <table class="table table-striped table-responsive table-bordered ">
                                         <thead>
@@ -260,9 +260,6 @@ print '
 	}
 
 
-
-
-
 ?>
                                             <!--aqui termina la tabla-->
                                       </tbody>
@@ -270,17 +267,41 @@ print '
 
                                 <hr>    
 
-                                <h4>Monto Total caja  <strong>$ <?php echo $reporte->get_monto_caja()['total']; ?> </strong></h4>
-
-                                <h4>Monto Total comprobantes  <strong>$ <?php echo $reporte->get_monto_comprobantes()['total'];  ?> </strong></h4>
-
-                            
 
 
-<?php  //var_dump($reporte->get_all_products());  ?>
+<h3>Productos vendidos</h3>
+<table class="table table-striped table-responsive table-bordered ">
+<thead>
+<tr>
+<th>ref</th>
+<th>Producto</th>
+<th>Unidades Vendidas</th>
+</tr>
+</thead>
+<tbody>
+
+
+
+<tr><td>1</td>
+<td>Speed Unlimited 250 ml x 24 latas</td>
+<td class="text-center">233</td>
+
+</tr>
+
+</tbody>
+</table>
+                                    <hr>
+
+                                    <h4>Monto Total caja  <strong>$ <?php echo $reporte->get_monto_caja()['total']; ?> </strong></h4>
+
+                                    <h4>Monto Total comprobantes  <strong>$ <?php echo $reporte->get_monto_comprobantes()['total'];  ?> </strong></h4>
+
+                                    <h4>Cantidad de Comprobantes  <strong><?php echo $reporte->cantidad_comprobantes()['comprobantes'];  ?> </strong></h4>
 
 
                                 </div>
+
+
 
 
                                 </div>
@@ -315,25 +336,22 @@ print '
 
 
 
-                                                    $resql=$db->query($sql_f);
+                                    $resql=$db->query($sql_f);
 
-                                                    if ($resql)
+                                    if ($resql)
+                                    {
+                                            $num = $db->num_rows($resql);
+
+                                            $i = 0;
+                                            if ($num)
+                                            {
+                                                    while ($i < $num)
                                                     {
-                                                            $num = $db->num_rows($resql);
 
+                                                            $obj = $db->fetch_object($resql);
                                                         
-                                                            $i = 0;
-                                                            if ($num)
+                                                            if ($obj)
                                                             {
-                                                                    while ($i < $num)
-                                                                    {
-
-
-                                                                            $obj = $db->fetch_object($resql);
-
-                                                                            
-                                                                            if ($obj)
-                                                                            {
 
 
 
@@ -381,30 +399,30 @@ print '
 
 
                                     $resp=$db->query($sql_d);
-                                                    if ($resp)
-                                                    {
-                                                        $cont = $db->num_rows($resp);
+                                        if ($resp)
+                                        {
+                                            $cont = $db->num_rows($resp);
 
-                                                        if ($cont)
-                                                        {
-                                                            
-                                                            //foreach ($objeto as $dato)
-                                                            for($j = 1; $j<= $cont ; $j++)
-                                                            {   
-                                                                $dato= $db->fetch_object($resp);
-                                                                
-                                                                    print'<tr>';
-                                                                    print '<td>'. $obj->datef.'</td>';
-                                                                    print '<td>'. $dato->description .'</td>';
-                                                                    print '<td>'. $dato->qty .'</td>';
-                                                                    print'</tr>';
+                                            if ($cont)
+                                            {
+                                                
+                                                //foreach ($objeto as $dato)
+                                                for($j = 1; $j<= $cont ; $j++)
+                                                {   
+                                                    $dato= $db->fetch_object($resp);
+                                                    
+                                                        print'<tr>';
+                                                        print '<td>'. $obj->datef.'</td>';
+                                                        print '<td>'. $dato->description .'</td>';
+                                                        print '<td>'. $dato->qty .'</td>';
+                                                        print'</tr>';
 
-                                                            }
+                                                }
 
 
-                                                        }
+                                            }
 
-                                                    }
+                                        }
 
 
                                     ?>
@@ -428,7 +446,7 @@ print '
                                                             $respuesta = 'hay un error en la conexion';
                                                     }
 
-//  var_dump($reporte->detalle_comprobante(100));
+var_dump($reporte->get_cantidad_unidades());
 
 // $datos= $reporte->detalle_comprobante(101);
 
@@ -449,15 +467,11 @@ print '
                                 </div>  <!--fin de bloque container-->
 
                                 <hr>
-
-
-                                                            
+                                  
 
                            </div><!--fin de bloque tab 2-->
 
                         
-
-
 
                 </div>
 
@@ -468,11 +482,9 @@ print '
                     <a class="btn btn-primary btn-block" href="reporteCierre.php" >Imprimir cierre<a/>
                 </div>
 
-<hr>
+                <hr>
 
-
-
-        </body>
+    </body>
 
     <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
     <script src="javascript/bootstrap.min.js"></script>
@@ -493,8 +505,6 @@ $_SESSION['stock_print']= $stock_print;
 
 $_SESSION['detalle_cliente']= $detalle_cliente;
 
-
- //var_dump($_SESSION);
 
 // var_dump($_SESSION['stock_total']);
 
