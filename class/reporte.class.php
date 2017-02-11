@@ -111,7 +111,7 @@ class Reporte {
 
 
 
-    function cantidad_vendidas($id_producto, $id_detalle)
+    function cantidad_vendidas($productos, $id_detalle, $bandera= null)
     {
 
         // aqui en base al id del comprobante  saco las unidades vendidas de cada producto
