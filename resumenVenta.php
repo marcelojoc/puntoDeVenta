@@ -446,7 +446,7 @@ print '
                                                             $respuesta = 'hay un error en la conexion';
                                                     }
 
-var_dump($reporte->get_cantidad_unidades());
+//var_dump($reporte->get_cantidad_unidades());
 
 // $datos= $reporte->detalle_comprobante(101);
 
@@ -486,10 +486,46 @@ var_dump($reporte->get_cantidad_unidades());
 
     </body>
 
+
+
+
+
     <script type="text/javascript" src="javascript/jquery-3.1.1.min.js"></script>
     <script src="javascript/bootstrap.min.js"></script>
+    <script>    
 
-    <script type="text/javascript" src="javascript/list_clients.js"></script>
+
+ $(document).ready(function(){
+
+                    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+                    //Ahora preguntamos si realmente existe.
+                    if (navigator.vibrate) {
+
+
+                    //daleee();
+                    } else {
+                    console.log('No puedes hacerlo vibrar' );
+                    }
+
+
+
+});
+
+
+
+
+                    function daleee(){
+
+                    //Otra manera es pasar como parametro un arreglo, donde cada posición es una escala pudiendo marcar un ritmo
+                    navigator.vibrate(2500);
+
+                    }
+
+
+
+    </script>
+    
 </html>
 
 
@@ -509,4 +545,27 @@ $_SESSION['detalle_cliente']= $detalle_cliente;
 // var_dump($_SESSION['stock_total']);
 
 
+
+
+
+/*
+
+Veamos las ramas disponibles con git remote:
+$ git remote show origin
+  * remote origin
+    URL: *************
+    Remote branch merged with 'git pull' 
+      while on branch master
+        master
+      Tracked remote branches
+        haml master
+Afortunadamente, el comando para obtener una rama remota es bastante simple:
+git checkout --track -b 
+  <local branch> <remote>/<tracked branch>
+Así que en nuestro caso, utilizamos este comando:
+git checkout --track -b haml origin/haml
+También es posible usar una versión más simple del mismo comando:
+git checkout -t origin/haml
+
+*/
 ?>
