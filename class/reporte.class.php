@@ -82,20 +82,89 @@ class Reporte {
     }
 
 
+
+// devuelve las cantidades de cada producto vendidos
     function get_cantidad_unidades()
     {
 
-        $comprobantes= $this->get_comprobantes();
-        $productos   = $this->get_all_products();
+        $comprobantes= $this->get_comprobantes();  //  105,  106,  107, 108
+        $productos   = $this->get_all_products();  // lista de productos 
 
 
-        foreach ($comprobantes as $num_comprobante)
-        
+
+
+            if($comprobantes){
+
+
+                    foreach ($comprobantes as $num_comprobante)
+                    
+                    {
+
+
+                        // un for each con los productos
+
+                            foreach ($productos as $producto)
+                            {
+
+
+
+
+
+                            }
+
+
+
+                            //$datos[]=  $num_comprobante->rowid;
+
+
+                    }
+
+
+
+
+                        return [ $productos, $datos] ;
+
+
+
+            }
+
+
+
+
+
+
+
+    }
+
+
+
+<<<<<<< HEAD
+    function cantidad_vendidas($id_producto, $id_detalle, $descuento = null)
+=======
+    function cantidad_vendidas($productos, $id_detalle, $bandera= null)
+>>>>>>> 0fe2e09ed826e6052bc5f09f7a5c0e349441bca2
+    {
+
+
+        if($descuento == null) // este parametro sirve para listar productos sin cargo y vendidos
+
         {
 
+                $sql='SELECT description, qty, remise_percent FROM
+                  llx_facturedet WHERE
+                  fk_facture = '.$id_detalle.' AND
+                   fk_product = '.$id_producto.' AND
+                   remise_percent = 0';
+
+        }
+        else{
 
 
-                $datos[]=  $num_comprobante->rowid;
+                $sql='SELECT description, qty, remise_percent FROM
+                  llx_facturedet WHERE
+                  fk_facture = '.$id_detalle.' AND
+                   fk_product = '.$id_producto.' AND
+                   remise_percent ='.$descuento ;
 
 
         }
@@ -103,16 +172,6 @@ class Reporte {
 
 
 
-            return [ $productos, $datos] ;
-
-
-
-    }
-
-
-
-    function cantidad_vendidas($productos, $id_detalle, $bandera= null)
-    {
 
         // aqui en base al id del comprobante  saco las unidades vendidas de cada producto
 
@@ -120,6 +179,9 @@ class Reporte {
 
 
     }
+
+
+
 
 
 
