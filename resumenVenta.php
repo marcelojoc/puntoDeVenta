@@ -148,7 +148,7 @@ $reporte=new Reporte($db, $_SESSION['uid'], $hoy, $_SESSION['CASHDESK_ID_BANKACC
                 
                                     <table class="table table-striped table-responsive table-bordered ">
                                         <thead>
-                                            <tr>
+                                            <tr class="info">
                                             <th>ref</th>
                                             <th>Producto</th>
                                             <th>Unidades actuales</th>
@@ -274,7 +274,7 @@ print '
 <h3>Productos vendidos</h3>
 <table class="table table-striped table-responsive table-bordered ">
 <thead>
-<tr>
+<tr class="success">
 <th>ref</th>
 <th>Producto</th>
 <th>Unidades Vendidas</th>
@@ -286,24 +286,37 @@ print '
 
         $vendidas = $reporte->get_cantidad_unidades();
 
-        foreach($vendidas as $vendida)
+        $sin_cargo = $reporte->get_cantidad_unidades(100);
+
+
+        if ($vendidas != null)
         {
 
-            print'<tr><td>'. $vendida ['ref'] .'</td>';
-            print'<td>'. $vendida ['label'] .'</td>';
-            print'<td>'. $vendida ['cantidad'] .'</td></tr>';
+            
+
+            foreach($vendidas as $vendida)
+            {
+
+                print'<tr><td>'. $vendida ['ref'] .'</td>';
+                print'<td>'. $vendida ['label'] .'</td>';
+                print'<td>'. $vendida ['cantidad'] .'</td></tr>';
+
+            }
 
         }
+
+
+
 
     ?>
 </tbody>
 </table>
 
 
-<h3>Productos Sin cargo</h3>
-<table class="table table-striped table-responsive table-bordered ">
+<h3 class="text-center">Productos Sin cargo</h3>
+<table class="table table-striped table-responsive table-bordered  ">
 <thead>
-<tr>
+<tr class="success">
 <th>ref</th>
 <th>Producto</th>
 <th>Unidades Vendidas</th>
@@ -313,30 +326,25 @@ print '
 
     <?php 
 
-        $sin_cargo = $reporte->get_cantidad_unidades(100);
+        
 
-        foreach($sin_cargo as $unidad)
+        if ($sin_cargo != null)
         {
 
-            print'<tr><td>'. $unidad ['ref'] .'</td>';
-            print'<td>'. $unidad ['label'] .'</td>';
-            print'<td>'. $unidad ['cantidad'] .'</td></tr>';
+            foreach($sin_cargo as $unidad)
+            {
+
+                print'<tr><td>'. $unidad ['ref'] .'</td>';
+                print'<td>'. $unidad ['label'] .'</td>';
+                print'<td>'. $unidad ['cantidad'] .'</td></tr>';
+
+            }
 
         }
 
     ?>
 </tbody>
 </table>
-
-
-
-
-
-
-
-
-
-
 
 
 

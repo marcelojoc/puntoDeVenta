@@ -91,8 +91,6 @@ class Reporte {
             $desc= 0;
         }
 
-
-
             if($comprobantes){
 
                     foreach ($productos as $producto)  // bucle iterador de comprobantes
@@ -161,10 +159,6 @@ class Reporte {
             }
         }
 
-        
-        // aqui en base al id del comprobante  saco las unidades vendidas de cada producto
-
-        // SELECT SUM(qty) FROM `llx_facturedet` WHERE `fk_facture` = 105 AND `fk_product`= 2
         return  $total;
 
     }
@@ -306,6 +300,34 @@ function get_comprobantes(){
         return $comprobante_total;
         
     }
+
+
+
+
+
+
+//     function restar_cantidades($array_vendidos, $array_sin_cargo)
+//     {
+
+
+
+// var_dump($array_vendidos);
+
+// var_dump($array_sin_cargo);
+
+//         $limit= count($array_vendidos);
+
+//         for ($i =0 ; $i <= $limit ; $i++)
+//         {
+
+//             $array_vendidos[$i]['cantidad'] = $array_vendidos[$i]['cantidad'] - $array_sin_cargo[$i]['cantidad'];
+
+//         }
+
+//         return $array_vendidos;
+
+
+//     }
 
 
 }
