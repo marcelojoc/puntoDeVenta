@@ -1,6 +1,4 @@
 <?php
-
-
 class Reporte {
 
 	var $db;      // instancia de conexion
@@ -17,7 +15,6 @@ class Reporte {
         $this->caja= $caja;
 		//$this->reponse(null);
 	}
-
 
 
 // este metodo devuelve el valor de movimientos de caja del dia 
@@ -84,47 +81,44 @@ class Reporte {
 
 
 // devuelve las cantidades de cada producto vendidos
-    function get_cantidad_unidades()
+    function get_cantidad_unidades($desc= null)
     {
 
         $comprobantes= $this->get_comprobantes();  //  105,  106,  107, 108
         $productos   = $this->get_all_products();  // lista de productos 
 
+        if($desc == null){
+            $desc= 0;
+        }
 
 
 
             if($comprobantes){
 
-
-                    foreach ($comprobantes as $num_comprobante)
+                    foreach ($productos as $producto)  // bucle iterador de comprobantes
                     
                     {
 
-
                         // un for each con los productos
 
-                            foreach ($productos as $producto)
+                             $total_uni = 0;
+                            foreach ($comprobantes as $num_comprobante)
                             {
 
-
-
-
+                                    $val      = $this->cantidad_vendidas($producto->rowid, $num_comprobante->rowid, $desc );
+                                    $total_uni =  $total_uni+ $val;
 
                             }
-
-
-
-                            //$datos[]=  $num_comprobante->rowid;
-
+                            //cargo el arreglo con cada producto y su cantidad
+                            $datos[]= ['ref'=> $producto->ref,
+                            'label'=> $producto->label,
+                            'cantidad'=> $total_uni
+                            ];
+                            
 
                     }
 
-
-
-
-                        return [ $productos, $datos] ;
-
-
+                        return $datos ;
 
             }
 
@@ -138,45 +132,40 @@ class Reporte {
 
 
 
-<<<<<<< HEAD
+
     function cantidad_vendidas($id_producto, $id_detalle, $descuento = null)
-=======
-    function cantidad_vendidas($productos, $id_detalle, $bandera= null)
->>>>>>> 0fe2e09ed826e6052bc5f09f7a5c0e349441bca2
+
+
     {
 
 
-        if($descuento == null) // este parametro sirve para listar productos sin cargo y vendidos
 
-        {
-
-                $sql='SELECT description, qty, remise_percent FROM
-                  llx_facturedet WHERE
-                  fk_facture = '.$id_detalle.' AND
-                   fk_product = '.$id_producto.' AND
-                   remise_percent = 0';
-
-        }
-        else{
-
-
-                $sql='SELECT description, qty, remise_percent FROM
+               $sql='SELECT SUM(qty) as total  FROM
                   llx_facturedet WHERE
                   fk_facture = '.$id_detalle.' AND
                    fk_product = '.$id_producto.' AND
                    remise_percent ='.$descuento ;
 
+        $restotal = $this->db->query($sql);
+        $num = $this->db->num_rows($restotal);
+        // si devuelve producto  entro al proceso
+        if ($num){
 
+            $obj = $this->db->fetch_object($restotal);
+            if ($obj)
+            {
+                
+                $total= (int)$obj->total ;
+
+
+            }
         }
 
-
-
-
-
+        
         // aqui en base al id del comprobante  saco las unidades vendidas de cada producto
 
         // SELECT SUM(qty) FROM `llx_facturedet` WHERE `fk_facture` = 105 AND `fk_product`= 2
-
+        return  $total;
 
     }
 
@@ -184,7 +173,7 @@ class Reporte {
 
 
 
-
+// devuelve todos los productos en venta
     function get_all_products()
     {
 
@@ -219,8 +208,7 @@ class Reporte {
     }
 
 
-
-
+// devuelve los comprobantes de hoy solo para el vendedor
 function get_comprobantes(){
 
     $sql= "SELECT f.rowid, f.facnumber, 
@@ -290,9 +278,7 @@ function get_comprobantes(){
     }
 
 
-
-
-
+// bueno, trae un entero de la cantidad de comprobantes del dia
     function cantidad_comprobantes(){
 
         $sql_comp = "

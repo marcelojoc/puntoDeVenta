@@ -86,6 +86,8 @@ $hoy =date("Y-m-d");
 // creo una instancia de reporte.. asigno datos de usuario
 $reporte=new Reporte($db, $_SESSION['uid'], $hoy, $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] );
 
+var_dump($reporte->cantidad_vendidas(4, 40,100));
+var_dump($reporte->get_cantidad_unidades());
 
 // $pibe= $reporte->get_monto_caja();
 // print $reporte->get_monto_caja()['total'] ;
@@ -280,16 +282,68 @@ print '
 </thead>
 <tbody>
 
+    <?php 
 
+        $vendidas = $reporte->get_cantidad_unidades();
 
-<tr><td>1</td>
-<td>Speed Unlimited 250 ml x 24 latas</td>
-<td class="text-center">233</td>
+        foreach($vendidas as $vendida)
+        {
 
-</tr>
+            print'<tr><td>'. $vendida ['ref'] .'</td>';
+            print'<td>'. $vendida ['label'] .'</td>';
+            print'<td>'. $vendida ['cantidad'] .'</td></tr>';
 
+        }
+
+    ?>
 </tbody>
 </table>
+
+
+<h3>Productos Sin cargo</h3>
+<table class="table table-striped table-responsive table-bordered ">
+<thead>
+<tr>
+<th>ref</th>
+<th>Producto</th>
+<th>Unidades Vendidas</th>
+</tr>
+</thead>
+<tbody>
+
+    <?php 
+
+        $sin_cargo = $reporte->get_cantidad_unidades(100);
+
+        foreach($sin_cargo as $unidad)
+        {
+
+            print'<tr><td>'. $unidad ['ref'] .'</td>';
+            print'<td>'. $unidad ['label'] .'</td>';
+            print'<td>'. $unidad ['cantidad'] .'</td></tr>';
+
+        }
+
+    ?>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                     <hr>
 
                                     <h4>Monto Total caja  <strong>$ <?php echo $reporte->get_monto_caja()['total']; ?> </strong></h4>
@@ -446,7 +500,7 @@ print '
                                                             $respuesta = 'hay un error en la conexion';
                                                     }
 
-//var_dump($reporte->get_cantidad_unidades());
+
 
 // $datos= $reporte->detalle_comprobante(101);
 
