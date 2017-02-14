@@ -86,8 +86,8 @@ $hoy =date("Y-m-d");
 // creo una instancia de reporte.. asigno datos de usuario
 $reporte=new Reporte($db, $_SESSION['uid'], $hoy, $_SESSION['CASHDESK_ID_BANKACCOUNT_CASH'] );
 
-var_dump($reporte->cantidad_vendidas(4, 40,100));
-var_dump($reporte->get_cantidad_unidades());
+// var_dump($reporte->cantidad_vendidas(4, 40,100));
+// var_dump($reporte->get_cantidad_unidades());
 
 // $pibe= $reporte->get_monto_caja();
 // print $reporte->get_monto_caja()['total'] ;
