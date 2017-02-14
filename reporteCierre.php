@@ -180,6 +180,55 @@ class PDF extends FPDF
 
 
 
+        function carga_vendidas ($header, $obj_detalle)
+        {
+            $productos = $obj_detalle->get_cantidad_unidades(); 
+
+
+
+            $this->Ln(12);
+            // Colores, ancho de línea y fuente en negrita
+            $this->SetFont('Arial','',18);
+            $this->Cell(0,15,"Unidades vendidas",0,1,'L');
+            $this->SetFont('Arial','',8);
+            $this->SetFillColor(255,255,255);
+            $this->SetTextColor(0);
+            $this->SetDrawColor(0,0,0);
+            $this->SetLineWidth(.3);
+            $this->SetFont('','B');
+            // Cabecera
+            $w = array(20, 80, 80, 10);
+            for($i=0;$i<count($header);$i++)
+                $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
+            $this->Ln();
+            // Restauración de colores y fuentes
+            $this->SetFillColor(255,255,255);
+            $this->SetTextColor(0);
+            $this->SetFont('');
+            // traigo el detalle de cada comprobante
+
+                
+            foreach($productos as $row)
+            {
+                $this->Cell($w[0],6,$row['ref'],'LRB',0,'C');
+                $this->Cell($w[1],6,$row ['label'],'LRB',0,'L');
+                $this->Cell($w[2],6,$row['cantidad'],'LRB',0,'C');
+                $this->Ln();
+                
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+
 
 
 }
@@ -222,6 +271,9 @@ if (isset($_SESSION["stock_print"]) && isset($_SESSION["detalle_cliente"])){
         {
             $pdf->carga_detalle($d_cliente, $reporte);
         }
+
+
+        $pdf->carga_vendidas($header, $reporte);
         
         // solo dibuja el total al final de la pagina
         $pdf->cargar_total( $reporte->get_monto_caja()['total']);
