@@ -77,8 +77,6 @@ if ( !$_SESSION['uid'] )
 
 <?php
 
-
-
 $form=new Form($db);
 $productstatic=new Product($db);
 $hoy =date("Y-m-d");
@@ -541,7 +539,7 @@ print '
 
                 <div class="container">
 
-                    <a class="btn btn-primary btn-block" href="reporteCierre.php" >Imprimir cierre<a/>
+                    <a class="btn btn-primary btn-block" id ="id_cierre" href="reporteCierre.php" >Imprimir cierre<a/>
                 </div>
 
                 <hr>
@@ -564,8 +562,12 @@ print '
                     //Ahora preguntamos si realmente existe.
                     if (navigator.vibrate) {
 
+                        // $('#id_cierre').on('click', function(){
 
-                    //daleee();
+                        //     vibrar();
+
+                        // });
+
                     } else {
                     console.log('No puedes hacerlo vibrar' );
                     }
@@ -577,7 +579,7 @@ print '
 
 
 
-                    function daleee(){
+                    function vibrar(){
 
                     //Otra manera es pasar como parametro un arreglo, donde cada posición es una escala pudiendo marcar un ritmo
                     navigator.vibrate(2500);

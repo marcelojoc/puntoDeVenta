@@ -314,7 +314,7 @@ if (isset($_SESSION["stock_print"]) && isset($_SESSION["detalle_cliente"])){
         $pdf->cargar_total( $reporte->get_monto_caja()['total']);
 
 
-        $file_name = str_replace ( " " , "_" , $_SESSION["lastname"] )."_". date("d-m-Y").".pdf";
+        $file_name = str_replace ( " " , "_" , strtolower ($_SESSION["uname"]) )."_". date("d_m_Y").".pdf";
         // guardar en server
         $pdf->Output( "tmp_repo/".$file_name , "F");
 
