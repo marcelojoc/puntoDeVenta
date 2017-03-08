@@ -8,8 +8,6 @@ $langs->load("admin");
 
 $langs->load("cashdesk");
 
-
-
 // Test if user logged
 if ( $_SESSION['uid'] > 0 )
 {

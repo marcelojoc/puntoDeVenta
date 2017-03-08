@@ -183,17 +183,17 @@ function dispararCalendario(){
 
 
 
-/*
-Esto se genera una unica vez en la venta
+	/*
+	Esto se genera una unica vez en la venta
 
-se crea una instancia de almacenamiento local donde va a estar el Stock temporal
-Si esta creada no debe crearla nuevamente, esto debe quedar guardado
-El loop debe escribir en el Option seleccionable de productos en base a lo que ve en el LS.
+	se crea una instancia de almacenamiento local donde va a estar el Stock temporal
+	Si esta creada no debe crearla nuevamente, esto debe quedar guardado
+	El loop debe escribir en el Option seleccionable de productos en base a lo que ve en el LS.
 
 
-Cuando es precionado el boton añadir , debe hacer el descuento en el localStorage
+	Cuando es precionado el boton añadir , debe hacer el descuento en el localStorage
 
- */
+	*/
 
 
 	if(!localStorage.getItem('tmpStock') === true ){ // compruebo la existencia de LS para tmpStock

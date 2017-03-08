@@ -269,17 +269,6 @@ class PDF extends FPDF
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 if (isset($_SESSION["stock_print"]) && isset($_SESSION["detalle_cliente"])){
 
 //if (true){

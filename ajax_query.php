@@ -78,6 +78,8 @@ $respuesta=null;
 
 
 
+//  AQUI verificar
+
 
             $sql= '
                 SELECT p.rowid, p.ref, p.price, p.tva_tx, p.recuperableonly, 
@@ -100,7 +102,7 @@ $respuesta=null;
 
                      /*
                       debo traer el producto, precio, Stock y otros datos
-                      verificar que enga una lista de descuentos y trarla en ese caso
+                      verificar que tenga una lista de descuentos y trarla en ese caso
                       instanciar el objeto facturation  y asignar los valores a cada parametro
                      
                      */
