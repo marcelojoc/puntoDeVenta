@@ -60,6 +60,12 @@ if (GETPOST('action','alpha') == 'set')
 	$res = dolibarr_set_const($db,"CASHDESK_SERVICES", GETPOST('CASHDESK_SERVICES','alpha'),'chaine',0,'',$conf->entity);
 	$res = dolibarr_set_const($db,"CASHDESK_DOLIBAR_RECEIPT_PRINTER", GETPOST('CASHDESK_DOLIBAR_RECEIPT_PRINTER','alpha'),'chaine',0,'',$conf->entity);
 
+// conf de categorias a las cuales aplicar
+	$res = dolibarr_set_const($db,"TPV_DESCUENTO_ESCALONADO", GETPOST('CASHDESK_SERVICES','alpha'),'chaine',0,'',$conf->entity);
+
+
+
+
 	dol_syslog("admin/cashdesk: level ".GETPOST('level','alpha'));
 
 	if (! $res > 0) $error++;
@@ -105,6 +111,8 @@ print '<tr '.$bc[$var].'><td width=\"50%\">'.$langs->trans("CashDeskThirdPartyFo
 print '<td colspan="2">';
 print $form->select_company($conf->global->CASHDESK_ID_THIRDPARTY,'socid','s.client in (1,3)',1,0,1,array(),0);
 print '</td></tr>';
+
+
 if (! empty($conf->banque->enabled))
 {
 	$var=!$var;
@@ -157,6 +165,38 @@ if (! empty($conf->stock->enabled))
 	{
 		print $langs->trans("StockDecreaseForPointOfSaleDisabled");
 	}
+
+
+// configuracion descuento escalonado
+	$disabled=$conf->global->TPV_DESCUENTO_ESCALONADO;
+	
+	$var=!$var;
+	print '<tr '.$bc[$var].'><td> Aplicar descuento escalonado a la categoria: </td>';	// Force warehouse (this is not a default value)
+	print '<td colspan="2">';
+	if ($disabled != "")
+	{
+		// print $formproduct->selectWarehouses($conf->global->CASHDESK_ID_WAREHOUSE,'CASHDESK_ID_WAREHOUSE','',1,$disabled);
+		// print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'">('.$langs->trans("Create").')</a>';
+
+		print'<option value="-1"></option>
+<option value="1143"> A.F VINOS (A.F VINOS)</option><option value="2542"> ABALLAY ROSA (ABALLAY ROSA)</option><option value="168"> ABALLAY SERGIO (ABALLAY SERGIO)</option><option value="1419"> ABARCA JOSE (ABARCA JOSE)</option><option value="2378"> ABBONA ALEJANDRO (ABBONA ALEJANDRO)</option><option value="1297"> ABIGAIL CAMILA (ABIGAIL CAMILA)</option><option value="2482"> ABIHAGLLE JUAN (ABIHAGLLE JUAN)</option><option value="630"> ABRAHAM ROSA (ABRAHAM ROSA)</option><option value="617"> ABRAHAM ROSA RAQUEL (ABRAHAM ROSA RAQUEL)</option><option value="692"> ABRAHAN ARIEL (ABRAHAN ARIEL)</option>
+<option value="1568"> ABRAHAN MARINA (ABRAHAN MARINA)</option>';
+
+
+
+
+	}
+	else
+	{
+		print $langs->trans("StockDecreaseForPointOfSaleDisabled");
+	}
+
+
+
+
+
+
+
 	print '</td></tr>';
 }
 

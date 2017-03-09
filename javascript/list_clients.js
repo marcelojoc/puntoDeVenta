@@ -50,8 +50,6 @@ function limpiarPanel(){
 
 
 
-
-
 function get_MyClient(param= null){
     
 	$.ajax(
@@ -132,10 +130,9 @@ var tmpValor= "";
 
 				}
 
-
 		});
-limpiarPanel();     // limpio el panel de abajo
-cargarComponent(lista) // cargo el select con los datos nuevos
+	limpiarPanel();     // limpio el panel de abajo
+	cargarComponent(lista) // cargo el select con los datos nuevos
 
 }
 

@@ -36,7 +36,6 @@ if ( !$_SESSION['uid'] )
             $_SESSION["PRICE_LEVEL"]= 0;
 
         }
-    
 
 ?>
 

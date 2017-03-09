@@ -12,42 +12,15 @@ dato  trae el parametro
 
 $consulta = GETPOST("consulta", "alpha");
 $dato     = GETPOST("dato", "alpha");
-
-
 $codVendedor= $_SESSION['codVendedor'];
 
 
-// $consulta = $_GET["consulta"];
-// $dato     =  $_GET["dato"];
-
-
-
-
-
-// $resql=$db->query("select * from llx_societe where rowid = 116");
-
-//  if ($resql)
-//  {
-//          $num = $db->num_rows($resql);
-//          $i = 0;
-//          if ($num)
-//          {
-//                  while ($i < $num)
-//                  {
-//                          $obj = $db->fetch_object($resql);
-//                          if ($obj)
-//                          {
-//                                  // You can use here results
-//                                  $respuesta.= $obj->nom;
-//                                  //print $obj->name_alias;
-//                          }
-//                          $i++;
-//                  }
-//          }
-//  }else{
-
-// 	 $respuesta = 'hay un error en la conexion';
-//  }
+// ++++++++++++ test
+// $consulta = 'get_valProduct';
+// $dato     = 3;
+// $_SESSION["PRICE_LEVEL"]=1;
+// $_SESSION['CASHDESK_ID_WAREHOUSE']=8;
+// $codVendedor= 1;
 
 $respuesta=null;
 
@@ -77,9 +50,26 @@ $respuesta=null;
         }
 
 
+        if ($conf->global->PRODUIT_MULTIPRICES == 1 )    // condicion para determinar multiples precios 
+        {
 
-//  AQUI verificar
+            
+            $sql= '
+                SELECT p.fk_product AS rowid,  p.price, p.tva_tx, p.recuperableonly,
+                ps.reel FROM llx_product_price AS p 
+                LEFT JOIN llx_product_stock AS ps 
+                ON p.fk_product  = ps.fk_product 
+                AND ps.fk_entrepot = '. $_SESSION['CASHDESK_ID_WAREHOUSE'] .'
+                WHERE  p.fk_product = '. $dato .' 
+                AND price_level = '. $_SESSION["PRICE_LEVEL"] .'
+                ORDER BY date_price DESC LIMIT 1   
+            ';
 
+
+
+        }
+        else
+        {
 
             $sql= '
                 SELECT p.rowid, p.ref, p.price, p.tva_tx, p.recuperableonly, 
@@ -90,6 +80,8 @@ $respuesta=null;
                 WHERE p.entity IN (1) 
                 AND p.rowid ='. $dato 
             ;
+
+        }
 
            
              $resql=$db->query($sql);  //Aqui tengo los datos del producto seleccionado
