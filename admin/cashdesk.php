@@ -178,9 +178,62 @@ if (! empty($conf->stock->enabled))
 		// print $formproduct->selectWarehouses($conf->global->CASHDESK_ID_WAREHOUSE,'CASHDESK_ID_WAREHOUSE','',1,$disabled);
 		// print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'">('.$langs->trans("Create").')</a>';
 
-		print'<option value="-1"></option>
+		print'
+		<select id="socid" class="flat minwidth100" name="socid">
+		<option value="-1"></option>
 <option value="1143"> A.F VINOS (A.F VINOS)</option><option value="2542"> ABALLAY ROSA (ABALLAY ROSA)</option><option value="168"> ABALLAY SERGIO (ABALLAY SERGIO)</option><option value="1419"> ABARCA JOSE (ABARCA JOSE)</option><option value="2378"> ABBONA ALEJANDRO (ABBONA ALEJANDRO)</option><option value="1297"> ABIGAIL CAMILA (ABIGAIL CAMILA)</option><option value="2482"> ABIHAGLLE JUAN (ABIHAGLLE JUAN)</option><option value="630"> ABRAHAM ROSA (ABRAHAM ROSA)</option><option value="617"> ABRAHAM ROSA RAQUEL (ABRAHAM ROSA RAQUEL)</option><option value="692"> ABRAHAN ARIEL (ABRAHAN ARIEL)</option>
-<option value="1568"> ABRAHAN MARINA (ABRAHAN MARINA)</option>';
+<option value="1568"> ABRAHAN MARINA (ABRAHAN MARINA)</option></select>';
+
+
+
+        // $sqlTotal_comp = "
+        
+        // SELECT SUM(total) AS total
+        // FROM `llx_facture` AS f   
+        // INNER JOIN llx_societe AS s 
+        // ON f.fk_soc = s.rowid 
+        // WHERE  f.datef = '".$this->hoy ."' AND f.fk_user_author =".$this->vendedor;
+        
+        // $restotal = $this->db->query($sqlTotal_comp);
+        // $num = $this->db->num_rows($restotal);
+        // // si devuelve producto  entro al proceso
+        // if ($num)
+        // {
+
+        //     $obj = $this->db->fetch_object($restotal);
+        //     if ($obj)
+        //     {
+                
+        //         $total= round($obj->total,2);
+        //         // aqui guardo el valor total de ventas
+        //         $comprobante_total=array('total'=> $total);
+        //     }
+        // }
+
+        // return $comprobante_total;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
