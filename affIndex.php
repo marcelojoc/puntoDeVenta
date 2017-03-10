@@ -17,12 +17,15 @@ if ( !$_SESSION['uid'] )
 	$company->fetch($_SESSION["CASHDESK_ID_THIRDPARTY"]);
 
 
+
         if(!isset($_SESSION['CASHDESK_ID_THIRDPARTY'])){  // si entra y no hay cliente asignaod vuelve al form de seleccion
 
         $redirection='select_client.php';
-        header('Location: '.$redirection);
+            header('Location: '.$redirection);
         }
 
+
+            $_SESSION['OPCIONES']= $company->array_options['options_opciones'];
 
 
         if ($conf->global->PRODUIT_MULTIPRICES == 1)    // condicion para determinar multiples precios 
@@ -37,6 +40,7 @@ if ( !$_SESSION['uid'] )
 
         }
 
+var_dump($company);
 ?>
 
 <!DOCTYPE html>

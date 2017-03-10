@@ -171,7 +171,7 @@ if (! empty($conf->stock->enabled))
 	$disabled=$conf->global->TPV_DESCUENTO_ESCALONADO;
 	
 	$var=!$var;
-	print '<tr '.$bc[$var].'><td> Aplicar descuento escalonado a la categoria: </td>';	// Force warehouse (this is not a default value)
+	print '<tr '.$bc[$var].'><td> Aplicar descuento escalonado al Area : </td>';
 	print '<td colspan="2">';
 	if ($disabled != "")
 	{
@@ -181,34 +181,48 @@ if (! empty($conf->stock->enabled))
 		print'
 		<select id="socid" class="flat minwidth100" name="socid">
 		<option value="-1"></option>
-<option value="1143"> A.F VINOS (A.F VINOS)</option><option value="2542"> ABALLAY ROSA (ABALLAY ROSA)</option><option value="168"> ABALLAY SERGIO (ABALLAY SERGIO)</option><option value="1419"> ABARCA JOSE (ABARCA JOSE)</option><option value="2378"> ABBONA ALEJANDRO (ABBONA ALEJANDRO)</option><option value="1297"> ABIGAIL CAMILA (ABIGAIL CAMILA)</option><option value="2482"> ABIHAGLLE JUAN (ABIHAGLLE JUAN)</option><option value="630"> ABRAHAM ROSA (ABRAHAM ROSA)</option><option value="617"> ABRAHAM ROSA RAQUEL (ABRAHAM ROSA RAQUEL)</option><option value="692"> ABRAHAN ARIEL (ABRAHAN ARIEL)</option>
+<option value="1143"> A.F VINOS (A.F VINOS)</option>
+<option value="2542"> ABALLAY ROSA (ABALLAY ROSA)</option>
+<option value="168"> ABALLAY SERGIO (ABALLAY SERGIO)</option>
+<option value="1419"> ABARCA JOSE (ABARCA JOSE)</option>
+<option value="2378"> ABBONA ALEJANDRO (ABBONA ALEJANDRO)</option>
+<option value="1297"> ABIGAIL CAMILA (ABIGAIL CAMILA)</option>
+<option value="2482"> ABIHAGLLE JUAN (ABIHAGLLE JUAN)</option>
+<option value="630"> ABRAHAM ROSA (ABRAHAM ROSA)</option>
+<option value="617"> ABRAHAM ROSA RAQUEL (ABRAHAM ROSA RAQUEL)</option>
+<option value="692"> ABRAHAN ARIEL (ABRAHAN ARIEL)</option>
 <option value="1568"> ABRAHAN MARINA (ABRAHAN MARINA)</option></select>';
 
+// $disabled  es el valor que tiene la constante para configurarla
 
+$paramentro= 'Area';
 
-        // $sqlTotal_comp = "
+$sql_param= "SELECT param FROM llx_extrafields WHERE elementtype = 'societe' AND label = '" .$paramentro."'";
+
         
-        // SELECT SUM(total) AS total
-        // FROM `llx_facture` AS f   
-        // INNER JOIN llx_societe AS s 
-        // ON f.fk_soc = s.rowid 
-        // WHERE  f.datef = '".$this->hoy ."' AND f.fk_user_author =".$this->vendedor;
-        
-        // $restotal = $this->db->query($sqlTotal_comp);
-        // $num = $this->db->num_rows($restotal);
-        // // si devuelve producto  entro al proceso
-        // if ($num)
-        // {
+        $loadOption = $db->query($sql_param);
+        $num = $db->num_rows($loadOption);
+        // si devuelve producto  entro al proceso
+		
+        if ($num)
+        {
 
-        //     $obj = $this->db->fetch_object($restotal);
-        //     if ($obj)
-        //     {
+            $obj = $db->fetch_object($loadOption);
+            if ($obj)
+            {
+				var_dump(unserialize($obj->param));
                 
-        //         $total= round($obj->total,2);
-        //         // aqui guardo el valor total de ventas
-        //         $comprobante_total=array('total'=> $total);
-        //     }
-        // }
+                // $total= round($obj->total,2);
+                // // aqui guardo el valor total de ventas
+                // $comprobante_total=array('total'=> $total);
+            }
+        }
+		else
+		{
+
+
+
+		}
 
         // return $comprobante_total;
 
@@ -243,10 +257,6 @@ if (! empty($conf->stock->enabled))
 	{
 		print $langs->trans("StockDecreaseForPointOfSaleDisabled");
 	}
-
-
-
-
 
 
 
