@@ -25,7 +25,17 @@ if ( !$_SESSION['uid'] )
         }
 
 
-            $_SESSION['OPCIONES']= $company->array_options['options_opciones'];
+            $area_asociado = $company->array_options['options_opciones'];  // cargo en la sesion Opciones los campos extra 
+            $area_conf     = $conf->global->TPV_DESCUENTO_ESCALONADO;     // cargo en la sesion del area que debo afectar.. 
+
+
+        if($area_asociado == $area_conf  || $area_conf == -1  )
+        {
+             $_SESSION['OPCIONES']= true;
+        }else
+        {
+             $_SESSION['OPCIONES']= false;
+        }
 
 
         if ($conf->global->PRODUIT_MULTIPRICES == 1)    // condicion para determinar multiples precios 
@@ -40,7 +50,15 @@ if ( !$_SESSION['uid'] )
 
         }
 
-var_dump($company);
+
+
+var_dump($area_asociado);
+var_dump($area_conf);
+var_dump( $_SESSION['OPCIONES']);
+var_dump($_SESSION["PRICE_LEVEL"]);
+
+
+
 ?>
 
 <!DOCTYPE html>

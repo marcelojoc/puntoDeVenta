@@ -61,7 +61,7 @@ if (GETPOST('action','alpha') == 'set')
 	$res = dolibarr_set_const($db,"CASHDESK_DOLIBAR_RECEIPT_PRINTER", GETPOST('CASHDESK_DOLIBAR_RECEIPT_PRINTER','alpha'),'chaine',0,'',$conf->entity);
 
 // conf de categorias a las cuales aplicar
-	$res = dolibarr_set_const($db,"TPV_DESCUENTO_ESCALONADO", GETPOST('CASHDESK_SERVICES','alpha'),'chaine',0,'',$conf->entity);
+	$res = dolibarr_set_const($db,"TPV_DESCUENTO_ESCALONADO", GETPOST('TPV_DESCUENTO_ESCALONADO','int') ,'chaine',0,'',$conf->entity);
 
 
 
@@ -178,26 +178,12 @@ if (! empty($conf->stock->enabled))
 		// print $formproduct->selectWarehouses($conf->global->CASHDESK_ID_WAREHOUSE,'CASHDESK_ID_WAREHOUSE','',1,$disabled);
 		// print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'">('.$langs->trans("Create").')</a>';
 
-		print'
-		<select id="socid" class="flat minwidth100" name="socid">
-		<option value="-1"></option>
-<option value="1143"> A.F VINOS (A.F VINOS)</option>
-<option value="2542"> ABALLAY ROSA (ABALLAY ROSA)</option>
-<option value="168"> ABALLAY SERGIO (ABALLAY SERGIO)</option>
-<option value="1419"> ABARCA JOSE (ABARCA JOSE)</option>
-<option value="2378"> ABBONA ALEJANDRO (ABBONA ALEJANDRO)</option>
-<option value="1297"> ABIGAIL CAMILA (ABIGAIL CAMILA)</option>
-<option value="2482"> ABIHAGLLE JUAN (ABIHAGLLE JUAN)</option>
-<option value="630"> ABRAHAM ROSA (ABRAHAM ROSA)</option>
-<option value="617"> ABRAHAM ROSA RAQUEL (ABRAHAM ROSA RAQUEL)</option>
-<option value="692"> ABRAHAN ARIEL (ABRAHAN ARIEL)</option>
-<option value="1568"> ABRAHAN MARINA (ABRAHAN MARINA)</option></select>';
 
 // $disabled  es el valor que tiene la constante para configurarla
 
-$paramentro= 'Area';
+	$paramentro= 'Area';
 
-$sql_param= "SELECT param FROM llx_extrafields WHERE elementtype = 'societe' AND label = '" .$paramentro."'";
+	$sql_param= "SELECT param FROM llx_extrafields WHERE elementtype = 'societe' AND label = '" .$paramentro."'";
 
         
         $loadOption = $db->query($sql_param);
@@ -209,24 +195,38 @@ $sql_param= "SELECT param FROM llx_extrafields WHERE elementtype = 'societe' AND
 
             $obj = $db->fetch_object($loadOption);
             if ($obj)
+
             {
-				var_dump(unserialize($obj->param));
-                
-                // $total= round($obj->total,2);
-                // // aqui guardo el valor total de ventas
-                // $comprobante_total=array('total'=> $total);
+				$area_conf     = $conf->global->TPV_DESCUENTO_ESCALONADO;
+                print'<select id="TPV_DESCUENTO_ESCALONADO" class="flat minwidth100" name="TPV_DESCUENTO_ESCALONADO">'; // inicio del select
+				$areas = unserialize($obj->param);
+					print'<option value="-1 "> Afectar a todos los Clientes</option>';
+				foreach($areas['options'] as $id => $area)
+				{
+
+					if( $id == $area_conf) // estamos en presencia de la variable configurada que hay que seleccionar
+					{
+						print'<option value="'.$id.' " selected="" > '.$area.' </option>';
+					}
+					else
+					{
+
+						print'<option value="'.$id.' "> '.$area.' </option>';
+					}
+					
+
+				}
+
             }
         }
 		else
 		{
 
-
+			print'<option value="0 "> Campos extra No asignados </option>';
 
 		}
 
-        // return $comprobante_total;
-
-    
+        print '</select>';    // fin del select
 
 
 

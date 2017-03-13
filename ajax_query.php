@@ -50,7 +50,7 @@ $respuesta=null;
         }
 
 
-        if ($conf->global->PRODUIT_MULTIPRICES == 1 )    // condicion para determinar multiples precios 
+        if ($conf->global->PRODUIT_MULTIPRICES == 1  )    // condicion para determinar multiples precios 
         {
 
             
@@ -98,7 +98,19 @@ $respuesta=null;
                       instanciar el objeto facturation  y asignar los valores a cada parametro
                      
                      */
-                        $tabSql= 'SELECT * FROM `llx_desc` WHERE `fk_product` = '.$dato ;  // crea la consulta la lista de descuentos
+
+                        if($conf->global->PRODUIT_MULTIPRICES == 1)
+                        {
+                                //Busca la tabla de des cuentos para multiprecion por %
+                                $tabSql= 'SELECT * FROM `llx_desc` WHERE `fk_product` = '.$dato . ' AND tag = "%"';  
+
+                        }
+                        else
+                        {
+                                //Busca la tabla de des cuentos para multiprecion por precio unico
+                                $tabSql= 'SELECT * FROM `llx_desc` WHERE `fk_product` = '.$dato . ' AND tag = "."';  // crea la consulta la lista de descuentos
+                        }
+                        
 
                         $re_tabsql= $db->query($tabSql);  // consulto  si existen descuentos 
 
@@ -106,7 +118,7 @@ $respuesta=null;
 
                         $matriz_desc= array();
 
-                        if($tabla >0){    // si hay tabla devolver la matriz de descuentos cargada
+                        if($tabla >0  && $_SESSION['OPCIONES'] ){    // si hay tabla devolver la matriz de descuentos cargada
 
                                     $i=0;
 
@@ -120,7 +132,8 @@ $respuesta=null;
                                                                         'list' => $i,
                                                                         'min'=>$obj->linf,
                                                                         'max'=> $obj->lsup,
-                                                                        'descuento'=> $obj->descuento
+                                                                        'descuento'=> $obj->descuento,
+                                                                        'tag'    => $obj->tag
                                                 );
                                                 
                                         }
@@ -135,8 +148,8 @@ $respuesta=null;
                                                 'list'     => "0",
                                                 'min'       => "0",
                                                 'max'       => "max",
-                                                'descuento' => '0'
-
+                                                'descuento' => '0',
+                                                'tag'    => '.'
                                 );
 
                         }

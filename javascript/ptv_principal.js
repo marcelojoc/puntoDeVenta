@@ -328,11 +328,31 @@ function dispararCalendario(){
 		}
 			if(e >= parseInt(value.min) && e <= parseInt(value.max)){
 
+
+
+				if(value.tag == '.')
+				{
+
 					if(value.descuento !=0){
 
 						$('#txtPunit').val(value.descuento);
 						setValorTabla(value.descuento);
 					}
+
+				}else{
+
+						if(value.descuento !=0){
+						// aqui proceso el valor que viene de la lista de precio y el descuento asignado por cantidad
+						var precioDescuento = descuentoPorcentaje(parseFloat($('#hiddenpUnit').val()), value.descuento )
+
+						$('#txtPunit').val(precioDescuento);
+						setValorTabla(precioDescuento);
+					}
+
+
+				}
+
+
 			}
 		
 		});
@@ -340,6 +360,17 @@ function dispararCalendario(){
 		calcularTotal();
 	}
 
+
+
+	function descuentoPorcentaje (valorUnidad, porcentaje)
+	{
+
+
+
+// hacer esta funcion AHORAAAA
+
+
+	}
 
 
 	function calcularTotal(){
