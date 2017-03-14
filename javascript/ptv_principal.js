@@ -364,12 +364,18 @@ function dispararCalendario(){
 
 	function descuentoPorcentaje (valorUnidad, porcentaje)
 	{
+		var precio_con_desc = 0;
 
+		if(porcentaje > 0)
+		{
 
+			var descuento = parseFloat(porcentaje/100)
+			var valor     = parseFloat(valorUnidad * descuento);
 
-// hacer esta funcion AHORAAAA
-
-
+			precio_con_desc = valorUnidad - valor;
+		}
+		
+		return precio_con_desc.toFixed(2);
 	}
 
 

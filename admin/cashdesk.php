@@ -42,6 +42,8 @@ $langs->load("admin");
 $langs->load("cashdesk");
 
 
+
+
 /*
  * Actions
  */
@@ -61,8 +63,44 @@ if (GETPOST('action','alpha') == 'set')
 	$res = dolibarr_set_const($db,"CASHDESK_DOLIBAR_RECEIPT_PRINTER", GETPOST('CASHDESK_DOLIBAR_RECEIPT_PRINTER','alpha'),'chaine',0,'',$conf->entity);
 
 // conf de categorias a las cuales aplicar
-	$res = dolibarr_set_const($db,"TPV_DESCUENTO_ESCALONADO", GETPOST('TPV_DESCUENTO_ESCALONADO','int') ,'chaine',0,'',$conf->entity);
+	//$res = dolibarr_set_const($db,"TPV_DESCUENTO_ESCALONADO", GETPOST('TPV_DESCUENTO_ESCALONADO','int') ,'chaine',0,'',$conf->entity);
 
+
+
+	$area = $_POST['TPV_DESCUENTO_ESCALONADO'];
+
+	($area =="") ? $area = -1 : $area = $area;  // si esta vacia la variable asigno inmediatamente -1 para afectar a todos
+
+
+	$db->begin(); // Debut transaction
+
+		if(is_null($conf->global->TPV_DESCUENTO_ESCALONADO))  // si no existe este parametro  lo debo crear
+		{
+
+			$resp = $db->query("INSERT INTO llx_const(rowid,`name`,`entity`,`value`,`type`,`visible`,`note`,`tms`) 
+						VALUES ( NULL,'TPV_DESCUENTO_ESCALONADO','1','".$area."','chaine','0',NULL,CURRENT_TIMESTAMP)");
+
+		}
+		else     // si existe esta constante la modifico
+
+		{
+			$resp = $db->query("UPDATE llx_const SET value= '".$area."' WHERE name='TPV_DESCUENTO_ESCALONADO'");
+			
+		}
+
+
+		// verifico si la consulta esta bien  para hacerla
+		if ($resp)
+		{
+			$db->commit();  // Valide
+			
+		}
+		else
+		{
+			$db->rollback();  // Annule
+			print dol_print_error($db);
+			
+		}
 
 
 
@@ -79,7 +117,11 @@ if (GETPOST('action','alpha') == 'set')
     {
         $db->rollback();
 	    setEventMessages($langs->trans("Error"), null, 'errors');
+
+
     }
+
+
 }
 
 /*
@@ -169,12 +211,10 @@ if (! empty($conf->stock->enabled))
 
 // configuracion descuento escalonado
 	$disabled=$conf->global->TPV_DESCUENTO_ESCALONADO;
-	
 	$var=!$var;
 	print '<tr '.$bc[$var].'><td> Aplicar descuento escalonado al Area : </td>';
 	print '<td colspan="2">';
-	if ($disabled != "")
-	{
+
 		// print $formproduct->selectWarehouses($conf->global->CASHDESK_ID_WAREHOUSE,'CASHDESK_ID_WAREHOUSE','',1,$disabled);
 		// print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&backtopage='.urlencode($_SERVER["PHP_SELF"]).'">('.$langs->trans("Create").')</a>';
 
@@ -197,25 +237,43 @@ if (! empty($conf->stock->enabled))
             if ($obj)
 
             {
+
+
 				$area_conf     = $conf->global->TPV_DESCUENTO_ESCALONADO;
+
                 print'<select id="TPV_DESCUENTO_ESCALONADO" class="flat minwidth100" name="TPV_DESCUENTO_ESCALONADO">'; // inicio del select
 				$areas = unserialize($obj->param);
-					print'<option value="-1 "> Afectar a todos los Clientes</option>';
-				foreach($areas['options'] as $id => $area)
+
+				// esta es una opcion que no puede estar en la base de datos  
+				if ( $area_conf == -1)
 				{
 
-					if( $id == $area_conf) // estamos en presencia de la variable configurada que hay que seleccionar
-					{
-						print'<option value="'.$id.' " selected="" > '.$area.' </option>';
-					}
-					else
-					{
-
-						print'<option value="'.$id.' "> '.$area.' </option>';
-					}
-					
-
+					print'<option value="-1" selected="" > Afectar a todos los Clientes</option>';
 				}
+				else{
+
+					print'<option value="-1"> Afectar a todos los Clientes</option>';
+				}
+
+
+					// recorro  el arreglo y dejo seleccionada la opcion que esta seteada	
+					foreach($areas['options'] as $id => $area)
+					{
+
+						// seleccionar e
+						if( $id == $area_conf) // estamos en presencia de la variable configurada que hay que seleccionar
+						{
+
+							print'<option value="'.$id.'" selected="" > '.$area.' </option>';
+						}
+						else
+						{
+
+							print'<option value="'.$id.'"> '.$area.' </option>';
+						}
+						
+
+					}
 
             }
         }
@@ -227,36 +285,6 @@ if (! empty($conf->stock->enabled))
 		}
 
         print '</select>';    // fin del select
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	}
-	else
-	{
-		print $langs->trans("StockDecreaseForPointOfSaleDisabled");
-	}
 
 
 

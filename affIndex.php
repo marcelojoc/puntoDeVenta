@@ -27,6 +27,8 @@ if ( !$_SESSION['uid'] )
 
             $area_asociado = $company->array_options['options_opciones'];  // cargo en la sesion Opciones los campos extra 
             $area_conf     = $conf->global->TPV_DESCUENTO_ESCALONADO;     // cargo en la sesion del area que debo afectar.. 
+            $area_conf     =(is_null($area_conf)) ? $area_conf  = '-1' : $area_conf  = $area_conf ;  // si esta vacia la variable asigno inmediatamente -1 para afectar a todos
+
 
 
         if($area_asociado == $area_conf  || $area_conf == -1  )
@@ -52,10 +54,10 @@ if ( !$_SESSION['uid'] )
 
 
 
-var_dump($area_asociado);
-var_dump($area_conf);
-var_dump( $_SESSION['OPCIONES']);
-var_dump($_SESSION["PRICE_LEVEL"]);
+ var_dump($area_asociado);
+ var_dump($area_conf);
+
+var_dump($_SESSION['OPCIONES']);
 
 
 
