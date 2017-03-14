@@ -54,10 +54,10 @@ if ( !$_SESSION['uid'] )
 
 
 
- var_dump($area_asociado);
- var_dump($area_conf);
+//  var_dump($area_asociado);
+//  var_dump($area_conf);
 
-var_dump($_SESSION['OPCIONES']);
+// var_dump($_SESSION['OPCIONES']);
 
 
 
