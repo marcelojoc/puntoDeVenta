@@ -278,15 +278,25 @@ $respuesta=null;
 
         case 'getAll':        // busca clientes de acuerdo al codigo asociado al vendedor
 
+        $state= (is_null($conf->global->GET_LOCATION_CUSTOMERS) || ($conf->global->GET_LOCATION_CUSTOMERS == 1)); // me fijo si esta seteado el parametro
+        //
 
+	if($state){
+
+	        $add_string='';
+	}else{
+
+                $add_string= ',llx_societe_extrafields.lat AS latitud,llx_societe_extrafields.lon';
+
+        }
                 if( $codVendedor <= 0){
 
                         $sql="
                                 SELECT  llx_societe.code_client, 
                                 llx_societe.rowid , 
-                                llx_societe.nom, llx_societe.address
+                                llx_societe.nom, llx_societe.address ".$add_string." 
 
-                                FROM llx_societe
+                                FROM llx_societe, llx_societe_extrafields
 
                                 WHERE code_client != 'NULL'  
                                 ORDER BY code_client ASC
@@ -298,8 +308,7 @@ $respuesta=null;
                         
                         SELECT  llx_societe.code_client, 
                         llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address
-
+                        llx_societe.nom, llx_societe.address".$add_string." 
                         FROM    llx_societe, llx_societe_extrafields
                         WHERE   llx_societe_extrafields.vendedor = $codVendedor
                         AND     llx_societe.rowid = llx_societe_extrafields.fk_object
@@ -323,12 +332,29 @@ $respuesta=null;
                                         if ($obj)
                                         {
                                                 // You can use here results
-                                                $respuesta[]= array(
-                                                                        'id_cliente'=> $obj->rowid,
-                                                                        'cod_cliente'=>$obj->code_client,
-                                                                        'nombre'=> $obj->nom,
-                                                                        'direccion'=> $obj->address,
-                                                );
+
+                                                if($state){
+
+
+                                                        $respuesta[]= array(
+                                                                'id_cliente'    => $obj->rowid,
+                                                                'cod_cliente'   =>$obj->code_client,
+                                                                'nombre'        => $obj->nom,
+                                                                'direccion'     => $obj->address
+                                                        );
+
+                                                }else{
+
+                                                        $respuesta[]= array(
+                                                                'id_cliente'    => $obj->rowid,
+                                                                'cod_cliente'   =>$obj->code_client,
+                                                                'nombre'        => $obj->nom,
+                                                                'direccion'     => $obj->address,
+                                                                'lat'           => $obj->latitud,
+                                                                'lon'           => $obj->longitud,
+                                                        );
+                                                }
+
                                                 //print $obj->name_alias;
                                         }
                                         $i++;

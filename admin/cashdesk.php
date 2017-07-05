@@ -34,15 +34,14 @@ if (! empty($_REQUEST['CASHDESK_ID_THIRDPARTY_id']))
 	$_REQUEST['CASHDESK_ID_THIRDPARTY'] = GETPOST('CASHDESK_ID_THIRDPARTY_id','alpha');
 }
 
+
+
 // Security check
 if (!$user->admin)
 accessforbidden();
 
 $langs->load("admin");
 $langs->load("cashdesk");
-
-
-
 
 /*
  * Actions
@@ -132,6 +131,12 @@ $form=new Form($db);
 $formproduct=new FormProduct($db);
 
 llxHeader('',$langs->trans("CashDeskSetup"));
+	// var_dump($conf->global->GET_LOCATION_CUSTOMERS);
+
+	// if(is_null($conf->global->GET_LOCATION_CUSTOMERS)){
+
+	// print'variable no seteada';
+	// }
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans("CashDeskSetup"),$linkback,'title_setup');
@@ -290,6 +295,19 @@ if (! empty($conf->stock->enabled))
 
 	print '</td></tr>';
 }
+
+// todo =================== opcion configurable de activar geolocalizacion de clientes
+print '<tr '.$bc[$var].'><td>Activar geolocalizacion por cliente con venta </td>';
+	print '<td colspan="2">';
+	print'<select class="flat" id="GET_LOCATION_CUSTOMERS" name="GET_LOCATION_CUSTOMERS">
+<option value="1">Sí</option>
+<option value="0" selected="">No</option>
+</select>';
+	print '</td></tr>';
+
+
+//=====================================================
+
 
 if (! empty($conf->service->enabled))
 {

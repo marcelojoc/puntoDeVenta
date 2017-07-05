@@ -149,7 +149,12 @@ if ( !$_SESSION['uid'] )
 
   </div>
 
+<?php  $obj_facturation = unserialize($_SESSION['serObjFacturation']);
 
+
+        var_dump($_SESSION['poscart']);
+
+   ?>
 
 <form id="frmQte"  method="post" action="facturation_verif.php?action=ajout_article" autocomplete="off"  onsubmit="return valNums($('#txtcantidad'))" >
         <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->

@@ -83,6 +83,7 @@ switch ($action)
 
 
 		$obj_facturation->prixTotalTtc($_POST['hiddentxttotal']);
+		//$obj_facturation->prixTotalTtc(0);
 	
 
 
@@ -355,14 +356,14 @@ if ($action == 'crear_remito' && $user->rights->commande->creer)
 
 
 						$updatePrice = "UPDATE `llx_commande` SET `total_ht`='$totalPrice',`total_ttc`='$totalPrice' WHERE `rowid`='$object_id'"; 
-					
+
 						$db->begin();
 
 						$db->query($updatePrice);
 
 						$db->commit(); // Valide
 
-//==================================================================================0
+						//==================================================================================0
 
 								$idwarehouse = $_SESSION['CASHDESK_ID_WAREHOUSE'];
 

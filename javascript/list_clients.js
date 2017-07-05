@@ -17,7 +17,7 @@ localStorage.removeItem('tmpStock');
 		
 	// 	localStorage.removeItem('tmpStock');
 	// }
-
+geoCliente.requestPosition();
 
 });
 
@@ -37,7 +37,27 @@ rellenarPanel (codClient.split('-'));
 function rellenarPanel(datos){    // funcion encargada de lipiar el panel y re escribir los datos
 
 limpiarPanel();
-$('#datosPanel').html('<p><i class="glyphicon glyphicon-tags"></i> codigo: ' + datos[0] +' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1] +'</p>   <p><i class="glyphicon glyphicon-home"></i> Direccion: '+ datos[2] +'</p>');
+
+var panelString = '<p><i class="glyphicon glyphicon-tags"></i> codigo: ' + datos[0];
+
+	panelString += ' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1];
+	panelString += '</p>  <p><i class="glyphicon glyphicon-home"></i> Direccion: '+ datos[2] +'</p>';
+
+	if(datos[3] === undefined){
+
+		panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="0">';
+		panelString += '<input type="hidden" name="set_lat" id="set_lon" value ="0">';
+
+	}else{
+
+		panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="'+ datos[3] +'">';
+		panelString += '<input type="hidden" name="set_lon" id="set_lon" value ="'+ datos[4] +'">';
+
+	}
+
+
+
+	$('#datosPanel').html(panelString);
 
 }
 
@@ -109,14 +129,14 @@ var buscar= filtro.toUpperCase();
 var tmpValor= "";
 
 		$.each(todo, function(id,value){
-/**
- * el valor debo pasarlo a String 
- * Luego a mayuscula
- * busco en el arreglo el criterios
- * si se cumple lo guardo al objeto en la lista
- * si no se cumple borro la variable temporal String y paso al siguiente registro
- * 
- */
+		/**
+		 * el valor debo pasarlo a String 
+		 * Luego a mayuscula
+		 * busco en el arreglo el criterios
+		 * si se cumple lo guardo al objeto en la lista
+		 * si no se cumple borro la variable temporal String y paso al siguiente registro
+		 * 
+		 */
 
 			tmpValor=JSON.stringify(value);
 			tmpValor.toUpperCase();

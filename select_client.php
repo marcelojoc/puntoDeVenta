@@ -53,12 +53,10 @@ if ( !$_SESSION['uid'] )
 
   }else{ //  si no hay datos post  cargo el form de busqueda de Clientes
 
-
     unset($_SESSION['serObjFacturation']); //borro sesion de facturacion y de carro de compras
     unset($_SESSION['poscart']);
 
  ?>   
-
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -83,7 +81,7 @@ if ( !$_SESSION['uid'] )
 
 
 
-	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-12 ">                    
 		<div class="panel panel-default formcentro" >
 				<!--<div class="panel-heading">
 					<div class="panel-title text-center">Acceso TPV</div>
@@ -162,11 +160,14 @@ if ( !$_SESSION['uid'] )
 
 
           <div class="col-sm-12 controls text-center">
+              <a class="btn btn-default btn-lg" href="resumenVenta.php">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Resumen de ventas
+              </a>
+          </div>
 
 
-<a class="btn btn-default btn-lg" href="resumenVenta.php">
-  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Resumen de ventas
-</a>
+          <div class="col-sm-12 controls text-center" id="pruebagps">
+
           </div>
 
 	</div>
@@ -207,6 +208,7 @@ if ( !$_SESSION['uid'] )
     <script src="javascript/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="javascript/list_clients.js"></script>
+    <script type="text/javascript" src="javascript/geo_clients.js"></script>
 </html>
 
 

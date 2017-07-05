@@ -136,8 +136,6 @@ class Facturation
         $product = new Product($db);
         $product->fetch($this->id);
 
-
-        
         $vatrowid = $this->tva();
 
         
@@ -147,7 +145,7 @@ class Facturation
 
 
         $localtaxarray = getLocalTaxesFromRate($vatrowid, 0, $societe, $mysoc, 1);
-        
+
         // Define part of HT, VAT, TTC
         $resultarray=calcul_price_total($this->qte, $this->precio_tabla(), $this->remisePercent(), $vat_rate, -1, -1, 0, 'HT', $use_npr, $product->type, $mysoc, $localtaxarray);
 
@@ -299,7 +297,6 @@ class Facturation
         $this->montantEncaisse('RESET');
         $this->montantRendu('RESET');
         $this->paiementLe('RESET');
-
         $this->prixTotalHt('RESET');
         $this->montantTva('RESET');
         $this->prixTotalTtc('RESET');
@@ -704,6 +701,8 @@ class Facturation
      */
     public function prixTotalTtc( $aTotalTtc=null )
     {
+
+
         if ( !$aTotalTtc )
         {
             return $this->prix_total_ttc;

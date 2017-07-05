@@ -174,10 +174,15 @@ switch ( $_GET['action'] )
 		if (! empty($obj_facturation->id))	// A product was previously selected and stored in session, so we can add it
 		{
 		    dol_syslog("facturation_verif save vat ".$_POST['selTva']);
+
+
+			
+
 			$obj_facturation->qte($_POST['txtcantidad']);
 			$obj_facturation->tva(233);                 // Save VAT selected so we can use it for next product
 			$obj_facturation->remisePercent($_POST['txtdesc']);
 			
+
 			$obj_facturation->ajoutArticle();	// This add an entry into $_SESSION['poscart']
 			// We update prixTotalTtc
 			 

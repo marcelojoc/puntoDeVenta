@@ -47,7 +47,17 @@ $langs->load("bills");
 
          <br>
 
-         <?php //var_dump(unserialize($_SESSION['serObjFacturation']));?>
+         <?php 
+//         $obj= unserialize($_SESSION['serObjFacturation']);
+//          var_dump($obj);
+//          $obj->montantEncaisse( '0' );
+//         // $obj->montantEncaisse( '0' );
+//         // $obj->montantEncaisse( '0' );
+//          $obj->prixTotalTtc('0');
+         
+// var_dump($obj);
+         
+         ?>
 
     <table class="table table-bordered table-responsive">
 
