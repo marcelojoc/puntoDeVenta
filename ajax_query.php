@@ -286,7 +286,7 @@ $respuesta=null;
 	        $add_string='';
 	}else{
 
-                $add_string= ',llx_societe_extrafields.lat AS latitud,llx_societe_extrafields.lon';
+                $add_string= ',llx_societe_extrafields.lat AS latitud,llx_societe_extrafields.lon AS longitud ';
 
         }
                 if( $codVendedor <= 0){

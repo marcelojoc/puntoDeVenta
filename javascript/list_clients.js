@@ -23,12 +23,11 @@ geoCliente.requestPosition();
 
 function asignarCodigo(valor){
 
- $('#hiddenCode').val( $('#selCliente').val())
+	$('#hiddenCode').val( $('#selCliente').val())
 
- var codClient= $('#selCliente option:selected').text();
+	var codClient= $('#selCliente').val();
 
-
-rellenarPanel (codClient.split('-'));
+	rellenarPanel (codClient);
 
 };
 
@@ -36,25 +35,33 @@ rellenarPanel (codClient.split('-'));
 
 function rellenarPanel(datos){    // funcion encargada de lipiar el panel y re escribir los datos
 
-limpiarPanel();
+	limpiarPanel();
+		var panelString ="";
 
-var panelString = '<p><i class="glyphicon glyphicon-tags"></i> codigo: ' + datos[0];
+		$.each(todo, function(id,value){
 
-	panelString += ' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ datos[1];
-	panelString += '</p>  <p><i class="glyphicon glyphicon-home"></i> Direccion: '+ datos[2] +'</p>';
+			if( datos == value.id_cliente ){
 
-	if(datos[3] === undefined){
+				panelString += '<p><i class="glyphicon glyphicon-tags"></i> codigo: ' + value.cod_cliente;
 
-		panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="0">';
-		panelString += '<input type="hidden" name="set_lat" id="set_lon" value ="0">';
+				panelString += ' </p>   <p><i class="glyphicon glyphicon-user"></i> Nombre: '+ value.nombre;
+				panelString += '</p>  <p><i class="glyphicon glyphicon-home"></i> Direccion: '+ value.direccion +'</p>';
 
-	}else{
+				if(value.lat === null || value.lon === null){
 
-		panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="'+ datos[3] +'">';
-		panelString += '<input type="hidden" name="set_lon" id="set_lon" value ="'+ datos[4] +'">';
+					panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="0">';
+					panelString += '<input type="hidden" name="set_lat" id="set_lon" value ="0">';
 
-	}
+				}else{
 
+					panelString += '<input type="hidden" name="set_lat" id="set_lat" value ="'+ value.lat +'">';
+					panelString += '<input type="hidden" name="set_lon" id="set_lon" value ="'+ value.lon +'">';
+
+				}
+
+			}
+				
+		});
 
 
 	$('#datosPanel').html(panelString);
